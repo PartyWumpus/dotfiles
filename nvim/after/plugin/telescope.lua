@@ -2,9 +2,9 @@ require('telescope').setup {
 	extensions = {
 		frecency = {
 			show_scores = true,
-      show_unindexed = true,
-    }
-  },
+			show_unindexed = true,
+		}
+	},
 }
 
 local builtin = require('telescope.builtin')
