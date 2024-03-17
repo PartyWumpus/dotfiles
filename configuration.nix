@@ -75,6 +75,7 @@
 
 	# Allow unfree packages
 	nixpkgs.config.allowUnfree = true;
+	nixpkgs.overlays = [ inputs.neovim.overlay ];
 
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget

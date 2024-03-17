@@ -47,7 +47,7 @@ require("hover").setup {
 	mouse_providers = {
 		'LSP'
 	},
-	mouse_delay = 1000
+	mouse_delay = 800
 }
 
 -- Setup keymaps
@@ -56,6 +56,6 @@ vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
 --vim.keymap.set("n", "<C-p>", function() require("hover").hover_switch("previous") end, {desc = "hover.nvim (previous source)"})
 --vim.keymap.set("n", "<C-n>", function() require("hover").hover_switch("next") end, {desc = "hover.nvim (next source)"})
 
--- Mouse support -- appears to only work in nvim 0.10+ :(
---  vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
---  vim.o.mousemoveevent = true
+-- Mouse support -- appears to only work in nvim 0.10+
+vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
+vim.o.mousemoveevent = true
