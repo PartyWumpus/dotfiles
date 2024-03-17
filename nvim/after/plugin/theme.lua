@@ -6,8 +6,8 @@ require("catppuccin").setup({
 	custom_highlights = function(colors)
 		return {
 			netrwTreeBar = { fg = colors.surface0 },
-				}
-		end,
+		}
+	end,
 })
 
 vim.cmd[[colorscheme catppuccin]]

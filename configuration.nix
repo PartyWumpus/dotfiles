@@ -108,6 +108,13 @@
 		tree-sitter
 		ripgrep
 		fd
+
+		# lsp packages
+		lua-language-server
+		nodePackages.typescript-language-server
+		rust-analyzer
+		nodePackages.pyright
+		nil
 	];
 
 

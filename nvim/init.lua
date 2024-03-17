@@ -32,6 +32,10 @@ require("lazy").setup({
 	{'hrsh7th/cmp-nvim-lsp'},
 	{'hrsh7th/nvim-cmp'},
 	{'L3MON4D3/LuaSnip'},
+
+	{'lewis6991/hover.nvim'},
+	{'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {}},
+	{'HiPhish/rainbow-delimiters.nvim'}
 })
 
 -- my config
@@ -39,7 +43,6 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
-vim.opt.noexpandtab = true
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
