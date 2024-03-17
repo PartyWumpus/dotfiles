@@ -1,7 +1,8 @@
 require("catppuccin").setup({
 	flavour = "macchiato",
 	itegrations = {
-
+		treesitter = true,
+		rainbow_delimiters = true,
 	},
 	custom_highlights = function(colors)
 		return {

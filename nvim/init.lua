@@ -35,7 +35,8 @@ require("lazy").setup({
 
 	{'lewis6991/hover.nvim'},
 	{'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {}},
-	{'HiPhish/rainbow-delimiters.nvim'}
+	{'HiPhish/rainbow-delimiters.nvim'},
+	{'nvim-lualine/lualine.nvim'},
 })
 
 -- my config

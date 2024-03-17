@@ -29,7 +29,6 @@ require("ibl").setup { scope = {enabled = false} }
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
 
-
 --- hover config
 require("hover").setup {
 	init = function()
