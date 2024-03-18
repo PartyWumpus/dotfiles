@@ -8,15 +8,16 @@
 	imports =
 		[ # Include the results of the hardware scan.
 			/etc/nixos/hardware-configuration.nix
+			/etc/nixos/configuration.nix
 			inputs.home-manager.nixosModules.default
 		];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 	# Bootloader.
-	boot.loader.grub.enable = true;
-	boot.loader.grub.device = "/dev/sda";
-	boot.loader.grub.useOSProber = true;
+	#boot.loader.grub.enable = true;
+	#boot.loader.grub.device = "/dev/sda";
+	#boot.loader.grub.useOSProber = true;
 
 	networking.hostName = "nixos"; # Define your hostname.
 	# networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
@@ -80,6 +81,7 @@
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
 	environment.systemPackages = with pkgs; [
+		sof-firmware
 		# packages
 		zsh
 		neovim
@@ -87,6 +89,8 @@
 		wget
 		tldr
 		konsole
+		alacritty
+		alacritty-theme
 		neofetch
 
 		# git packages
@@ -150,6 +154,7 @@
 		pulse.enable = true;
 		jack.enable = true;
 	};
+	hardware.enableAllFirmware = true;
 
 	# List services that you want to enable:
 
