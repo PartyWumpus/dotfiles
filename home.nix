@@ -17,7 +17,7 @@
 
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
-	home.packages = [
+	home.packages = with pkgs; [
 		# # Adds the 'hello' command to your environment. It prints a friendly
 		# # "Hello, world!" when run.
 		# pkgs.hello
@@ -34,7 +34,41 @@
 		# (pkgs.writeShellScriptBin "my-hello" ''
 		#		echo "Hello, ${config.home.username}!"
 		# '')
-	];
+  	#(pkgs.catppuccin-kvantum.override {
+    #	accent = "Lavender";
+    #	variant = "Macchiato";
+    #})
+  ];
+  #xdg.configFile = {
+	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
+  #	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.svg".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.svg";
+  #};
+
+	gtk = {
+		enable = true;
+		theme = {
+			name = "Catppuccin-Macchiato-Compact-Blue-Dark";
+			package = pkgs.catppuccin-gtk.override {
+				#accents = [ "pink" ];
+				size = "compact";
+				tweaks = [ "rimless" ];
+				variant = "macchiato";
+			};
+		};
+	};
+
+	xdg.configFile = {
+		"gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
+		"gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
+		"gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
+	};
+
+      #home.pointerCursor = {
+      #  gtk.enable = true;
+      #  package = pkgs.bibata-cursors;
+      #  name = "Bibata-Modern-Classic";
+      #  size = 24;
+      #};
 
 	# Home Manager is pretty good at managing dotfiles. The primary way to manage
 	# plain files is through 'home.file'.
@@ -130,7 +164,16 @@
 				}
 
 				bindm = $mod, mouse:272, movewindow
-				bindm = $mod, mouse:273, resizewindow
+				bindm = ALT, mouse:272, resizewindow
+
+				bind=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+				bind=, XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-
+				bind=, XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+
+				bind=, XF86XK_MonBrightnessUp,  exec, brightnessctl s +5%
+				bind=, XF86XK_MonBrightnessDown,  exec, brightnessctl s 5%-
+				bind=, F12, exec, grimshot --notify save area ${config.xdg.userDirs.pictures}/$(TZ=utc date +'screenshot_%Y-%m-%d-%H%M%S.%3N.png')
+        bind=Shift, F12, exec, grimshot --notify save active ${config.xdg.userDirs.pictures}/$(TZ=utc date +'screenshot_%Y-%m-%d-%H%M%S.%3N.png')
 		'';
 		settings = {
 			"$mod" = "SUPER";
@@ -140,9 +183,6 @@
 				[
 					"$mod, Q, exec, $terminal"
 					"$mod, S, exec, $menu"
-					"$mod, F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-					"$mod, F2, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-"
-					"$mod, F3, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
 					"$mod, C, killactive"
 					"$mod, M, exit"
 				]
@@ -195,7 +235,7 @@
 		"custom/arrow4"
 		"battery"
 		"custom/arrow3"
-		"hyprland/language"
+		"disk"
 		"custom/arrow2"
 		"tray"
 		"clock#date"
@@ -251,11 +291,16 @@
 		};
 	};
 
-	"hyprland/language" = {
-		format = " {}";
-		min-length = 5;
-		on-click = "swaymsg 'input * xkb_switch_layout next'";
-		tooltip = false;
+	#"hyprland/language" = {
+	#	format = " {}";
+	#	min-length = 5;
+	#	on-click = "swaymsg 'input * xkb_switch_layout next'";
+	#	tooltip = false;
+	#};
+
+	disk = {
+		format = " {percentage_used}%";
+		format-alt = " {used}/{total}";
 	};
 
 	memory = {
@@ -302,14 +347,17 @@
 		format-icons = {
 			headphone = "";
 			hands-free = "";
-			headset = "";
+			#headset = "";
+			headset = "";
 			phone = "";
 			portable = "";
 			car = "";
 			default = ["" ""];
 		};
 		scroll-step = 1;
-		on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+		#on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+		# sleep is needed because of waybar & hyprland bug https://github.com/Alexays/Waybar/issues/1850
+		on-click = "sleep 0.1 && ${./hyprland/waybar/audio_changer.py}";
 		tooltip = false;
 	};
 

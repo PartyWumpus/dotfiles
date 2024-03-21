@@ -57,6 +57,9 @@
 	console.keyMap = "uk";
 
 	programs.zsh.enable = true;
+	programs.command-not-found.enable = false;
+	programs.nix-index.enable = true;
+	programs.nix-index-database.comma.enable = true;
 
 	# Define a user account. Don't forget to set a password with ‘passwd’.
 	users.users.wumpus = {
@@ -77,6 +80,7 @@
 	# Allow unfree packages
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.overlays = [ inputs.neovim.overlay ];
+	environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
@@ -84,14 +88,24 @@
 		sof-firmware
 		# packages
 		zsh
-		neovim
 		micro
 		wget
 		tldr
-		konsole
 		alacritty
-		alacritty-theme
+
+		sway-contrib.grimshot
+
+		xfce.thunar
+		ranger
+
+		# fun packages
 		neofetch
+		pipes
+
+		# themes
+		libsForQt5.qtstyleplugin-kvantum
+		libsForQt5.qt5ct
+		catppuccin-kvantum
 
 		# git packages
 		git
@@ -101,8 +115,10 @@
 		# apps
 		google-chrome
 		vesktop
+		transmission-gtk
 
 		# hyprland packages
+		brightnessctl
 		wofi
 		waybar
 		dunst
@@ -110,6 +126,7 @@
 		swww
 
 		# nvim packages
+		neovim
 		tree-sitter
 		ripgrep
 		fd
@@ -120,6 +137,14 @@
 		rust-analyzer
 		nodePackages.pyright
 		nil
+
+		# languages
+		python3
+
+		# productivity
+		libreoffice-qt
+    hunspell
+		hunspellDicts.en_GB-ize
 	];
 
 
@@ -130,6 +155,13 @@
 		noto-fonts-emoji
 		meslo-lgs-nf
 	];
+
+	environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
+	qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+    style = "kvantum";
+  };
 
 	# Some programs need SUID wrappers, can be configured further or are
 	# started in user sessions.
@@ -143,6 +175,15 @@
 	programs.hyprland.enable = true;
 	xdg.portal.enable = true;
 	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
+	
+	# mime type setup
+	environment.sessionVariables.DEFAULT_BROWSER = "${pkgs.google-chrome}/bin/google-chrome-stable";
+	xdg.mime.defaultApplications = {
+		"text/html" = "google-chrome.desktop";
+		"x-scheme-handler/https" = "google-chrome.desktop";
+		"x-scheme-handler/about" = "google-chrome.desktop";
+		"x-scheme-handler/unknown" = "google-chrome.desktop";
+	};
 
 	# sound setup
 	sound.enable = true;
@@ -155,6 +196,15 @@
 		jack.enable = true;
 	};
 	hardware.enableAllFirmware = true;
+	
+	programs.steam = {
+  	enable = true;
+		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  	dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+	};
+
+	services.xserver.libinput.enable = false;
+	services.xserver.synaptics.enable = true;
 
 	# List services that you want to enable:
 

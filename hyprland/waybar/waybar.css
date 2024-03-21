@@ -180,7 +180,7 @@
 	color: @black;
 }
 
-#language {
+#language, #disk {
 	background: @layout;
 	color: @black;
 }
