@@ -81,6 +81,7 @@
 #backlight,
 #idle_inhibitor,
 #disk,
+#custom-clipboard,
 #user,
 #mpris {
 	padding-left: 8pt;
@@ -180,7 +181,7 @@
 	color: @black;
 }
 
-#language, #disk {
+#language, #disk, #custom-clipboard {
 	background: @layout;
 	color: @black;
 }

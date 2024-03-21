@@ -94,6 +94,8 @@
 		alacritty
 
 		sway-contrib.grimshot
+		cliphist
+		wl-clipboard
 
 		xfce.thunar
 		ranger
