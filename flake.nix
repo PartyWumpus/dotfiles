@@ -35,15 +35,16 @@
 
 			hosts.laptop = {
 				modules = [
-				./hosts/configuration.nix
-				./hosts/hardware-configuration.nix
+				./hosts/laptop/configuration.nix
+				./hosts/laptop/hardware-configuration.nix
 				];
 			};
 
 
 			hosts.desktop = {
 				modules = [
-					./hosts/Hostname2.nix
+				./hosts/desktop/configuration.nix
+				./hosts/desktop/hardware-configuration.nix
 				];
 			};
 

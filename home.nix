@@ -124,7 +124,8 @@
 		syntaxHighlighting.enable = true;
 
 		shellAliases = {
-			update = "sudo nixos-rebuild switch --flake ~/nixos#default --impure";
+			update = "sudo nixos-rebuild switch --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
+			#update = "sudo nixos-rebuild switch --flake ~/nixos#default --impure";
 		};
 
 		history.size = 10000;

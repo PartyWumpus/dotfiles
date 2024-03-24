@@ -182,12 +182,12 @@
 	color: @black;
 }
 
-#language, #disk, #custom-clipboard {
+#language, #custom-clipboard {
 	background: @layout;
 	color: @black;
 }
 
-#battery {
+#battery, #disk {
 	background: @battery;
 	color: @white;
 }

@@ -35,7 +35,11 @@ in {
 		extraConfig = ''
 				$mod = SUPER
 
-				monitor=eDP-2,2560x1600@165,0x0,1.666667
+
+				${(if builtins.getEnv "HOSTNAME" == "desktop"
+					then "monitor=DP-1,2560x1440@144,0x0,1.6"
+					else "monitor=eDP-2,2560x1600@165,0x0,1.666667"
+					)}
 
 				exec-once = swww init && swww img ~/wallpaper.png
 				exec-once = waybar
@@ -127,9 +131,8 @@ in {
 		"custom/arrow5"
 		"temperature"
 		"custom/arrow4"
-		"battery"
+		(if builtins.getEnv "HOSTNAME" == "desktop" then "disk" else "battery")
 		"custom/arrow3"
-		#"disk"
 		"custom/clipboard"
 		"custom/arrow2"
 		"clock#date"
@@ -192,10 +195,10 @@ in {
 	#	tooltip = false;
 	#};
 
-	#disk = {
-	#	format = " {percentage_used}%";
-	#	format-alt = " {used}/{total}";
-	#};
+	disk = {
+		format = " {percentage_used}%";
+		format-alt = " {used}/{total}";
+	};
 
 	# thank you random reddit thread https://www.reddit.com/r/swaywm/comments/z4lq76/comment/ixse0tm/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 	"custom/clipboard" = {
