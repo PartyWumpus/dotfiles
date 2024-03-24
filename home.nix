@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-	imports = [ ./hyprland/hyprland.nix ];
+	imports = [ ./modules/hyprland/hyprland.nix ./modules/zsh/zsh.nix ];
 	# Home Manager needs a bit of information about you and the paths it should
 	# manage.
 	home.username = "wumpus";
@@ -82,7 +82,7 @@
 		# # the Nix store. Activating the configuration will then make '~/.screenrc' a
 		# # symlink to the Nix store copy.
 		# ".screenrc".source = dotfiles/screenrc;
-		".config/nvim".source = ./nvim;
+		".config/nvim".source = ./modules/nvim;
 
 		# # You can also set the file content immediately.
 		# ".gradle/gradle.properties".text = ''
@@ -115,34 +115,6 @@
 		enable = true;
 		userName = "PartyWumpus";
 		userEmail = "48649272+PartyWumpus@users.noreply.github.com";
-	};
-
-	programs.zsh = {
-		enable = true;
-		enableCompletion = true;
-		enableAutosuggestions = true;
-		syntaxHighlighting.enable = true;
-
-		shellAliases = {
-			update = "sudo nixos-rebuild switch --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
-			#update = "sudo nixos-rebuild switch --flake ~/nixos#default --impure";
-		};
-
-		history.size = 10000;
-		history.path = "${config.xdg.dataHome}/zsh/history";
-
-		plugins = [
-		{
-			name = "powerlevel10k";
-			src = pkgs.zsh-powerlevel10k;
-			file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-		}
-		{
-			name = "powerlevel10k-config";
-			src = ./zsh;
-			file = "p10k.zsh";
-		}
-		];
 	};
 
 	programs.alacritty = {

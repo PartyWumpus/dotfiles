@@ -35,7 +35,6 @@ in {
 		extraConfig = ''
 				$mod = SUPER
 
-
 				${(if builtins.getEnv "HOSTNAME" == "desktop"
 					then "monitor=DP-1,2560x1440@144,0x0,1.6"
 					else "monitor=eDP-2,2560x1600@165,0x0,1.666667"
@@ -57,6 +56,10 @@ in {
 
 				decoration {
 					rounding = 10
+				}
+
+				misc {
+					force_default_wallpaper = 0
 				}
 
 				bindm = $mod, mouse:272, movewindow
