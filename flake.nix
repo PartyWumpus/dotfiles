@@ -3,6 +3,7 @@
 
 	inputs = {
 		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
 		neovim.url = "github:neovim/neovim?dir=contrib";
 
 		home-manager.url = "github:nix-community/home-manager";

@@ -94,7 +94,8 @@
 #cpu.critical,
 #temperature.critical,
 #battery.critical.discharging {
-	animation-timing-function: linear;
+	/*animation-timing-function: linear; */
+	animation-timing-function: steps(14);
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
 	animation-name: blink-critical;

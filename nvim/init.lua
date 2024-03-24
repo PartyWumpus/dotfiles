@@ -42,6 +42,18 @@ require("lazy").setup({
 -- my config
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
+-- Copy to clipboard
+vim.keymap.set("v", "<leader>y", '"+y')
+--nnoremap  <leader>Y  "+yg_
+--nnoremap  <leader>y  "+y
+vim.keymap.set("n", "<leader>yy", '"+yy')
+
+-- Paste from clipboard
+--nnoremap <leader>p "+p
+--nnoremap <leader>P "+P
+--vnoremap <leader>p "+p
+--vnoremap <leader>P "+P
+
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 

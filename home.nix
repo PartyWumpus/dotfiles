@@ -32,9 +32,11 @@
 		# # You can also create simple shell scripts directly inside your
 		# # configuration. For example, this adds a command 'my-hello' to your
 		# # environment:
-		# (pkgs.writeShellScriptBin "my-hello" ''
-		#		echo "Hello, ${config.home.username}!"
-		# '')
+		(pkgs.writeShellScriptBin "unlink-copy" ''
+			cp "$1" "$1.tmp"
+			unlink "$1"
+			mv "$1.tmp" "$1"
+		'')
   	#(pkgs.catppuccin-kvantum.override {
     #	accent = "Lavender";
     #	variant = "Macchiato";
@@ -57,6 +59,8 @@
 			};
 		};
 	};
+
+	xdg.enable = true;
 
 	xdg.configFile = {
 		"gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";

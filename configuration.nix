@@ -14,13 +14,26 @@
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+	# move me to laptop specific config
+	#services.auto-cpufreq.enable = true;
+	#services.auto-cpufreq.settings = {
+	#	battery = {
+  #  	governor = "powersave";
+  #  	turbo = "never";
+  #	};
+	#	charger = {
+  #		governor = "performance";
+  #		turbo = "auto";
+  #	};
+	#};
+
 	# Bootloader.
 	#boot.loader.grub.enable = true;
 	#boot.loader.grub.device = "/dev/sda";
 	#boot.loader.grub.useOSProber = true;
 
 	networking.hostName = "nixos"; # Define your hostname.
-	# networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
+	#networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
 
 	# Configure network proxy if necessary
 	# networking.proxy.default = "http://user:password@proxy:port/";
@@ -92,40 +105,33 @@
 		wget
 		tldr
 		alacritty
-
-		sway-contrib.grimshot
-		cliphist
-		wl-clipboard
-
-		xfce.thunar
-		ranger
-
-		# fun packages
 		neofetch
 		pipes
+
 
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
 		libsForQt5.qt5ct
 		catppuccin-kvantum
 
+
 		# git packages
 		git
 		gh
 		libsecret
 
+
 		# apps
 		google-chrome
 		vesktop
 		transmission-gtk
+		pinta
+		obs-studio
+		yt-dlp
+		kid3
+		xfce.thunar
+		ranger
 
-		# hyprland packages
-		brightnessctl
-		wofi
-		waybar
-		dunst
-		libnotify
-		swww
 
 		# nvim packages
 		neovim
@@ -201,6 +207,7 @@
 	
 	programs.steam = {
   	enable = true;
+		#package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; #TODO, figure this out
 		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   	dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 	};
