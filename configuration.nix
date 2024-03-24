@@ -5,26 +5,19 @@
 { config, pkgs, inputs, ... }:
 
 {
-	imports =
-		[ # Include the results of the hardware scan.
-			/etc/nixos/hardware-configuration.nix
-			/etc/nixos/configuration.nix
-			inputs.home-manager.nixosModules.default
-		];
-
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 	# move me to laptop specific config
 	#services.auto-cpufreq.enable = true;
 	#services.auto-cpufreq.settings = {
 	#	battery = {
-  #  	governor = "powersave";
-  #  	turbo = "never";
-  #	};
+	#		governor = "powersave";
+	#		turbo = "never";
+	#	};
 	#	charger = {
-  #		governor = "performance";
-  #		turbo = "auto";
-  #	};
+	#		governor = "performance";
+	#		turbo = "auto";
+	#	};
 	#};
 
 	# Bootloader.
@@ -32,7 +25,7 @@
 	#boot.loader.grub.device = "/dev/sda";
 	#boot.loader.grub.useOSProber = true;
 
-	networking.hostName = "nixos"; # Define your hostname.
+	#networking.hostName = "nixos"; # Define your hostname.
 	#networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
 
 	# Configure network proxy if necessary
@@ -91,8 +84,8 @@
 	};
 
 	# Allow unfree packages
-	nixpkgs.config.allowUnfree = true;
-	nixpkgs.overlays = [ inputs.neovim.overlay ];
+	#nixpkgs.config.allowUnfree = true;
+	#nixpkgs.overlays = [ inputs.neovim.overlay ];
 	environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 	# List packages installed in system profile. To search, run:
@@ -151,7 +144,7 @@
 
 		# productivity
 		libreoffice-qt
-    hunspell
+		hunspell
 		hunspellDicts.en_GB-ize
 	];
 
@@ -166,10 +159,10 @@
 
 	environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
 	qt = {
-    enable = true;
-    platformTheme = "qt5ct";
-    style = "kvantum";
-  };
+		enable = true;
+		platformTheme = "qt5ct";
+		style = "kvantum";
+	};
 
 	# Some programs need SUID wrappers, can be configured further or are
 	# started in user sessions.
@@ -206,10 +199,10 @@
 	hardware.enableAllFirmware = true;
 	
 	programs.steam = {
-  	enable = true;
+		enable = true;
 		#package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; #TODO, figure this out
 		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  	dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+		dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 	};
 
 	services.xserver.libinput.enable = false;
