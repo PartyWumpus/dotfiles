@@ -233,6 +233,7 @@ in {
 		format-disconnected = "No connection";
 		format-alt = " {ipaddr}/{cidr}";
 		tooltip = false;
+		on-click-right = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
 	};
 
 	"hyprland/mode" = {
