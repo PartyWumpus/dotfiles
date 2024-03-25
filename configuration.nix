@@ -101,18 +101,15 @@
 		neofetch
 		pipes
 
-
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
 		libsForQt5.qt5ct
 		catppuccin-kvantum
 
-
 		# git packages
 		git
 		gh
 		libsecret
-
 
 		# apps
 		google-chrome
@@ -124,20 +121,6 @@
 		kid3
 		xfce.thunar
 		ranger
-
-
-		# nvim packages
-		neovim
-		tree-sitter
-		ripgrep
-		fd
-
-		# lsp packages
-		lua-language-server
-		nodePackages.typescript-language-server
-		rust-analyzer
-		nodePackages.pyright
-		nil
 
 		# languages
 		python3

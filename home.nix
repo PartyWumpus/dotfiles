@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
 
 {
-	imports = [ ./modules/hyprland/hyprland.nix ./modules/zsh/zsh.nix ];
+	imports = [
+	./modules/hyprland/hyprland.nix
+	./modules/zsh/zsh.nix
+	./modules/nvim/nvim.nix
+	];
 	# Home Manager needs a bit of information about you and the paths it should
 	# manage.
 	home.username = "wumpus";
@@ -82,7 +86,7 @@
 		# # the Nix store. Activating the configuration will then make '~/.screenrc' a
 		# # symlink to the Nix store copy.
 		# ".screenrc".source = dotfiles/screenrc;
-		".config/nvim".source = ./modules/nvim;
+		#".config/nvim".source = ./modules/nvim;
 
 		# # You can also set the file content immediately.
 		# ".gradle/gradle.properties".text = ''
@@ -107,7 +111,7 @@
 	#  /etc/profiles/per-user/wumpus/etc/profile.d/hm-session-vars.sh
 	#
 	home.sessionVariables = {
-		EDITOR = "nvim";
+		#EDITOR = "nvim";
 		TERMINAL = "alacritty";
 	};
 
