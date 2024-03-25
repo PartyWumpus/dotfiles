@@ -40,7 +40,7 @@ in {
 					else "monitor=eDP-2,2560x1600@165,0x0,1.666667"
 					)}
 
-				exec-once = swww init && swww img ~/wallpaper.png
+				exec-once = swww init && swww img ${./wallpaper.png}
 				exec-once = waybar
 				exec-once = dunst
 				exec-once = wl-paste --watch cliphist store
