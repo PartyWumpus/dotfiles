@@ -78,6 +78,8 @@
 
 	home-manager = {
 		extraSpecialArgs = {inherit inputs;};
+		useGlobalPkgs = true;
+		useUserPackages = true;
 		users = {
 			"wumpus" = import ./home.nix;
 		};
