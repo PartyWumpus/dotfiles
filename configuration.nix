@@ -12,6 +12,16 @@
 	#boot.loader.grub.device = "/dev/sda";
 	#boot.loader.grub.useOSProber = true;
 
+	boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+	boot.kernelModules = [
+	"v4l2loopback"
+	];
+
+	boot.extraModprobeConfig = ''
+		options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+	'';
+	security.polkit.enable = true;
+
 	#networking.hostName = "nixos"; # Define your hostname.
 	#networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
 
@@ -111,6 +121,8 @@
 		xfce.thunar
 		ranger
 		kdenlive
+		prismlauncher
+		spotify
 
 		# languages
 		python3
@@ -178,6 +190,7 @@
 		#package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; #TODO, figure this out
 		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
 		dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+		gamescopeSession.enable = true;
 	};
 
 	services.xserver.libinput.enable = false;

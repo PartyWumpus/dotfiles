@@ -41,15 +41,15 @@
 			unlink "$1"
 			mv "$1.tmp" "$1"
 		'')
-  	#(pkgs.catppuccin-kvantum.override {
-    #	accent = "Lavender";
-    #	variant = "Macchiato";
-    #})
-  ];
-  #xdg.configFile = {
+		#(pkgs.catppuccin-kvantum.override {
+		#	accent = "Lavender";
+		#	variant = "Macchiato";
+		#})
+	];
+	#xdg.configFile = {
 	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
-  #	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.svg".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.svg";
-  #};
+	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.svg".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.svg";
+	#};
 
 	gtk = {
 		enable = true;
@@ -72,12 +72,12 @@
 		"gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
 	};
 
-      #home.pointerCursor = {
-      #  gtk.enable = true;
-      #  package = pkgs.bibata-cursors;
-      #  name = "Bibata-Modern-Classic";
-      #  size = 24;
-      #};
+			#home.pointerCursor = {
+			#  gtk.enable = true;
+			#  package = pkgs.bibata-cursors;
+			#  name = "Bibata-Modern-Classic";
+			#  size = 24;
+			#};
 
 	# Home Manager is pretty good at managing dotfiles. The primary way to manage
 	# plain files is through 'home.file'.
@@ -124,6 +124,12 @@
 	programs.alacritty = {
 		enable = true;
 		settings.import = [ "${pkgs.alacritty-theme.outPath}/catppuccin_macchiato.toml" ];
+	};
+
+	programs.direnv = {
+		enable = true;
+		enableZshIntegration = true; # see note on other shells below
+		nix-direnv.enable = true;
 	};
 
 	# Let Home Manager install and manage itself.
