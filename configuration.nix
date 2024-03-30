@@ -7,19 +7,6 @@
 {
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-	# move me to laptop specific config
-	#services.auto-cpufreq.enable = true;
-	#services.auto-cpufreq.settings = {
-	#	battery = {
-	#		governor = "powersave";
-	#		turbo = "never";
-	#	};
-	#	charger = {
-	#		governor = "performance";
-	#		turbo = "auto";
-	#	};
-	#};
-
 	# Bootloader.
 	#boot.loader.grub.enable = true;
 	#boot.loader.grub.device = "/dev/sda";
@@ -123,6 +110,7 @@
 		kid3
 		xfce.thunar
 		ranger
+		kdenlive
 
 		# languages
 		python3

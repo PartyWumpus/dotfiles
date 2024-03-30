@@ -1,7 +1,5 @@
-Properly set up various languages
+Properly set up various programming languages
 Figure out how to put the hyprland config.nix stuff in the module
-Configure kdenlive & obs to use proper drivers?
-Figure out battery optimization on laptop
 Switch to firefox??
 Figure out how to tell steam to start with -vgui (seems to magically fix it)
 Figure out why hyprland freezes up sometimes (inactivity?)
