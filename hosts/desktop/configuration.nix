@@ -14,4 +14,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+	fileSystems."/mnt" = {
+		device = "/dev/disk/by-uuid/f346c230-d657-4376-a161-b29a9055568c";
+		fsType = "btrfs";
+		options = [
+			"noatime"
+			"compress=zstd:5"
+		];
+	};
+
 }

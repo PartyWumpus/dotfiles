@@ -44,6 +44,7 @@ in {
 				exec-once = waybar
 				exec-once = dunst
 				exec-once = wl-paste --watch cliphist store
+				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
 
 				input {
 					kb_layout = gb
