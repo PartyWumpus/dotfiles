@@ -103,7 +103,7 @@
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
 		libsForQt5.qt5ct
-		catppuccin-kvantum
+
 
 		# git packages
 		git
@@ -123,6 +123,7 @@
 		kdenlive
 		prismlauncher
 		spotify
+		r2modman
 
 		# languages
 		python3
@@ -143,11 +144,6 @@
 	];
 
 	environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
-	qt = {
-		enable = true;
-		platformTheme = "qt5ct";
-		style = "kvantum";
-	};
 
 	environment.variables.HOSTNAME = config.networking.hostName;
 
@@ -166,6 +162,7 @@
 	
 	# mime type setup
 	environment.sessionVariables.DEFAULT_BROWSER = "${pkgs.google-chrome}/bin/google-chrome-stable";
+	xdg.mime.enable = true;
 	xdg.mime.defaultApplications = {
 		"text/html" = "google-chrome.desktop";
 		"x-scheme-handler/https" = "google-chrome.desktop";

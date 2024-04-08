@@ -74,8 +74,8 @@ in {
 
 				bind=, XF86MonBrightnessUp,  exec, brightnessctl s +5%
 				bind=, XF86MonBrightnessDown,  exec, brightnessctl s 5%-
-				bind=, F12, exec, grimshot --notify savecopy area ${config.xdg.userDirs.pictures}/$(TZ=utc date +'screenshot_%Y-%m-%d-%H%M%S.%3N.png')
-				bind=Shift, F12, exec, grimshot --notify savecopy active ${config.xdg.userDirs.pictures}/$(TZ=utc date +'screenshot_%Y-%m-%d-%H%M%S.%3N.png')
+				bind=, F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
+				bind=Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
 		'';
 		settings = {
 			"$mod" = "SUPER";

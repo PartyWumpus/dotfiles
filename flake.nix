@@ -12,6 +12,8 @@
 
 		nix-index-database.url = "github:nix-community/nix-index-database";
 		nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+		#flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};
 
 
@@ -28,6 +30,7 @@
 				./configuration.nix
 				home-manager.nixosModules.default
 				nix-index-database.nixosModules.nix-index
+				#inputs.flatpaks.homeManagerModules.default
 			];
 
 

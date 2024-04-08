@@ -41,10 +41,6 @@
 			unlink "$1"
 			mv "$1.tmp" "$1"
 		'')
-		#(pkgs.catppuccin-kvantum.override {
-		#	accent = "Lavender";
-		#	variant = "Macchiato";
-		#})
 	];
 	#xdg.configFile = {
 	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
@@ -64,20 +60,31 @@
 		};
 	};
 
+	qt = {
+		enable = true;
+		platformTheme = "qtct";
+		style.name = "kvantum";
+	};
+
 	xdg.enable = true;
 
 	xdg.configFile = {
 		"gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
 		"gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
 		"gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
+		"Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini {}).generate "kvantum.kvconfig" {
+			General.theme = "Catppuccin-Macchiato-Blue";
+		};
+		"Kvantum/Catppuccin-Macchiato-Blue".source =
+		"${(pkgs.catppuccin-kvantum.override {accent = "Blue";variant ="Macchiato";} )}/share/Kvantum/Catppuccin-Macchiato-Blue";
 	};
 
-			#home.pointerCursor = {
-			#  gtk.enable = true;
-			#  package = pkgs.bibata-cursors;
-			#  name = "Bibata-Modern-Classic";
-			#  size = 24;
-			#};
+	#home.pointerCursor = {
+	#  gtk.enable = true;
+	#  package = pkgs.bibata-cursors;
+	#  name = "Bibata-Modern-Classic";
+	#  size = 24;
+	#};
 
 	# Home Manager is pretty good at managing dotfiles. The primary way to manage
 	# plain files is through 'home.file'.
@@ -117,7 +124,7 @@
 	#  /etc/profiles/per-user/wumpus/etc/profile.d/hm-session-vars.sh
 	#
 	home.sessionVariables = {
-		#EDITOR = "nvim";
+		EDITOR = "nvim";
 		TERMINAL = "alacritty";
 	};
 
@@ -134,9 +141,12 @@
 
 	programs.direnv = {
 		enable = true;
-		enableZshIntegration = true; # see note on other shells below
+		enableZshIntegration = true;
 		nix-direnv.enable = true;
 	};
+
+	#services.flatpak.enable = true;
+	#services.flatpak.packages = [];
 
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
