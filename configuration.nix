@@ -7,10 +7,13 @@
 {
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-	# Bootloader.
-	#boot.loader.grub.enable = true;
-	#boot.loader.grub.device = "/dev/sda";
-	#boot.loader.grub.useOSProber = true;
+	virtualisation.docker = {
+		enable = true;
+		rootless = {
+			enable = true;
+			setSocketVariable = true;
+		};
+	};
 
 	boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 	boot.kernelModules = [
@@ -21,13 +24,6 @@
 		options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
 	'';
 	security.polkit.enable = true;
-
-	#networking.hostName = "nixos"; # Define your hostname.
-	#networking.wireless.enable = true;	# Enables wireless support via wpa_supplicant.
-
-	# Configure network proxy if necessary
-	# networking.proxy.default = "http://user:password@proxy:port/";
-	# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
 	# Enable networking
 	networking.networkmanager.enable = true;
