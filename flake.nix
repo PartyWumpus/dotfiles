@@ -13,11 +13,13 @@
 		nix-index-database.url = "github:nix-community/nix-index-database";
 		nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
+		hyprlock.url = "github:hyprwm/Hyprlock";
+
 		#flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, home-manager, nix-index-database }:
+	outputs = inputs@{ self, nixpkgs, utils, neovim, home-manager, nix-index-database, hyprlock }:
 		utils.lib.mkFlake {
 			inherit self inputs;
 
@@ -28,7 +30,11 @@
 			# Modules shared between all hosts
 			hostDefaults.modules = [
 				./configuration.nix
-				home-manager.nixosModules.default
+				home-manager.nixosModules.default {
+					home-manager.sharedModules = [
+					{imports = [hyprlock.homeManagerModules.hyprlock];}
+					];
+				}
 				nix-index-database.nixosModules.nix-index
 				#inputs.flatpaks.homeManagerModules.default
 			];

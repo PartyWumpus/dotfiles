@@ -99,6 +99,7 @@
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
 		libsForQt5.qt5ct
+		where-is-my-sddm-theme
 
 
 		# git packages
@@ -188,6 +189,16 @@
 
 	services.xserver.libinput.enable = false;
 	services.xserver.synaptics.enable = true;
+
+	security.pam.services.hyprlock = {};
+
+	services.xserver.enable = true;
+	services.displayManager.sddm = {
+		enable = true;
+		wayland.enable = true;
+		theme = "where_is_my_sddm_theme";
+		package = pkgs.libsForQt5.sddm;
+	};
 
 	# List services that you want to enable:
 

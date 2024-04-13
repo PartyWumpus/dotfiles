@@ -3,3 +3,4 @@ Figure out how to put the hyprland config.nix stuff in the module
 Switch to firefox??
 Figure out how to tell steam to start with -vgui (seems to magically fix it)
 Figure out why hyprland freezes up sometimes (inactivity?)
+Fix sddm theme

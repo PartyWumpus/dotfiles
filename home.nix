@@ -145,6 +145,9 @@
 		nix-direnv.enable = true;
 	};
 
+	programs.hyprlock.enable = true;
+
+
 	#services.flatpak.enable = true;
 	#services.flatpak.packages = [];
 

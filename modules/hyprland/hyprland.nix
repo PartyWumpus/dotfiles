@@ -28,7 +28,14 @@ in {
 		sway-contrib.grimshot
 		cliphist
 		wl-clipboard
+		hypridle
 	];
+
+	programs.hyprlock.enable = true;
+
+	xdg.configFile = {
+		"hypr/hypridle.conf".source = ./hypridle.conf;
+	};
 
 	wayland.windowManager.hyprland = {
 		enable = true;
@@ -45,6 +52,7 @@ in {
 				exec-once = dunst
 				exec-once = wl-paste --watch cliphist store
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
+				exec-once = hypridle
 
 				input {
 					kb_layout = gb
