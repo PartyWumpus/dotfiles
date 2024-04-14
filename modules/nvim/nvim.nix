@@ -2,7 +2,8 @@
 { options, config, lib, pkgs, ...}:
 
 {
-	home.file.".config/nvim".source = ./lua-config;
+	xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/modules/nvim/lua-config";
+	#xdg.configFile."nvim".source = ./lua-config; # use if mkOutOfStoreSymlink doesn't work
 
 	home.packages = with pkgs; [
 		neovim

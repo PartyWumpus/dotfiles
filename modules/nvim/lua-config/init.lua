@@ -54,6 +54,7 @@ vim.keymap.set("n", "<leader>yy", '"+yy')
 --vnoremap <leader>p "+p
 --vnoremap <leader>P "+P
 
+
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 

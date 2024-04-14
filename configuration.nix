@@ -6,6 +6,17 @@
 
 {
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	#nix.package = pkgs.nixVersions.unstable # switch to this once 2.21.3 releases
+	nix.package = pkgs.nixVersions.unstable.overrideAttrs (oldAttrs: {
+		src = pkgs.fetchFromGitHub {
+			owner = "NixOS";
+			repo = "nix";
+			# 2.21-maintenance, basically just want 2.21.3
+			rev = "60824fa97c588a0faf68ea61260a47e388b0a4e5";
+			sha256 = "10z/SoidVl9/lh56cMLj7ntJZHtVrumFvmn1YEqXmaM=";
+		};
+	});
+
 
 	virtualisation.docker = {
 		enable = true;
