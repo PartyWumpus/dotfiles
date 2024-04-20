@@ -19,9 +19,10 @@
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, home-manager, nix-index-database, hyprlock }:
+	outputs = inputs@{ self, nixpkgs, utils, neovim, home-manager, nix-index-database, hyprlock }:	
 		utils.lib.mkFlake {
 			inherit self inputs;
+
 
 			# Channel definitions.
 			channelsConfig.allowUnfree = true;
@@ -56,6 +57,8 @@
 				./hosts/desktop/hardware-configuration.nix
 				];
 			};
+
+			devShells.x86_64-linux = import ./devshells { pkgs = import nixpkgs {system="x86_64-linux";}; };
 
 		};
 }

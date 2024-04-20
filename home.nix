@@ -36,11 +36,6 @@
 		# # You can also create simple shell scripts directly inside your
 		# # configuration. For example, this adds a command 'my-hello' to your
 		# # environment:
-		(pkgs.writeShellScriptBin "unlink-copy" ''
-			cp "$1" "$1.tmp"
-			unlink "$1"
-			mv "$1.tmp" "$1"
-		'')
 	];
 	#xdg.configFile = {
 	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
@@ -139,6 +134,7 @@
 		settings.import = [ "${pkgs.alacritty-theme.outPath}/catppuccin_macchiato.toml" ];
 	};
 
+	# nix flake new -t github:nix-community/nix-direnv .
 	programs.direnv = {
 		enable = true;
 		enableZshIntegration = true;

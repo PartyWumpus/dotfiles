@@ -17,6 +17,9 @@
 		};
 	});
 
+	nix.registry.self.flake = inputs.self;
+
+	nix.settings.auto-optimise-store = true;
 
 	virtualisation.docker = {
 		enable = true;
@@ -89,6 +92,21 @@
 		};
 	};
 
+	environment.interactiveShellInit = ''
+		unlink-copy() {
+			cp "$1" "$1.tmp"
+			unlink "$1"
+			mv "$1.tmp" "$1"
+		}
+
+		dev() {
+			nix develop self#"$1"
+		}
+
+		alias update='sudo nixos-rebuild switch --impure';
+	'';
+	#alias rebuild = "sudo nixos-rebuild build --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
+
 	# Allow unfree packages
 	#nixpkgs.config.allowUnfree = true;
 	#nixpkgs.overlays = [ inputs.neovim.overlay ];
@@ -132,6 +150,7 @@
 		prismlauncher
 		spotify
 		r2modman
+		protonvpn-cli_2
 
 		# languages
 		python3
