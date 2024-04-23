@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, rust-overlay, ... }:
 pkgs.mkShell {
 	name = "rust-dev";
 
 	packages = [
-		pkgs.cargo
+		pkgs.rust-bin.stable.latest.default
 	];
 }

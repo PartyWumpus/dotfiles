@@ -7,6 +7,8 @@
 
 		neovim.url = "github:neovim/neovim?dir=contrib";
 
+		rust-overlay.url = "github:oxalica/rust-overlay";
+
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -19,8 +21,9 @@
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, home-manager, nix-index-database, hyprlock }:	
-		utils.lib.mkFlake {
+	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprlock }:	
+		let pkgs = import nixpkgs {system="x86_64-linux";}; 
+		in utils.lib.mkFlake {
 			inherit self inputs;
 
 
@@ -58,7 +61,19 @@
 				];
 			};
 
-			devShells.x86_64-linux = import ./devshells { pkgs = import nixpkgs {system="x86_64-linux";}; };
+			devShells.x86_64-linux = import ./devshells {inherit pkgs rust-overlay; };
 
-		};
+		} // utils.lib.eachDefaultSystem (system: 
+      let
+				overlays = [ (import rust-overlay) ];
+        pkgs = import nixpkgs {
+          inherit system overlays;
+          config = {
+            allowUnfree = true;
+          };
+        };
+
+      in {
+        devShells = import ./devshells { inherit system pkgs; };
+      });
 }
