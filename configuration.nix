@@ -211,7 +211,8 @@
 	
 	programs.steam = {
 		enable = true;
-		#package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; #TODO, figure this out
+		#TODO: figure this out
+		#package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; 
 		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
 		dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 		gamescopeSession.enable = true;

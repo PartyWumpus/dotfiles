@@ -26,6 +26,9 @@ require("lazy").setup({
 			require("telescope").load_extension "frecency"
 		end,
 	},
+	{'folke/todo-comments.nvim',
+		dependencies = { "nvim-lua/plenary.nvim"},
+	},
 
 	{'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
 	{'neovim/nvim-lspconfig'},
@@ -38,6 +41,7 @@ require("lazy").setup({
 	{'HiPhish/rainbow-delimiters.nvim'},
 	{'nvim-lualine/lualine.nvim'},
 })
+
 
 -- my config
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)

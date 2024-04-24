@@ -58,3 +58,5 @@ vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
 -- Mouse support -- appears to only work in nvim 0.10+
 vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
 vim.o.mousemoveevent = true
+
+require('todo-comments').setup()
