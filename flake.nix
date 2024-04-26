@@ -18,11 +18,11 @@
 		hyprlock.url = "github:hyprwm/Hyprlock";
 		hyprland.url = "github:hyprwm/Hyprland";
 
-		#flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
+		flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprland, hyprlock }:	
+	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprland, hyprlock, flatpaks }:	
 		let pkgs = import nixpkgs {system="x86_64-linux";}; 
 		in utils.lib.mkFlake {
 			inherit self inputs;
@@ -34,6 +34,7 @@
 
 			# Modules shared between all hosts
 			hostDefaults.modules = [
+				flatpaks.nixosModules.default
 				./configuration.nix
 				home-manager.nixosModules.default {
 					home-manager.sharedModules = [
@@ -41,7 +42,6 @@
 					];
 				}
 				nix-index-database.nixosModules.nix-index
-				#inputs.flatpaks.homeManagerModules.default
 			];
 
 

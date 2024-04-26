@@ -128,6 +128,7 @@
 		alacritty
 		neofetch
 		pipes
+		steam-run
 
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
@@ -164,6 +165,13 @@
 		hunspell
 		hunspellDicts.en_GB-ize
 	];
+
+	services.flatpak.enable = true;
+	services.flatpak.packages = [ "flathub:app/com.heroicgameslauncher.hgl//stable" ];
+	services.flatpak.remotes = {
+		"flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+		"flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
+	};
 
 
 	# fonts

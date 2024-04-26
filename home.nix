@@ -144,8 +144,7 @@
 	programs.hyprlock.enable = true;
 
 
-	#services.flatpak.enable = true;
-	#services.flatpak.packages = [];
+
 
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
