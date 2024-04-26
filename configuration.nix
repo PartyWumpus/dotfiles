@@ -6,6 +6,10 @@
 
 {
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
 	#nix.package = pkgs.nixVersions.unstable # switch to this once 2.21.3 releases
 	nix.package = pkgs.nixVersions.unstable.overrideAttrs (oldAttrs: {
 		src = pkgs.fetchFromGitHub {
@@ -184,8 +188,9 @@
 
 	# hyprland setup
 	programs.hyprland.enable = true;
+	programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 	xdg.portal.enable = true;
-	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
+	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 	
 	# mime type setup
 	environment.sessionVariables.DEFAULT_BROWSER = "${pkgs.google-chrome}/bin/google-chrome-stable";

@@ -16,12 +16,13 @@
 		nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
 		hyprlock.url = "github:hyprwm/Hyprlock";
+		hyprland.url = "github:hyprwm/Hyprland";
 
 		#flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprlock }:	
+	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprland, hyprlock }:	
 		let pkgs = import nixpkgs {system="x86_64-linux";}; 
 		in utils.lib.mkFlake {
 			inherit self inputs;
