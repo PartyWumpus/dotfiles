@@ -66,12 +66,12 @@
 
 		} // utils.lib.eachDefaultSystem (system: 
       let
-				overlays = [ (import rust-overlay) ];
         pkgs = import nixpkgs {
-          inherit system overlays;
+          inherit system;
           config = {
             allowUnfree = true;
           };
+					overlays = [ (import rust-overlay) ];
         };
 
       in {

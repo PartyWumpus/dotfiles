@@ -1,5 +1,5 @@
-{pkgs,  rust-overlay, ... }:
+{pkgs, ... }:
 {
   #decky = nixpkgs.callPackage ./decky.nix {};
-	rust = pkgs.callPackage ./rust.nix { inherit rust-overlay; };
+	rust = pkgs.callPackage ./rust.nix {};
 }

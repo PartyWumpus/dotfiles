@@ -1,4 +1,4 @@
-{ pkgs, rust-overlay, ... }:
+{ pkgs, ... }:
 pkgs.mkShell {
 	name = "rust-dev";
 
