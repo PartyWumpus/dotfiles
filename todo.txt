@@ -5,3 +5,4 @@ Figure out how to tell steam to start with -vgui (seems to magically fix it)
 Figure out why hyprland freezes up sometimes (inactivity?)
 Fix sddm theme
 Add shortcut for editing config, and make nvim CD when a opening dir is specificied
+Find a good debugger for rust cuz i want to view the assembly

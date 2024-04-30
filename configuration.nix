@@ -158,7 +158,9 @@
 		protonvpn-cli_2
 
 		# languages
-		python3
+		(python312.withPackages(ps: [
+			ps.pynvim
+		]))
 
 		# productivity
 		libreoffice-qt
