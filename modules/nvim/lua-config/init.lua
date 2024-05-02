@@ -30,6 +30,8 @@ require("lazy").setup({
 		dependencies = { "nvim-lua/plenary.nvim"},
 	},
 
+	{'tris203/precognition.nvim'},
+
 	{'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
 	{'neovim/nvim-lspconfig'},
 	{'hrsh7th/cmp-nvim-lsp'},

@@ -59,4 +59,7 @@ vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
 vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
 vim.o.mousemoveevent = true
 
+
+vim.keymap.set('n', "F", require('precognition').peek)
+
 require('todo-comments').setup()
