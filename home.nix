@@ -143,8 +143,10 @@
 
 	programs.hyprlock.enable = true;
 
-
-
+	programs.obs-studio = {
+		enable = true;
+		plugins = [ pkgs.obs-studio-plugins.droidcam-obs ];
+	};
 
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;

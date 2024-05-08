@@ -146,7 +146,6 @@
 		vesktop
 		transmission-gtk
 		pinta
-		obs-studio
 		yt-dlp
 		kid3
 		xfce.thunar
