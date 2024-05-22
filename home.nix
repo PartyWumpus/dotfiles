@@ -131,7 +131,12 @@
 
 	programs.alacritty = {
 		enable = true;
-		settings.import = [ "${pkgs.alacritty-theme.outPath}/catppuccin_macchiato.toml" ];
+		settings = {
+			font = {
+				normal.family = "MesloLGS NF";
+			};
+			import = [ "${pkgs.alacritty-theme.outPath}/catppuccin_macchiato.toml" ];
+		};
 	};
 
 	# nix flake new -t github:nix-community/nix-direnv .

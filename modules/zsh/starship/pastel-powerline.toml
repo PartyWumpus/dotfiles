@@ -1,0 +1,178 @@
+format = """
+[ ](bg:#c6a0f6 fg:#c6a0f6)\
+$os\
+$username\
+[](bg:#8aadf4 fg:#c6a0f6)\
+$directory\
+[](fg:#8aadf4 bg:#b7bdf8)\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+[](fg:#b7bdf8 bg:#ee99a0)\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+$scala\
+[](fg:#ee99a0 bg:#eed49f)\
+$docker_context\
+$nix_shell\
+[ ](fg:#eed49f)\
+"""
+
+right_format = """
+[](fg:#f0c6c6)\
+$cmd_duration\
+[](bg:#f0c6c6 fg:#8bd5ca)\
+$time\
+"""
+
+# Disable the blank line at the start of the prompt
+# add_newline = false
+
+# You can also replace your username with a neat symbol like   or disable this
+# and use the os module below
+[username]
+show_always = true
+style_user = "bg:#c6a0f6"
+style_root = "bg:#c6a0f6"
+format = '[$user ]($style)'
+disabled = true
+
+# An alternative to the username module which displays a symbol that
+# represents the current operating system
+[os]
+style = "bg:#c6a0f6 fg:#494d64"
+disabled = false # Disabled by default
+
+[os.symbols]
+NixOS = " "
+
+[directory]
+style = "bg:#8aadf4 fg:#494d64"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+"~/Documents" = "󰈙"
+"~/Downloads" = ""
+"~/Music" = ""
+"~/Pictures" = ""
+"~/nixos" = ""
+"/nix" = ""
+# Keep in mind that the order matters. For example:
+# "Important Documents" = " 󰈙 "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important 󰈙 " = " 󰈙 "
+
+[c]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#eed49f fg:#494d64"
+format = '[ $symbol $context ]($style)'
+
+[elixir]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[elm]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[git_branch]
+symbol = ""
+style = "bg:#b7bdf8 fg:#494d64"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#b7bdf8 fg:#494d64"
+format = '[$all_status$ahead_behind]($style)'
+conflicted = '[=$count ](fg:#df8e1d bg:#b7bdf8)' # yellow
+ahead = '[⇡$count ](fg:#40a02b bg:#b7bdf8)' # green
+diverged = '[⇕ [⇡${ahead_count}](fg:#40a02b) [⇣${behind_count} ](fg:#d20f39)](bg:#b7bdf8)' # green then red
+#up_to_date = '[:\)](fg:#40a02b bg:#b7bdf8)'
+behind = '[⇣$count ](fg:#d20f39 bg:#b7bdf8)' # red
+untracked = '[?$count ](fg:#df8e1d bg:#b7bdf8)' # yellow
+stashed = '\$$count '
+modified = '[!$count ](fg:#df8e1d bg:#b7bdf8)' # yellow
+staged = 	'[+$count ](fg:#40a02b bg:#b7bdf8)' # green
+renamed = '»$count '
+deleted = '[x$count ](fg:#d20f39 bg:#b7bdf8)' # red
+
+[golang]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[gradle]
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[java]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[julia]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[nim]
+symbol = "󰆥 "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[scala]
+symbol = " "
+style = "bg:#ee99a0 fg:#494d64"
+format = '[ $symbol ($version) ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#8bd5ca fg:#494d64"
+format = '[  $time ]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "bg:#f0c6c6 fg:#494d64"
+format = '[  $duration ]($style)'
+
+[nix_shell]
+disabled = false
+style = "bg:#eed49f fg:#494d64"
+format = '[  $name ]($style)'

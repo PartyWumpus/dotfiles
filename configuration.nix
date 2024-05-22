@@ -106,8 +106,6 @@
 		dev() {
 			nix develop self#"$1"
 		}
-
-		alias update='sudo nixos-rebuild switch --impure';
 	'';
 	#alias rebuild = "sudo nixos-rebuild build --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
 
@@ -125,10 +123,13 @@
 		micro
 		wget
 		tldr
+		unzip
 		alacritty
 		neofetch
 		pipes
 		steam-run
+		fzf
+		manix
 
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
@@ -168,7 +169,21 @@
 	];
 
 	services.flatpak.enable = true;
-	services.flatpak.packages = [ "flathub:app/com.heroicgameslauncher.hgl//stable" ];
+	#FIXME: for now use flatseal :(
+	#services.flatpak.overrides = {
+	#		Context.filesystems = [
+	#			"host"
+	#			"xdg-download"
+	#			"home"
+	#			"/mnt"
+	#		];
+	#		"dev.bambosh.UnofficialHomestuckCollection".filesystems = [ "host" "xdg-download" "home" "/mnt" ];
+	#};
+	services.flatpak.packages = [ 
+	"flathub:app/com.heroicgameslauncher.hgl//stable"
+	"flathub:app/dev.bambosh.UnofficialHomestuckCollection//stable"
+	"flathub:app/com.github.tchx84.Flatseal//stable"
+	];
 	services.flatpak.remotes = {
 		"flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
 		"flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";

@@ -29,6 +29,7 @@ in {
 		cliphist
 		wl-clipboard
 		hypridle
+		playerctl
 	];
 
 	programs.hyprlock.enable = true;
@@ -75,6 +76,10 @@ in {
 				bindm = ALT, mouse:272, resizewindow
 
 				bind=$mod, P, exec, ${show_clipboard}
+
+				bindl=, XF86AudioPlay, exec, playerctl play-pause # the stupid key is called play , but it toggles 
+				bindl=, XF86AudioNext, exec, playerctl next 
+				bindl=, XF86AudioPrev, exec, playerctl previous
 
 				bind=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 				bind=, XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-

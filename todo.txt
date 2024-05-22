@@ -6,3 +6,4 @@ Figure out why hyprland freezes up sometimes (inactivity?)
 Fix sddm theme
 Add shortcut for editing config, and make nvim CD when a opening dir is specificied
 Find a good debugger for rust cuz i want to view the assembly
+Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager && nix-channel --update` doesn't work and i need to type `manix --update-cache mergeattr` constantly :(
