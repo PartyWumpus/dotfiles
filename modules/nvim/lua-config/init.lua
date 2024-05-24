@@ -47,6 +47,7 @@ require("lazy").setup({
 
 -- my config
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename)
 
 -- Copy to clipboard
 vim.keymap.set("v", "<leader>y", '"+y')
@@ -74,4 +75,5 @@ vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 
 vim.opt.updatetime = 50
+
 

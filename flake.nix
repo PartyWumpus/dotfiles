@@ -16,7 +16,7 @@
 		nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
 		hyprlock.url = "github:hyprwm/Hyprlock";
-		hyprland.url = "github:hyprwm/Hyprland";
+		hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
 		flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};

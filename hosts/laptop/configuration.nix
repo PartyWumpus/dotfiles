@@ -47,6 +47,11 @@
 		};
 	};
 
+	# for framework 16 led thingy
+	services.udev.extraRules = ''
+		SUBSYSTEMS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0020", MODE="0660", TAG+="uaccess"
+	'';
+
 	# autosuspends keyboard so unusable
 	# also doesn't appear to make huge diff so its okay
 	#powerManagement.powertop.enable = true;
