@@ -35,6 +35,13 @@
 	'';
 	security.polkit.enable = true;
 
+	nix.gc = {
+		automatic = true;
+		persistent = true;
+		dates = "weekly";
+		options = "--delete-older-than 30d";
+	};
+
 	# Enable networking
 	networking.networkmanager.enable = true;
 
@@ -252,6 +259,18 @@
 		theme = "where_is_my_sddm_theme";
 		package = pkgs.libsForQt5.sddm;
 	};
+
+	#hardware.bluetooth.enable = true;
+	#hardware.bluetooth.settings.General.Experimental = true;
+	# if desktop hardware.bluetooth.powerOnBoot = true;
+	#services.blueman.enable = true;
+	#hardware.pulseaudio = {
+	#	enable = true;
+	#	package = pkgs.pulseaudioFull;
+	#	extraConfig = "
+	#		load-module module-switch-on-connect
+	#	";
+	#};
 
 	# List services that you want to enable:
 

@@ -7,6 +7,9 @@
 		enableCompletion = true;
 		autosuggestion.enable = true;
 		syntaxHighlighting.enable = true;
+		historySubstringSearch.enable = true;
+		historySubstringSearch.searchDownKey = ["^[[B" "$terminfo[kcud1]"];
+		historySubstringSearch.searchUpKey = ["^[[A" "$terminfo[kcuu1]"];
 
 		shellAliases = {
 			update = "sudo nixos-rebuild switch --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";

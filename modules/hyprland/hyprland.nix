@@ -5,7 +5,7 @@ let
 	menu = "${pkgs.wofi}/bin/wofi";
 
 	show_clipboard = pkgs.writeShellScript "show_clipboard" ''
-		text=$(cliphist list | ${menu} --show dmenu -p "copy"); \
+		text=$(cliphist list | ${menu} --show dmenu -l top_right -p "copy"); \
 		if [[ $text != "" ]]; then
 			cliphist decode <<< "$text" | wl-copy
 		fi
@@ -97,7 +97,7 @@ in {
 			bind = 
 				[
 					"$mod, Q, exec, $terminal"
-					"$mod, S, exec, $menu --show drun -show-icons"
+					"$mod, S, exec, $menu --insensitive --show drun -show-icons"
 					"$mod, C, killactive"
 					"$mod, M, exit"
 				]
