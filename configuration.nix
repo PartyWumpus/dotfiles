@@ -122,6 +122,7 @@
 		steam-run
 		fzf
 		manix
+		distrobox
 
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
@@ -161,16 +162,16 @@
 	];
 
 	services.flatpak.enable = true;
-	#FIXME: for now use flatseal :(
-	#services.flatpak.overrides = {
-	#		Context.filesystems = [
-	#			"host"
-	#			"xdg-download"
-	#			"home"
-	#			"/mnt"
-	#		];
-	#		"dev.bambosh.UnofficialHomestuckCollection".filesystems = [ "host" "xdg-download" "home" "/mnt" ];
-	#};
+	# docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md
+	services.flatpak.overrides = {
+		"global" = {
+			filesystems = [
+				#"host"
+				"/mnt"
+			];
+		};
+		#"dev.bambosh.UnofficialHomestuckCollection".filesystems = [ "host" "xdg-download" "home" "/mnt" ];
+	};
 	services.flatpak.packages = [ 
 	"flathub:app/com.heroicgameslauncher.hgl//stable"
 	"flathub:app/dev.bambosh.UnofficialHomestuckCollection//stable"
