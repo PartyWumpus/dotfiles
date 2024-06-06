@@ -37,29 +37,43 @@ in {
 		settings = {
 			general = {
 				disable_loading_bar = true;
-				grace = 20;
+				grace = 10;
 				hide_cursor = true;
 				no_fade_in = false;
 			};
 
 			background = [{
       	monitor = "";
-				path = "${./wallpaper.png}";
-				color = "rgb(25, 20, 20)";
+				path = "${./wallpaper.jpg}";
+				color = "rgb(36, 39, 58)";
+			}];
+
+			label = [{
+				monitor = "";
+				text = ''$TIME'';
+				#text = '' cmd[update:900] echo "hello $USER<br/>$(date +%H:%M:%S)" '';
+				text_align = "center";
+				color = "rgb(202, 211, 245)";
+				font_size = "35";
+				position = "0, -80";
+				halign = "center";
+				valign = "top";
 			}];
 
 			input-field = [{
-      	size = "200, 50";
-      	position = "0, -80";
-      	monitor = "";
-      	dots_center = true;
-      	fade_on_empty = false;
-      	font_color = "rgb(202, 211, 245)";
-    		inner_color = "rgb(91, 96, 120)";
-      	outer_color = "rgb(24, 25, 38)";
-      	outline_thickness = 5;
-      	placeholder_text = ''<span foreground="##cad3f5">Press index finger on sensor</span>'';
-      	shadow_passes = 2;
+				monitor = "";
+				size = "200, 50";
+				position = "0, 5";dots_center = true;
+				fade_on_empty = false;
+				font_color = "rgb(202, 211, 245)";
+				inner_color = "rgb(91, 96, 120)";
+				outer_color = "rgb(24, 25, 38)";
+				outline_thickness = 5;
+				placeholder_text = (if builtins.getEnv "HOSTNAME" == "laptop"
+					then ''<span foreground="##cad3f5">Press index finger on the fingerprint sensor</span>''
+					else ''<span foreground="##cad3f5">Password...</span>''
+				);
+				shadow_passes = 2;
     }];
 		};
 	};
@@ -78,7 +92,7 @@ in {
 					else "monitor=eDP-2,2560x1600@165,0x0,1"
 					)}
 
-				exec-once = swww init && swww img ${./wallpaper.png}
+				exec-once = swww init && swww img ${./wallpaper.jpg}
 				exec-once = waybar
 				exec-once = dunst
 				exec-once = wl-paste --watch cliphist store
