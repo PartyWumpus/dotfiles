@@ -146,8 +146,6 @@
 		nix-direnv.enable = true;
 	};
 
-	programs.hyprlock.enable = true;
-
 	programs.obs-studio = {
 		enable = true;
 		plugins = [ pkgs.obs-studio-plugins.droidcam-obs ];

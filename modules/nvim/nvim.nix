@@ -1,12 +1,12 @@
 
-{ options, config, lib, pkgs, ...}:
+{ inputs, options, config, lib, pkgs, ...}:
 
 {
 	xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/modules/nvim/lua-config";
 	#xdg.configFile."nvim".source = ./lua-config; # use if mkOutOfStoreSymlink doesn't work
 
 	home.packages = with pkgs; [
-		neovim
+		inputs.neovim-nightly-overlay.packages.${pkgs.system}.default
 		tree-sitter
 		ripgrep
 		fd

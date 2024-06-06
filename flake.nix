@@ -5,7 +5,7 @@
 		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 		utils.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
 
-		neovim.url = "github:neovim/neovim?dir=contrib";
+		neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
 		rust-overlay.url = "github:oxalica/rust-overlay";
 
@@ -15,14 +15,13 @@
 		nix-index-database.url = "github:nix-community/nix-index-database";
 		nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-		hyprlock.url = "github:hyprwm/Hyprlock";
 		hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
 		flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, neovim, rust-overlay, home-manager, nix-index-database, hyprland, hyprlock, flatpaks }:	
+	outputs = inputs@{ self, nixpkgs, utils, rust-overlay, home-manager, nix-index-database, hyprland, flatpaks, ... }:
 		let pkgs = import nixpkgs {system="x86_64-linux";}; 
 		in utils.lib.mkFlake {
 			inherit self inputs;
@@ -30,7 +29,7 @@
 
 			# Channel definitions.
 			channelsConfig.allowUnfree = true;
-			sharedOverlays = [ neovim.overlay ];
+			#sharedOverlays = [ neovim.overlay ];
 
 			# Modules shared between all hosts
 			hostDefaults.modules = [
@@ -38,7 +37,9 @@
 				./configuration.nix
 				home-manager.nixosModules.default {
 					home-manager.sharedModules = [
-					{imports = [hyprlock.homeManagerModules.hyprlock];}
+					{imports = [
+						#hyprlock.homeManagerModules.hyprlock
+					];}
 					];
 				}
 				nix-index-database.nixosModules.nix-index
