@@ -90,6 +90,7 @@
 		extraSpecialArgs = {inherit inputs;};
 		useGlobalPkgs = true;
 		useUserPackages = true;
+		backupFileExtension = "tmp.${inputs.self.timestamp}";
 		users = {
 			"wumpus" = import ./home.nix;
 		};
@@ -97,9 +98,10 @@
 
 	environment.interactiveShellInit = ''
 		unlink-copy() {
-			cp "$1" "$1.tmp"
+			cp -r "$1" "$1.tmp"
 			unlink "$1"
 			mv "$1.tmp" "$1"
+			chmod -R 777 "$1"
 		}
 
 		dev() {

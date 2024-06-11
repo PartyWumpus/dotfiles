@@ -22,10 +22,13 @@
 
 
 	outputs = inputs@{ self, nixpkgs, utils, rust-overlay, home-manager, nix-index-database, hyprland, flatpaks, ... }:
-		let pkgs = import nixpkgs {system="x86_64-linux";}; 
+		let pkgs = self.pkgs.x86_64-linux.nixpkgs;
 		in utils.lib.mkFlake {
 			inherit self inputs;
 
+			# https://discourse.nixos.org/t/how-to-create-a-timestamp-in-a-nix-expression/30329
+			# seems to be behind an hour because of timezone fuckery and defaulting to utc but still does its job
+			timestamp = nixpkgs.lib.readFile "${pkgs.runCommand "timestamp" { env.when = builtins.currentTime; } "echo -n `date -d @$when +%Y-%m-%d_%H-%M-%S` > $out"}";
 
 			# Channel definitions.
 			channelsConfig.allowUnfree = true;
