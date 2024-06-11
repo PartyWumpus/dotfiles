@@ -20,21 +20,21 @@
 		history.size = 10000;
 		history.path = "${config.xdg.dataHome}/zsh/history";
 
-		
-		#plugins = [
-		#{
-		#	name = "powerlevel10k";
-		#	src = pkgs.zsh-powerlevel10k;
-		#	file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-		#}
-		#{
-		#	name = "powerlevel10k-config";
-		#	src = ./plugins;
-		#	file = "p10k.zsh";
-		#}
-		#];
+		plugins = [
+		{
+			name = "powerlevel10k";
+			src = pkgs.zsh-powerlevel10k;
+			file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+		}
+		{
+			name = "powerlevel10k-config";
+			src = ./plugins;
+			file = "p10k.zsh";
+		}
+		];
 	};
-
+	
+	/*
 	programs.starship = {
     enable = true;
 		settings = {
@@ -52,4 +52,5 @@
 					#// builtins.fromTOML (builtins.readFile ./starship/nerd-font-symbols.toml) 
 					// builtins.fromTOML (builtins.readFile ./starship/pastel-powerline.toml);
   };
+	*/
 }

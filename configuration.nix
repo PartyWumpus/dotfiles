@@ -103,7 +103,7 @@
 		}
 
 		dev() {
-			nix develop self#"$1"
+			nix develop self#"$1" -c zsh
 		}
 	'';
 	#alias rebuild = "sudo nixos-rebuild build --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
