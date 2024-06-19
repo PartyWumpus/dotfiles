@@ -98,7 +98,7 @@
 
 	environment.interactiveShellInit = ''
 		unlink-copy() {
-			cp -r "$1" "$1.tmp"
+			cp "$1" "$1.tmp"
 			unlink "$1"
 			mv "$1.tmp" "$1"
 			chmod -R 777 "$1"
