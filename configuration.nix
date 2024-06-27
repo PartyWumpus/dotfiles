@@ -17,12 +17,23 @@
 
 	nix.settings.auto-optimise-store = true;
 
-	virtualisation.docker = {
+
+	virtualisation.containers.enable = true;
+	#virtualisation.docker = {
+	#	enable = true;
+	#	rootless = {
+	#		enable = true;
+	#		setSocketVariable = true;
+	#	};
+	#};
+	virtualisation.podman = {
 		enable = true;
-		rootless = {
-			enable = true;
-			setSocketVariable = true;
-		};
+
+		# Create a `docker` alias for podman, to use it as a drop-in replacement
+		dockerCompat = true;
+
+		# Required for containers under podman-compose to be able to talk to each other.
+		defaultNetwork.settings.dns_enabled = true;
 	};
 
 	boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -96,7 +107,7 @@
 		};
 	};
 
-	environment.interactiveShellInit = ''
+	environment.interactiveShellInit = /*bash*/ ''
 		unlink-copy() {
 			cp "$1" "$1.tmp"
 			unlink "$1"
@@ -147,7 +158,7 @@
 		# apps
 		google-chrome
 		vesktop
-		transmission-gtk
+		transmission_3-gtk
 		pinta
 		yt-dlp
 		kid3

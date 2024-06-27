@@ -15,7 +15,7 @@
 		lua-language-server
 		nodePackages.typescript-language-server
 		rust-analyzer
-		nodePackages.pyright
+		pyright
 		nil
 	];
 

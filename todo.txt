@@ -8,3 +8,4 @@ Add shortcut for editing config, and make nvim CD when a opening dir is specific
 Find a good debugger for rust cuz i want to view the assembly
 Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager && nix-channel --update` doesn't work and i need to type `manix --update-cache mergeattr` constantly :(
 Theme the cursor so it isn't just the default cursor
+waybar gets fat when ⛏ and probably other chars show up. figure out how to fix (font??)
