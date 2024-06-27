@@ -162,7 +162,6 @@
 		pinta
 		yt-dlp
 		kid3
-		xfce.thunar
 		ranger
 		kdenlive
 		prismlauncher
@@ -180,6 +179,11 @@
 		hunspell
 		hunspellDicts.en_GB-ize
 	];
+
+	# thunar
+	programs.thunar.enable = true;
+	programs.xfconf.enable = true;
+	services.tumbler.enable = true;
 
 	services.flatpak.enable = true;
 	# docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md

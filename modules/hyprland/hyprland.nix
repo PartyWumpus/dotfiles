@@ -99,6 +99,10 @@ in {
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
 				exec-once = hypridle
 
+				windowrulev2 = float, initialclass: xdg-desktop-portal-gtk
+				windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
+				windowrulev2 = opacity 0.95, initialTitle: Alacritty
+
 				input {
 					kb_layout = gb
 				}
@@ -106,9 +110,15 @@ in {
 				general {
 					gaps_in = 5
 					gaps_out = 5
+					col.inactive_border = rgba(18192644) # CRUST
+					col.active_border = rgb(8aadf4) # BLUE
 				}
 
 				decoration {
+					inactive_opacity = 0.98
+					active_opacity = 1.00
+					fullscreen_opacity = 1.00
+					dim_around = 0.07 # dimming around modals
 					rounding = 10
 				}
 
