@@ -173,6 +173,14 @@ in {
 		};
 	};
 
+	programs.ags = {
+		enable = true;
+		configDir = ./ags;
+		extraPackages = with pkgs; [
+			bun
+		];
+	};
+
 	programs.waybar = {
 		enable = true;
 		style = ''

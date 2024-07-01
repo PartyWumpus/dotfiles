@@ -9,6 +9,8 @@
 
 		rust-overlay.url = "github:oxalica/rust-overlay";
 
+		ags.url = "github:/Aylur/ags";
+
 		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -21,7 +23,7 @@
 	};
 
 
-	outputs = inputs@{ self, nixpkgs, utils, rust-overlay, home-manager, nix-index-database, hyprland, flatpaks, ... }:
+	outputs = inputs@{ self, nixpkgs, utils, rust-overlay, home-manager, nix-index-database, hyprland, flatpaks, ags, ... }:
 		let pkgs = self.pkgs.x86_64-linux.nixpkgs;
 		in utils.lib.mkFlake {
 			inherit self inputs;
@@ -41,6 +43,7 @@
 				home-manager.nixosModules.default {
 					home-manager.sharedModules = [
 					{imports = [
+						ags.homeManagerModules.default
 						#hyprlock.homeManagerModules.hyprlock
 					];}
 					];
