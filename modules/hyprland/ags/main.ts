@@ -1,9 +1,13 @@
 // TODO:
 // make height constant properly
 // make the selected window title have a max length before truncation or something
-// make one of the bars not battery
+// make the battery bar a networking bar
 // find a nice rounded font
 // use svg icon thingies instead of just nerd font icons
+// TO ADD:
+// volume indicator
+// tooltips EVERYWHERE with info (exact values, wifi name + ip address for networking, calendar, etc)
+//
 
 interface nix {
   bun: string;
