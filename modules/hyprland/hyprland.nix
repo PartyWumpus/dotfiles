@@ -111,7 +111,7 @@ in {
 					gaps_in = 5
 					gaps_out = 5
 					col.inactive_border = rgba(18192644) # CRUST
-					col.active_border = rgb(8aadf4) # BLUE
+					col.active_border = rgb(c6a0f6) # Mauve
 				}
 
 				decoration {
@@ -179,7 +179,7 @@ in {
 
 	home.file.".local/share/ags/nix.json".text = builtins.toJSON {
 		bun = "${pkgs.bun}/bin/bun"; # workaround for extraPackages being broken
-    var = "#ffffff";
+		show_clipboard = "${show_clipboard}";
   };
 
 	programs.ags = {

@@ -45,9 +45,9 @@
 	gtk = {
 		enable = true;
 		theme = {
-			name = "catppuccin-macchiato-blue-compact+rimless";
+			name = "catppuccin-macchiato-mauve-compact+rimless";
 			package = pkgs.catppuccin-gtk.override {
-				#accents = [ "pink" ];
+				accents = [ "mauve" ];
 				size = "compact";
 				tweaks = [ "rimless" ];
 				variant = "macchiato";
@@ -68,10 +68,10 @@
 		"gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
 		"gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
 		"Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini {}).generate "kvantum.kvconfig" {
-			General.theme = "Catppuccin-Macchiato-Blue";
+			General.theme = "Catppuccin-Macchiato-Mauve";
 		};
-		"Kvantum/Catppuccin-Macchiato-Blue".source =
-		"${(pkgs.catppuccin-kvantum.override {accent = "Blue";variant ="Macchiato";} )}/share/Kvantum/Catppuccin-Macchiato-Blue";
+		"Kvantum/Catppuccin-Macchiato-Mauve".source =
+		"${(pkgs.catppuccin-kvantum.override {accent = "Mauve";variant ="Macchiato";} )}/share/Kvantum/Catppuccin-Macchiato-Mauve";
 	};
 
 	#home.pointerCursor = {
