@@ -1,5 +1,5 @@
 
-{ options, config, lib, pkgs, ...}:
+{ inputs, options, config, lib, pkgs, ...}:
 
 let
 	menu = "${pkgs.wofi}/bin/wofi";
@@ -173,12 +173,22 @@ in {
 		};
 	};
 
+	# symlink the ags types into the config directory.
+	# TODO: find a better way of symlinking the ags types
+	home.file."${inputs.self.location}/modules/hyprland/ags/types".source = "${inputs.ags.packages.x86_64-linux.agsWithTypes.out}/share/com.github.Aylur.ags/types";
+
+	home.file.".local/share/ags/nix.json".text = builtins.toJSON {
+		bun = "${pkgs.bun}/bin/bun"; # workaround for extraPackages being broken
+    var = "#ffffff";
+  };
+
 	programs.ags = {
 		enable = true;
 		configDir = ./ags;
-		extraPackages = with pkgs; [
-			bun
-		];
+		# extraPackages isn't working for some reason
+		#extraPackages = with pkgs; [
+		#	bun
+		#];
 	};
 
 	programs.waybar = {

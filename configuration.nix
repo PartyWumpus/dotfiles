@@ -136,12 +136,15 @@
 		wget
 		tldr
 		unzip
-		alacritty
+		watchexec
+
 		neofetch
 		pipes
-		steam-run
+
 		fzf
 		manix
+
+		steam-run
 		distrobox
 
 		# themes
@@ -149,13 +152,13 @@
 		libsForQt5.qt5ct
 		where-is-my-sddm-theme
 
-
 		# git packages
 		git
 		gh
 		libsecret
 
 		# apps
+		alacritty
 		google-chrome
 		vesktop
 		transmission_3-gtk
@@ -184,6 +187,9 @@
 	programs.thunar.enable = true;
 	programs.xfconf.enable = true;
 	services.tumbler.enable = true;
+
+	# power info
+	services.upower.enable = true;
 
 	services.flatpak.enable = true;
 	# docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md

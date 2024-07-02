@@ -7,12 +7,14 @@
     ],
     "allowJs": true,
     "checkJs": true,
+		"resolveJsonModule": true,
     "strict": true,
     "noImplicitAny": false,
     "baseUrl": ".",
     "typeRoots": [
       "./types"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+		"moduleResolution": "node"
   }
 }

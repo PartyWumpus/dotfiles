@@ -1,8 +1,10 @@
+// watchexec --restart -- "ags -c ~/nixos/modules/hyprland/ags/config.js"
 const main = '/tmp/ags/main.js';
+const nix = JSON.parse(Utils.readFile(`/home/${Utils.USER}/.local/share/ags/nix.json`));
 
 try {
     await Utils.execAsync([
-        'bun', 'build', `${App.configDir}/main.ts`,
+        nix.bun, 'build', `${App.configDir}/main.ts`,
         '--outfile', main,
         '--external', 'resource://*',
         '--external', 'gi://*',
@@ -10,6 +12,7 @@ try {
     ]);
     await import(`file://${main}`);
 } catch (error) {
+		console.log("nixData: ", nix);
     console.error(error);
     App.quit();
 }
