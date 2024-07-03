@@ -22,7 +22,6 @@ in {
 		brightnessctl
 		wofi
 		waybar
-		dunst
 		libnotify
 		swww
 		sway-contrib.grimshot
@@ -93,8 +92,8 @@ in {
 					)}
 
 				exec-once = swww init && swww img ${./wallpaper.jpg}
-				exec-once = waybar
-				exec-once = dunst
+				#exec-once = waybar
+				exec-once = ags
 				exec-once = wl-paste --watch cliphist store
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
 				exec-once = hypridle
@@ -103,13 +102,18 @@ in {
 				windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
 				windowrulev2 = opacity 0.95, initialTitle: Alacritty
 
+				# remove blur from all windows, but not from layers
+				windowrule = noblur, .*
+				layerrule = blur, ^bar.*
+				layerrule = ignorezero, ^bar.*
+
 				input {
 					kb_layout = gb
 				}
 
 				general {
 					gaps_in = 5
-					gaps_out = 5
+					gaps_out = 0,5,5,5
 					col.inactive_border = rgba(18192644) # CRUST
 					col.active_border = rgb(c6a0f6) # Mauve
 				}
@@ -120,6 +124,11 @@ in {
 					fullscreen_opacity = 1.00
 					dim_around = 0.07 # dimming around modals
 					rounding = 10
+					# blur is only for top bar
+					blur {
+						size = 8
+						passes = 3
+					}
 				}
 
 				misc {
@@ -151,7 +160,8 @@ in {
 			bind = 
 				[
 					"$mod, Q, exec, $terminal"
-					"$mod, S, exec, $menu --insensitive --show drun -show-icons"
+					#"$mod, S, exec, $menu --insensitive --show drun -show-icons"
+					"$mod, S, exec, ags -t applauncher"
 					"$mod, C, killactive"
 					"$mod, M, exit"
 				]
@@ -180,6 +190,7 @@ in {
 	home.file.".local/share/ags/nix.json".text = builtins.toJSON {
 		bun = "${pkgs.bun}/bin/bun"; # workaround for extraPackages being broken
 		show_clipboard = "${show_clipboard}";
+		audio_changer = "${./waybar/audio_changer.py}";
   };
 
 	programs.ags = {

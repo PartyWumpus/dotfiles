@@ -4,7 +4,7 @@ const nix = JSON.parse(Utils.readFile(`/home/${Utils.USER}/.local/share/ags/nix.
 
 try {
     await Utils.execAsync([
-        nix.bun, 'build', `${App.configDir}/main.ts`,
+        nix.bun, 'build', `${App.configDir}/src/main.ts`,
         '--outfile', main,
         '--external', 'resource://*',
         '--external', 'gi://*',

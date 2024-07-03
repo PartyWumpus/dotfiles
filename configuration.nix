@@ -137,6 +137,7 @@
 		tldr
 		unzip
 		watchexec
+		htop
 
 		neofetch
 		pipes
@@ -190,8 +191,12 @@
 
 	# power info
 	services.upower.enable = true;
-
+	
+	services.flatpak.enable-debug = true;
 	services.flatpak.enable = true;
+	services.flatpak.preInstallCommand = ''${pkgs.libnotify}/bin/notify-send "Updating Flatpaks"'';
+	services.flatpak.preDedupeCommand = ''${pkgs.libnotify}/bin/notify-send "Deduping Flatpaks"'';
+	services.flatpak.UNCHECKEDpostEverythingCommand = ''${pkgs.libnotify}/bin/notify-send "Flatpaks Updated"'';
 	# docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md
 	services.flatpak.overrides = {
 		"global" = {
