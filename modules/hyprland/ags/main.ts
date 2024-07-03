@@ -1,12 +1,16 @@
 // TODO:
 // make height constant properly
-// make the selected window title have a max length before truncation or something
-// find a nice rounded font
 // use svg icon thingies instead of just nerd font icons
 // make clipboard ui with ags
+// indicate charging or not on battery wheel tooltip
 // TO ADD:
 // volume indicator
 // tooltips EVERYWHERE with info (exact values, wifi name + ip address for networking, calendar, etc)
+
+import Gtk from "gi://Gtk";
+
+// TODO: fix this jankery
+type BaseProps = Parameters<typeof Widget.Box>[0];
 
 interface nix {
   bun: string;
@@ -26,11 +30,15 @@ const focusedTitle = () =>
     children: [
       Widget.Label({
         hpack: "start",
+        truncate: "end",
+        maxWidthChars: 45,
         label: hyprland.active.client.bind("title"),
       }),
       Widget.Label({
         hpack: "start",
         css: "opacity: 0.6",
+        truncate: "end",
+        maxWidthChars: 40,
         label: hyprland.active.client.bind("class"),
         visible: hyprland.active
           .bind("client")
@@ -44,11 +52,27 @@ const dispatch = (ws: number) =>
   hyprland.messageAsync(`dispatch workspace ${ws}`);
 
 App.applyCss(`
+window {
+	font-size: 10px;
+	font-family: rubik;
+}
 .workspace-icon {
-	margin-top: 13px;
-	margin-bottom: 16px;
+	margin-left: 1px;
+	margin-right: 1px;
+	font-size: 15px;
 }
 `);
+
+// TODO: sorry.
+const NotAspectFrame = Widget.subclass(Gtk.AspectFrame);
+type aspectFrameProps = (
+  props: BaseProps & { child?: Gtk.Widget; ratio?: number },
+) => ReturnType<typeof NotAspectFrame>;
+const aspectFrame: aspectFrameProps =
+  NotAspectFrame as unknown as aspectFrameProps;
+
+// TODO: my type crimes didnt actually fix all the issues
+// figure it out.
 
 const Workspaces = () =>
   Widget.EventBox({
@@ -56,17 +80,22 @@ const Workspaces = () =>
     //onScrollDown: () => dispatch("-1"),
     child: Widget.Box({
       children: Array.from({ length: 10 }, (_, i) => i + 1).map((i) =>
-        Widget.Button({
-          attribute: i,
-          label: `${i}`,
-          onClicked: () => dispatch(i),
-          className: "circular workspace-icon",
+        aspectFrame({
+          className: "flat",
+          child: Widget.Button({
+            attribute: i,
+            label: `${i}`,
+            onClicked: () => dispatch(i),
+            className: "circular workspace-icon",
+          }),
+          ratio: 1,
         }),
       ),
 
       setup: (self) =>
         self.hook(hyprland, () =>
-          self.children.forEach((btn) => {
+          self.children.forEach((frame) => {
+            const btn = frame.child;
             if (btn.attribute === hyprland.active.workspace.id) {
               btn.css = `background-color:${COLOR.Highlight};`;
             } else if (
@@ -103,7 +132,7 @@ const batteryIcon = () =>
 
 const batteryTimeRemaining = () =>
   Widget.Label({
-    css: "font-size: 1.9em;",
+    css: "font-size: 10px;",
     label: battery
       .bind("time_remaining")
       .as(
@@ -125,12 +154,22 @@ const batteryProgressBar = () =>
   });
 
 App.applyCss(`
+levelbar {
+	background-color: transparent;
+}
+
 levelbar trough {
   background-color: ${COLOR.Surface0};
+	border-radius: 50px;
+}
+
+levelbar block.empty {
+	background-color: transparent;
 }
 
 levelbar block.filled {
   background-color: ${COLOR.Highlight};
+	border-radius: 50px;
 }
 `);
 
@@ -141,10 +180,10 @@ const batteryProgressWheel = () =>
       (percent, watts) => `${percent}%\n${round(watts)}W`,
     ),
     css:
-      "min-width: 50px;" + // its size is min(min-height, min-width)
-      "min-height: 50px;" +
+      "min-width: 40px;" + // its size is min(min-height, min-width)
+      "min-height: 40px;" +
       "font-size: 6px;" + // to set its thickness set font-size on it
-      "margin: 4px;" + // you can set margin on it
+      "margin: 1px;" + // you can set margin on it
       `background-color: ${COLOR.Surface0};` + // set its bg color
       `color: ${COLOR.Highlight};`, // set its fg color
     rounded: false,
@@ -316,9 +355,9 @@ const Container = (children) =>
     css: `background-color:${COLOR.Mantle};
 	border-radius:15px;
 	padding:5px;
-	padding-left:9px;
-	padding-right:9px;
-	margin:5px;`,
+	padding-left:5px;
+	padding-right:5px;
+	margin:3px;`,
     children: children,
   });
 
@@ -329,12 +368,13 @@ const Bar = (monitor: number) =>
     anchor: ["top", "left", "right"],
     exclusivity: "exclusive",
     margins: [5, 7, 5, 7],
-    css: `background-color: ${COLOR.Surface0}; padding: 1em;border-radius:25px;`,
+    css: `background-color: ${COLOR.Surface0};border-radius:25px;`,
     child: Widget.CenterBox({
       start_widget: Widget.Box({
-        css: "padding-left:9px;padding-top:10px;",
+        css: "padding-left:9px;padding-top:10px;font-size:12px;",
         child: focusedTitle(),
       }),
+
       center_widget: Widget.Box({
         children: [
           Container([Workspaces()]),
@@ -353,18 +393,19 @@ const Bar = (monitor: number) =>
           ]),
         ],
       }),
+
       end_widget: Widget.Box({
         hpack: "end",
-        css: "font-size:1.5em;padding-right:12px;",
+        css: "padding-right:12px;",
         children: [
           Container([
             Widget.Button({
-              css: "margin: 6px",
+              css: "font-size:20px;margin-right:5px",
               onClicked: () => Utils.execAsync(nixData.show_clipboard),
               label: " 󱉫 ",
             }),
             Widget.Button({
-              css: "margin: 6px",
+              css: "font-size:20px;",
               onClicked: () => Utils.execAsync(nixData.show_clipboard),
               label: " 󱉫 ",
             }),

@@ -219,6 +219,7 @@
 		noto-fonts-cjk
 		noto-fonts-emoji
 		meslo-lgs-nf
+		rubik
 	];
 
 	environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
