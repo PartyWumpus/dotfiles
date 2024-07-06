@@ -17,6 +17,14 @@ let
 		cliphist delete
 	'';
 
+	wifi_menu = pkgs.writeShellScript "wifi_menu" ''
+		hyprctl dispatch exec "[tag modal] alacritty -e bash -c 'unset COLORTERM; TERM=xterm-old nmtui'"
+	'';
+
+	bluetooth_menu = pkgs.writeShellScript "bluetooth_menu" ''
+		hyprctl dispatch exec "[tag modal] ${pkgs.blueman}/bin/blueman-manager"
+	'';
+
 in {
 	home.packages = with pkgs; [
 		brightnessctl
@@ -94,9 +102,11 @@ in {
 				exec-once = swww init && swww img ${./wallpaper.jpg}
 				#exec-once = waybar
 				exec-once = ags
+				exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 				exec-once = wl-paste --watch cliphist store
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
 				exec-once = hypridle
+				exec-once = hyprctl setcursor Qogir 24
 
 				windowrulev2 = float, initialclass: xdg-desktop-portal-gtk
 				windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
@@ -106,6 +116,12 @@ in {
 				windowrule = noblur, .*
 				layerrule = blur, ^bar.*
 				layerrule = ignorezero, ^bar.*
+
+				# modalify tag:modal windows
+				windowrulev2 = float, tag:modal
+				windowrulev2 = pin, tag:modal
+				windowrulev2 = center, tag:modal
+				windowrulev2 = bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1
 
 				input {
 					kb_layout = gb
@@ -126,9 +142,13 @@ in {
 					rounding = 10
 					# blur is only for top bar
 					blur {
-						size = 8
+						size = 4
 						passes = 3
 					}
+				}
+				
+				dwindle {
+					preserve_split = 1
 				}
 
 				misc {
@@ -183,6 +203,99 @@ in {
 		};
 	};
 
+	programs.wlogout = {
+		enable = true;
+		layout = [
+{
+label = "lock";
+action = "loginctl lock-session";
+text = "Lock";
+keybind = "l";
+}
+{
+label = "hibernate";
+action = "systemctl hibernate";
+text = "Hibernate";
+keybind = "h";
+}
+{
+label = "logout";
+action = "loginctl terminate-user $USER";
+text = "Logout";
+keybind = "e";
+}
+{
+label = "shutdown";
+action = "systemctl poweroff";
+text = "Shutdown";
+keybind = "s";
+}
+{
+label = "suspend";
+action = "systemctl suspend";
+text = "Suspend";
+keybind = "u";
+}
+{
+label = "reboot";
+action = "systemctl reboot";
+text = "Reboot";
+keybind = "r";
+}
+];
+style = /* css */ ''
+* {
+	background-image: none;
+	box-shadow: none;
+}
+
+window {
+	background-color: rgba(12, 12, 12, 0.9);
+}
+
+button {
+	text-decoration-color: #FFFFFF;
+  color: #FFFFFF;
+	background-color: #363a4f;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 25%;
+
+	margin:5px;
+	border-radius: 15px;
+}
+
+button:focus, button:active, button:hover {
+	background-color: #c6a0f6;
+	outline-style: none;
+}
+
+#lock {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+}
+
+#logout {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+}
+
+#suspend {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+}
+
+#hibernate {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+}
+
+#shutdown {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+}
+
+#reboot {
+    background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+}
+'';
+	};
+
 	# symlink the ags types into the config directory.
 	# TODO: find a better way of symlinking the ags types
 	home.file."${inputs.self.location}/modules/hyprland/ags/types".source = "${inputs.ags.packages.x86_64-linux.agsWithTypes.out}/share/com.github.Aylur.ags/types";
@@ -191,6 +304,8 @@ in {
 		bun = "${pkgs.bun}/bin/bun"; # workaround for extraPackages being broken
 		show_clipboard = "${show_clipboard}";
 		audio_changer = "${./waybar/audio_changer.py}";
+		wifi_menu = "${wifi_menu}";
+		bluetooth_menu = "${bluetooth_menu}";
   };
 
 	programs.ags = {

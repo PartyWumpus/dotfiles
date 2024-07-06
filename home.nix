@@ -36,6 +36,7 @@
 		# # You can also create simple shell scripts directly inside your
 		# # configuration. For example, this adds a command 'my-hello' to your
 		# # environment:
+		qogir-icon-theme
 	];
 	#xdg.configFile = {
 	#	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
@@ -52,6 +53,14 @@
 				tweaks = [ "rimless" ];
 				variant = "macchiato";
 			};
+		};
+		cursorTheme = {
+			name = "Qogir";
+			package = pkgs.qogir-icon-theme;
+		};
+		iconTheme = {
+			name = "Qogir";
+			package = pkgs.qogir-icon-theme;
 		};
 	};
 
@@ -72,6 +81,14 @@
 		};
 		"Kvantum/Catppuccin-Macchiato-Mauve".source =
 		"${(pkgs.catppuccin-kvantum.override {accent = "Mauve";variant ="Macchiato";} )}/share/Kvantum/Catppuccin-Macchiato-Mauve";
+	};
+
+	xdg.configFile = {
+		"distrobox/distrobox.conf".text = ''
+		container_additional_volumes="/nix:/nix:ro /etc/profiles/per-user/wumpus/etc/profile.d:/etc/profiles/per-user/wumpus/etc/profile.d:ro"
+		PATH="$PATH:${pkgs.zsh}/bin"
+		container_init_hook="${pkgs.zsh}/bin/zsh"
+		'';
 	};
 
 	#home.pointerCursor = {

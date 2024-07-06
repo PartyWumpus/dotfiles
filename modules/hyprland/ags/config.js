@@ -1,4 +1,4 @@
-// watchexec --restart -- "ags -c ~/nixos/modules/hyprland/ags/config.js"
+// watchexec --restart --wrap-process=none -- "ags -c ~/nixos/modules/hyprland/ags/config.js"
 const main = '/tmp/ags/main.js';
 const nix = JSON.parse(Utils.readFile(`/home/${Utils.USER}/.local/share/ags/nix.json`));
 

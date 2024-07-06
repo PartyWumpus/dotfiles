@@ -1,6 +1,5 @@
 const { query } = await Service.import("applications");
-import type { Application } from "types/service/applications";
-const WINDOW_NAME = "applauncher";
+const WINDOW_NAME = "powermenu";
 
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
@@ -9,7 +8,7 @@ import * as COLOR from "../colours.json";
 
 // TODO: fix selection boxes on apps being cut off and looking weird
 
-const AppItem = (app: Application) =>
+const AppItem = (app) =>
   Widget.Button({
     css: "margin:2px;margin-bottom:0px",
     on_clicked: () => {
@@ -131,9 +130,9 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
     }
   });
 };
-
+/*
 // there needs to be only one instance
-export const AppLauncher = Widget.Window({
+export const PowerMenu = Widget.Window({
   css: `border-radius:25px;background-color:${COLOR.Base}`,
   name: WINDOW_NAME,
   setup: (self) =>
@@ -148,3 +147,4 @@ export const AppLauncher = Widget.Window({
     spacing: 12,
   }),
 });
+*/

@@ -112,7 +112,7 @@ const NetworkingBar = () =>
       NetworkIcon(),
       Widget.LevelBar({
         widthRequest: 100,
-        value: networking.wifi.bind("strength").as((x) => x / 100),
+        value: networking.wifi.bind("strength").as((x) => Math.abs(x) / 100),
         css: "border: 1px transparent solid;",
       }),
     ],

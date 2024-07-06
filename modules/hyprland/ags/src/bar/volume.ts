@@ -1,5 +1,6 @@
 const audio = await Service.import("audio");
 
+import { nix } from "src/nix";
 import * as COLOR from "../../colours.json";
 
 const VolumeSlider = () =>
@@ -28,15 +29,59 @@ const VolumeIndicator = () =>
     self.css = "font-size:15px;";
   });
 
+type formFactor =
+  | "internal"
+  | "speaker"
+  | "handset"
+  | "tv"
+  | "webcam"
+  | "microphone"
+  | "headset"
+  | "headphone"
+  | "hands-free"
+  | "car"
+  | "hifi"
+  | "computer"
+  | "portable";
+
+const SpeakerIndicator = () =>
+  Widget.Label({
+    css: "font-size:18px;",
+    label: Utils.merge(
+      [audio.speaker.bind("stream"), audio.speaker.bind("is_muted")],
+      (stream, is_muted) => {
+        if (is_muted) {
+          return "";
+        }
+
+        const formFactor = (stream?.formFactor ?? "speaker") as formFactor;
+
+        switch (formFactor) {
+          case "headphone":
+          case "headset":
+            return "";
+          case "webcam":
+          case "handset":
+          case "hands-free":
+          case "portable":
+            return "";
+          default:
+            return "";
+        }
+      },
+    ),
+  });
+
 export const VolumeWheel = () =>
   Widget.Button({
     className: "flat",
     css: "box-shadow: none;text-shadow: none;background: none;padding: 0;",
     onClicked: () => (audio.speaker.is_muted = !audio.speaker.is_muted),
     onSecondaryClick: () => Utils.execAsync(nix.audio_changer).catch(print),
-    tooltipText: audio.speaker
-      .bind("volume")
-      .as((vol) => `Volume ${Math.floor(vol * 100)}%`),
+    tooltipText: Utils.merge(
+      [audio.speaker.bind("volume"), audio.speaker.bind("description")],
+      (vol, name) => `${name}\nVolume ${Math.floor(vol * 100)}%`,
+    ),
     onScrollUp: () => {
       if (audio.speaker.volume < 1) {
         audio.speaker.volume += 0.015;
@@ -50,13 +95,13 @@ export const VolumeWheel = () =>
         "min-height: 40px;" +
         "font-size: 6px;" + // to set its thickness set font-size on it
         "margin: 1px;" + // you can set margin on it
-        `background-color: ${COLOR.Surface0};` + // set its bg color
+        `background-color: ${COLOR.Surface1};` + // set its bg color
         `color: ${COLOR.Highlight};`,
       rounded: false,
       inverted: false,
       startAt: 0.4,
       endAt: 0.105,
       value: audio.speaker.bind("volume"),
-      child: VolumeIndicator(),
+      child: SpeakerIndicator(),
     }),
   });

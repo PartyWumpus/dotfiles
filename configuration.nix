@@ -142,6 +142,8 @@
 		neofetch
 		pipes
 
+		gnome.gnome-bluetooth
+
 		fzf
 		manix
 
@@ -191,6 +193,8 @@
 
 	# power info
 	services.upower.enable = true;
+	# caching of cover art
+	services.gvfs.enable = true;
 	
 	services.flatpak.enable-debug = true;
 	services.flatpak.enable = true;

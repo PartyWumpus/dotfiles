@@ -1,3 +1,5 @@
+import { Notification } from "types/service/notifications";
+
 const notifications = await Service.import("notifications");
 
 notifications.popupTimeout = 4000;
@@ -62,7 +64,7 @@ window.notification-popups box.notifications {
 }
 `);
 
-function NotificationIcon({ app_entry, app_icon, image }) {
+function NotificationIcon({ app_entry, app_icon, image }: Notification) {
   if (image) {
     return Widget.Box({
       css:
@@ -83,12 +85,12 @@ function NotificationIcon({ app_entry, app_icon, image }) {
   });
 }
 
-function Notification(n) {
-  const icon = Widget.Box({
+function Notification(n: Notification) {
+  /*const icon = Widget.Box({
     vpack: "start",
     class_name: "icon",
     child: NotificationIcon(n),
-  });
+  });*/
 
   const title = Widget.Label({
     class_name: "title",
@@ -152,12 +154,12 @@ export function NotificationPopups(monitor = 0) {
     children: notifications.popups.map(Notification),
   });
 
-  function onNotified(_, /** @type {number} */ id) {
+  function onNotified(_: any, id: number) {
     const n = notifications.getNotification(id);
     if (n) list.children = [Notification(n), ...list.children];
   }
 
-  function onDismissed(_, /** @type {number} */ id) {
+  function onDismissed(_: any, id: number) {
     list.children.find((n) => n.attribute.id === id)?.destroy();
   }
 
