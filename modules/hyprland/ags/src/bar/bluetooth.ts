@@ -2,7 +2,7 @@ const bluetooth = await Service.import("bluetooth");
 
 import * as COLOR from "../../colours.json";
 
-import { BluetoothDevice } from "types/service/bluetooth";
+import { type BluetoothDevice } from "types/service/bluetooth";
 
 const BluetoothWheel = (device: BluetoothDevice) =>
   Widget.Button({
@@ -22,9 +22,14 @@ const BluetoothWheel = (device: BluetoothDevice) =>
       inverted: false,
       startAt: 0.75,
       value: device.battery_percentage / 100,
-      child: Widget.Icon({
+      /*child: Widget.Icon({
         icon: device.icon_name + "-symbolic",
+				
         css: "font-size:15px;",
+      }),*/
+      child: Widget.Label({
+        css: "font-size:13px;",
+        label: "󰥉",
       }),
     }),
   });

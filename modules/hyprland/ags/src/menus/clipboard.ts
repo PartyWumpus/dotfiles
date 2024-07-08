@@ -1,47 +1,66 @@
-const { query } = await Service.import("applications");
-import type { Application } from "types/service/applications";
-const WINDOW_NAME = "applauncher";
+import * as COLOR from "../../colours.json";
 
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
 
-import * as COLOR from "../colours.json";
+const WINDOW_NAME = "clipboard";
 
-const AppItem = (app: Application) =>
+interface Entry {
+  original: string;
+  text: string;
+  index: number;
+}
+
+App.applyCss(`
+.clipboard-entry:focus, .clipboard-entry:active, .clipboard-entry:hover   {
+	background-color: ${COLOR.Highlight};
+	/*box-shadow: 0 0 0 1px ${COLOR.Highlight} inset;*/
+}
+`);
+
+function get_clipboard() {
+  return Utils.exec("cliphist list")
+    .split("\n")
+    .map((entry) => {
+      let [index, text] = entry.split("\t");
+      // original entry to be passed back to cliphist for decoding
+      return { original: entry, text: text, index: Number(index) };
+    });
+}
+
+const AppItem = (entry: Entry) =>
   Widget.Button({
     css: "margin:2px;margin-bottom:0px",
     on_clicked: () => {
       App.closeWindow(WINDOW_NAME);
-      app.launch();
+      Utils.execAsync([
+        `bash`,
+        `-c`,
+        `cliphist decode <<< "${entry.original}" | wl-copy`,
+      ]);
     },
-    attribute: { app },
+    attribute: entry.original,
     child: Widget.Box({
       children: [
-        Widget.Icon({
-          icon: app.icon_name || "",
-          css: "font-size: 35px",
-          // size doesn't scale all the icons identically so gotta use this instead
-        }),
         Widget.Label({
           css: "font-size: 20px",
           class_name: "title",
-          label: ` ${app.name}`,
+          label: `${entry.text}`,
           xalign: 0,
           vpack: "center",
-          truncate: "end",
+          wrap: true,
         }),
       ],
     }),
   });
 
-function applicationsList() {
-  let applications = query("").map(AppItem);
-  return applications;
+function clipboardList() {
+  return get_clipboard().map(AppItem);
 }
 
 const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
   // list of application buttons
-  let applications = applicationsList();
+  let applications = clipboardList();
 
   // container holding the buttons
   const list = Widget.Box({
@@ -52,16 +71,16 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
 
   // repopulate the box, so the most frequent apps are on top of the list
   function repopulate() {
-    applications = applicationsList();
+    applications = clipboardList();
 
     list.children = applications;
   }
 
-  function filterList(text) {
+  function filterList(text: string | null) {
     let first = true;
     for (const item of applications) {
       item.canFocus = true;
-      let visible = item.attribute.app.match(text ?? "");
+      let visible = item.attribute.includes(text ?? "");
       item.visible = visible;
       // skip focus over first item, because the entry bar is already the first item
       if (first && visible) {
@@ -90,7 +109,11 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
 
       if (results[0]) {
         App.toggleWindow(WINDOW_NAME);
-        results[0].attribute.app.launch();
+        Utils.execAsync([
+          `bash`,
+          `-c`,
+          `cliphist decode <<< "${results[0].attribute}" | wl-copy`,
+        ]);
       }
     },
 
@@ -129,7 +152,7 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
 };
 
 // there needs to be only one instance
-export const AppLauncher = Widget.Window({
+export const Clipboard = Widget.Window({
   css: `border-radius:25px;background-color:${COLOR.Base}`,
   name: WINDOW_NAME,
   setup: (self) =>

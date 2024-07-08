@@ -1,42 +1,43 @@
-const { query } = await Service.import("applications");
-const WINDOW_NAME = "powermenu";
+const audio = await Service.import("audio");
+const WINDOW_NAME = "sink-picker";
 
+import { Stream } from "types/service/audio";
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
 
-import * as COLOR from "../colours.json";
+import * as COLOR from "../../colours.json";
 
-// TODO: fix selection boxes on apps being cut off and looking weird
+import { FormFactorIcon } from "src/bar/volume";
 
-const AppItem = (app) =>
+const AppItem = (app: Stream) =>
   Widget.Button({
     css: "margin:2px;margin-bottom:0px",
     on_clicked: () => {
       App.closeWindow(WINDOW_NAME);
-      app.launch();
+      audio.control.set_default_sink(app.stream!);
     },
-    attribute: { app },
+    attribute: { stream: app.stream, name: app.name ?? "" },
     child: Widget.Box({
       children: [
-        Widget.Icon({
-          icon: app.icon_name || "",
-          css: "font-size: 35px",
-          // size doesn't scale all the icons identically so gotta use this instead
+        Widget.Label({
+          vpack: "center",
+          css: "font-size: 20px;margin-right:8px;",
+          label: FormFactorIcon(app.stream?.form_factor ?? ""),
         }),
         Widget.Label({
           css: "font-size: 20px",
           class_name: "title",
-          label: ` ${app.name}`,
+          label: app.description,
           xalign: 0,
           vpack: "center",
-          truncate: "end",
+          wrap: true,
         }),
       ],
     }),
   });
 
 function applicationsList() {
-  let applications = query("").map(AppItem);
+  let applications = audio.speakers.map(AppItem);
   return applications;
 }
 
@@ -58,11 +59,13 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
     list.children = applications;
   }
 
+  setTimeout(repopulate, 3000);
+
   function filterList(text) {
     let first = true;
     for (const item of applications) {
       item.canFocus = true;
-      let visible = item.attribute.app.match(text ?? "");
+      let visible = item.attribute.name.includes(text ?? "");
       item.visible = visible;
       // skip focus over first item, because the entry bar is already the first item
       if (first && visible) {
@@ -71,6 +74,13 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
       }
     }
   }
+
+  // wrap the list in a scrollable
+  const scrollableList = Widget.Scrollable({
+    hscroll: "never",
+    css: `min-width: ${width}px;` + `min-height: ${height}px;`,
+    child: list,
+  });
 
   // search entry
   const entry = Widget.Entry({
@@ -84,27 +94,18 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
 
       if (results[0]) {
         App.toggleWindow(WINDOW_NAME);
-        results[0].attribute.app.launch();
+        audio.control.set_default_sink(results[0].attribute.stream!);
       }
     },
 
     // filter out the list
     on_change: ({ text }) => filterList(text),
-  });
+  }).on("focus_in_event", () => scrollableList.get_vadjustment().set_value(0));
 
   return Widget.Box({
     vertical: true,
     css: `margin: ${spacing * 2}px;`,
-    children: [
-      entry,
-
-      // wrap the list in a scrollable
-      Widget.Scrollable({
-        hscroll: "never",
-        css: `min-width: ${width}px;` + `min-height: ${height}px;`,
-        child: list,
-      }),
-    ],
+    children: [entry, scrollableList],
     setup: (self) =>
       self.hook(App, (_, windowName, visible) => {
         if (windowName !== WINDOW_NAME) return;
@@ -130,16 +131,16 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
     }
   });
 };
-/*
+
 // there needs to be only one instance
-export const PowerMenu = Widget.Window({
+export const SinkPicker = Widget.Window({
   css: `border-radius:25px;background-color:${COLOR.Base}`,
   name: WINDOW_NAME,
   setup: (self) =>
     self.keybind("Escape", () => {
       App.closeWindow(WINDOW_NAME);
     }),
-  visible: false,
+  visible: true,
   keymode: "exclusive",
   child: Applauncher({
     width: 500,
@@ -147,4 +148,3 @@ export const PowerMenu = Widget.Window({
     spacing: 12,
   }),
 });
-*/

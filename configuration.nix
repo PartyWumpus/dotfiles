@@ -101,7 +101,7 @@
 		extraSpecialArgs = {inherit inputs;};
 		useGlobalPkgs = true;
 		useUserPackages = true;
-		backupFileExtension = "tmp.${inputs.self.timestamp}";
+		backupFileExtension = "tmp.${inputs.self.my_timestamp}";
 		users = {
 			"wumpus" = import ./home.nix;
 		};
@@ -142,6 +142,7 @@
 		neofetch
 		pipes
 
+		# bluetooth info for ags
 		gnome.gnome-bluetooth
 
 		fzf
@@ -153,7 +154,15 @@
 		# themes
 		libsForQt5.qtstyleplugin-kvantum
 		libsForQt5.qt5ct
-		where-is-my-sddm-theme
+		(
+  	pkgs.catppuccin-sddm.override {
+    	flavor = "macchiato";
+    	font  = "Noto Sans";
+    	fontSize = "15";
+    	background = "${./modules/hyprland/wallpaper.jpg}";
+    	loginBackground = true;
+  	}
+	)
 
 		# git packages
 		git
@@ -174,6 +183,7 @@
 		spotify
 		r2modman
 		protonvpn-cli_2
+		feishin
 
 		# languages
 		(python312.withPackages(ps: [
@@ -191,6 +201,7 @@
 	programs.xfconf.enable = true;
 	services.tumbler.enable = true;
 
+	## AGS
 	# power info
 	services.upower.enable = true;
 	# caching of cover art
@@ -289,8 +300,8 @@
 	services.displayManager.sddm = {
 		enable = true;
 		wayland.enable = true;
-		theme = "where_is_my_sddm_theme";
-		package = pkgs.libsForQt5.sddm;
+		theme = "catppuccin-macchiato";
+		package = pkgs.kdePackages.sddm;
 	};
 
 	hardware.bluetooth.enable = true;

@@ -96,7 +96,7 @@ in {
 
 				${(if builtins.getEnv "HOSTNAME" == "desktop"
 					then "monitor=DP-1,2560x1440@144,0x0,1"
-					else "monitor=eDP-2,2560x1600@165,0x0,1"
+					else "monitor=eDP-2,2560x1600@165,0x0,1,vrr,1"
 					)}
 
 				exec-once = swww init && swww img ${./wallpaper.jpg}

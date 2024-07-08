@@ -1,17 +1,21 @@
 // TODO:
 // use svg icon thingies instead of just nerd font icons
-// make clipboard ui with ags
-// make wifi ui with ags? might be too hard.
-// make audio device selector with ags
-// indicate charging or not on battery wheel tooltip
-// add bluetooth thingy next to volume
+// add popup for when volume or (screen/kb) brightness changes airplane mode or low battery
+// add bluetooth thingy next to volume if using bluetooth headphones
 // make the notifications betterer
-// make the changing of songs in the audio player work better, currently it looks jank,
-// 	probably just keep the old icon until the new one loads? <- doesn't look possible >:(
+// fix the slide-out of media by freezing the element when there are none left.
+// figure out why the media wobbles a bit when sliding in
+// make media disappear if its just chrome doing nothing
+// deduplicate some code in places: popup menu list, button
+//
+// TODO: agsify:
+// clipboard
+// audio device selector
+// power menu
+// wifi
+// bluetoth
 //
 // TODO: ADD:
-// power menu button with hibernate option
-// in dropdown menu put other stuff
 // investigate GSconnect :o
 
 import * as COLOR from "../colours.json";
@@ -20,29 +24,29 @@ import { nix } from "./nix";
 import { FocusedTitle } from "./bar/title";
 import { Workspaces } from "./bar/workspaces";
 import { BatteryWheel } from "./bar/battery";
-import { InfoBars } from "./bar/ram";
+import { InfoBars } from "./bar/bars";
 import { VolumeWheel } from "./bar/volume";
 import { Date } from "./bar/date";
 import { BluetoothWheels } from "./bar/bluetooth";
 
 //
 
-import { MprisPlayer } from "types/service/mpris";
+import { type MprisPlayer } from "types/service/mpris";
 
 App.applyCss(`
 window {
 	font-size: 10px;
 	font-family: rubik;
-}
-`);
+}`);
 
 App.applyCss(`
 .player {
-  padding: 10px;
-  min-width: 350px;
-	background-color: #363a4f;
+  padding-left: 7px;
+  padding-right: 7px;
+  min-width: 240px;
+	background-color: ${COLOR.Surface0};
+	background-color:rgba(54, 58, 79,0.8);
 	border-radius: 15px;
-	margin:3px;
 }
 
 .player .img {
@@ -112,6 +116,7 @@ popover {
 `);
 
 const mpris = await Service.import("mpris");
+mpris.cacheCoverArt = false;
 const players = mpris.bind("players");
 
 const FALLBACK_ICON = "audio-x-generic-symbolic";
@@ -133,7 +138,7 @@ function lengthStr(length: number) {
 }
 
 function Player(player: MprisPlayer) {
-  const img = Widget.Box({
+  /*const img = Widget.Box({
     class_name: "img",
     vpack: "start",
     css: player.bind("cover_path").as(
@@ -141,19 +146,23 @@ function Player(player: MprisPlayer) {
             background-image: url('${p}');
         `,
     ),
-  });
+  });*/
 
   const title = Widget.Label({
     class_name: "title",
     wrap: true,
     hpack: "start",
+    maxWidthChars: 25,
+    truncate: "end",
     label: player.bind("track_title"),
   });
 
   const artist = Widget.Label({
     class_name: "artist",
     wrap: true,
-    hpack: "start",
+    hpack: "end",
+    maxWidthChars: 23,
+    truncate: "end",
     label: player.bind("track_artists").transform((a) => a.join(", ")),
   });
 
@@ -180,7 +189,7 @@ function Player(player: MprisPlayer) {
     class_name: "position",
     hpack: "start",
     setup: (self) => {
-      const update = (_: any, time: number) => {
+      const update = (_: any, time: number | undefined = undefined) => {
         self.label = lengthStr(time || player.position);
       };
 
@@ -195,7 +204,7 @@ function Player(player: MprisPlayer) {
     label: player.bind("length").transform(lengthStr),
   });
 
-  const icon = Widget.Icon({
+  /*const icon = Widget.Icon({
     class_name: "icon",
     hexpand: true,
     hpack: "end",
@@ -205,6 +214,12 @@ function Player(player: MprisPlayer) {
       const name = `${entry}-symbolic`;
       return Utils.lookUpIcon(name) ? name : FALLBACK_ICON;
     }),
+  });*/
+
+  const playerName = Widget.Label({
+    hpack: "end",
+    css: "margin-right:3px;",
+    label: player.bind("identity"),
   });
 
   const playPause = Widget.Button({
@@ -256,34 +271,42 @@ function Player(player: MprisPlayer) {
 	*/
 
   return Widget.Box(
-    { class_name: "player" },
-    img,
+    { class_name: "player", attribute: player.bus_name },
     Widget.Box(
       {
         vertical: true,
+        vexpand: true,
+        vpack: "center",
         hexpand: true,
       },
-      Widget.Box([title, icon]),
-      artist,
-      Widget.Box({ vexpand: true }),
+      Widget.CenterBox({ start_widget: title, end_widget: artist }),
       positionSlider,
       Widget.CenterBox({
         start_widget: positionLabel,
         center_widget: Widget.Box([prev, playPause, next]),
-        end_widget: lengthLabel,
+        end_widget: Widget.Box({
+          hpack: "end",
+          children: [playerName, lengthLabel],
+        }),
       }),
     ),
   );
 }
 
-export function Media() {
-  return Widget.Box({
-    vertical: true,
-    css: "min-height: 2px; min-width: 2px;", // small hack to make it visible
-    visible: players.as((p) => p.length > 0),
-    children: players.as((p) => p.map(Player)),
+export const Media = () =>
+  Widget.Revealer({
+    revealChild: players.as((p) => p.length > 0),
+    transitionDuration: 1000,
+    transition: "slide_right",
+    child: Widget.Scrollable({
+      hscroll: "never",
+      vscroll: players.as((p) => (p.length > 1 ? "always" : "never")),
+      child: Widget.Box({
+        vertical: true,
+        children: players.as((p) => p.map(Player)),
+      }),
+    }),
   });
-}
 
 const uptime = Variable(0, {
   poll: [
@@ -366,6 +389,7 @@ export const dropdownMenu = Widget.Window({
 
 const Container = (children) =>
   Widget.Box({
+    className: "container",
     css: `
 	background-color:${COLOR.Surface0};
 	background-color:rgba(54, 58, 79,0.8);
@@ -376,6 +400,19 @@ const Container = (children) =>
 	margin:1px;`,
     children: children,
   });
+
+App.applyCss(`
+.side-button {
+font-size:18px;
+margin:2px;
+}
+.side-button button {
+background-color:${COLOR.Surface2};
+color:${COLOR.Highlight};
+}
+`);
+
+import { newAspectFrame as AspectFrame } from "src/widgets/AspectFrame";
 
 export const Bar = (monitor: number) =>
   Widget.Window({
@@ -398,23 +435,51 @@ export const Bar = (monitor: number) =>
           Container([Workspaces()]),
           Container([Date(), InfoBars(), BatteryWheel(), BluetoothWheels()]),
           Container([VolumeWheel()]),
+          Media(),
         ],
       }),
 
       end_widget: Widget.Box({
         hpack: "end",
-        css: "padding-right:12px;",
         children: [
           Container([
-            /*Widget.Button({
-              css: `font-size:20px;margin:2px;background-color:${COLOR.Surface1};color:${COLOR.Highlight};`,
-              onPrimaryClick: () => Utils.execAsync(nix.show_clipboard),
-              label: " 󱉫 ",
-            }),*/
-            Widget.Button({
-              css: `font-size:20px;margin:2px;background-color:${COLOR.Surface1};color:${COLOR.Highlight};`,
-              onClicked: () => App.toggleWindow("dropdown-menu"),
-              label: " 󰍜 ",
+            AspectFrame({
+              ratio: 1,
+              className: "side-button flat",
+              child: Widget.Button({
+                className: "circular",
+                label: "",
+                onClicked: () => Utils.execAsync(nix.wifi_menu),
+              }),
+            }),
+            AspectFrame({
+              ratio: 1,
+              className: "side-button flat",
+              child: Widget.Button({
+                className: "circular",
+                label: "",
+                //label: bluetooth.bind("enabled").as((x) => (x ? "" : "󰂲")),
+                onClicked: () => Utils.execAsync(nix.bluetooth_menu),
+              }),
+            }),
+            AspectFrame({
+              ratio: 1,
+              className: "side-button flat",
+              child: Widget.Button({
+                className: "circular",
+                //onClicked: () => Utils.execAsync(nix.show_clipboard),
+                onClicked: () => App.openWindow("clipboard"),
+                label: "󱉫",
+              }),
+            }),
+            AspectFrame({
+              ratio: 1,
+              className: "side-button flat",
+              child: Widget.Button({
+                className: "circular",
+                label: "",
+                onClicked: () => Utils.execAsync("wlogout"),
+              }),
             }),
 
             /*Widget.Button({

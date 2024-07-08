@@ -32,27 +32,30 @@ export const RamBar = () =>
     ],
   });
 
-// TODO: this is a terrible measure of cpu usage, find a better one
-// best case figure out what waybar does
-const cpu = Variable("", {
+const cpu = Variable(0, {
   poll: [
-    2000,
+    4000,
     [
       "bash",
       "-c",
-      `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`,
+      // returns two numbers, the first one is bad
+      // the second one is the percentage IDLE time
+      String.raw`lANG=C top -bn2 | awk '/Cpu\(s\):/ { print $8 }'`,
     ],
+    (idle_percents) => {
+      return 100 - Number(idle_percents.split("\n")[1]);
+    },
   ],
 });
 
 const CpuBar = () =>
   Widget.Box({
-    tooltipText: cpu.bind().as((x) => `${x.padStart(4, "0")}%`),
+    tooltipText: cpu.bind().as((x) => `${round(x).padStart(4, "0")}%`),
     children: [
       Widget.Label({ label: "󰓅 " }),
       Widget.LevelBar({
         widthRequest: 100,
-        value: cpu.bind().as((x) => Number(x) / 100),
+        value: cpu.bind().as((x) => x / 100),
         css: "border: 1px transparent solid;",
       }),
     ],
@@ -103,19 +106,22 @@ const ip = Variable("", {
 });
 
 const NetworkingBar = () =>
-  Widget.Box({
-    tooltipMarkup: Utils.merge(
-      [networking.bind("wifi"), ip.bind()],
-      (wifi, ip) => `${wifi.ssid} (${wifi.strength}%)\n${ip}`,
-    ),
-    children: [
-      NetworkIcon(),
-      Widget.LevelBar({
-        widthRequest: 100,
-        value: networking.wifi.bind("strength").as((x) => Math.abs(x) / 100),
-        css: "border: 1px transparent solid;",
-      }),
-    ],
+  Widget.EventBox({
+    // TODO: onSecondaryClick: () => App.openWindow("network"),
+    child: Widget.Box({
+      tooltipMarkup: Utils.merge(
+        [networking.bind("wifi"), ip.bind()],
+        (wifi, ip) => `${wifi.ssid} (${wifi.strength}%)\n${ip}`,
+      ),
+      children: [
+        NetworkIcon(),
+        Widget.LevelBar({
+          widthRequest: 100,
+          value: networking.wifi.bind("strength").as((x) => Math.abs(x) / 100),
+          css: "border: 1px transparent solid;",
+        }),
+      ],
+    }),
   });
 
 export const InfoBars = () =>

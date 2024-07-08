@@ -11,22 +11,10 @@ App.applyCss(`
 	font-size: 15px;
 }`);
 
-// TODO: fix this jankery
-type BaseProps = Parameters<typeof Widget.Box>[0];
-
 const dispatch = (ws: number) =>
   hyprland.messageAsync(`dispatch workspace ${ws}`);
 
-// TODO: sorry.
-const NotAspectFrame = Widget.subclass(Gtk.AspectFrame);
-type aspectFrameProps = (
-  props: BaseProps & { child?: Gtk.Widget; ratio?: number },
-) => ReturnType<typeof NotAspectFrame>;
-const aspectFrame: aspectFrameProps =
-  NotAspectFrame as unknown as aspectFrameProps;
-
-// TODO: my type crimes didnt actually fix all the issues
-// figure it out.
+import { newAspectFrame as AspectFrame } from "src/widgets/AspectFrame";
 
 export const Workspaces = () =>
   Widget.EventBox({
@@ -34,7 +22,7 @@ export const Workspaces = () =>
     //onScrollDown: () => dispatch("-1"),
     child: Widget.Box({
       children: Array.from({ length: 10 }, (_, i) => i + 1).map((i) =>
-        aspectFrame({
+        AspectFrame({
           className: "flat",
           child: Widget.Button({
             attribute: i,

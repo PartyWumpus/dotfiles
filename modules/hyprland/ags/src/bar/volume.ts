@@ -11,7 +11,7 @@ const VolumeSlider = () =>
     value: audio.speaker.bind("volume"),
   });
 
-const VolumeIndicator = () =>
+const oldVolumeIndicator = () =>
   Widget.Icon().hook(audio.speaker, (self) => {
     const vol = audio.speaker.volume * 100;
     let icon = [
@@ -44,7 +44,22 @@ type formFactor =
   | "computer"
   | "portable";
 
-const SpeakerIndicator = () =>
+export const FormFactorIcon = (formFactor: formFactor) => {
+  switch (formFactor) {
+    case "headphone":
+    case "headset":
+      return "";
+    case "webcam":
+    case "handset":
+    case "hands-free":
+    case "portable":
+      return "";
+    default:
+      return "";
+  }
+};
+
+const VolumeIndicator = () =>
   Widget.Label({
     css: "font-size:18px;",
     label: Utils.merge(
@@ -56,18 +71,7 @@ const SpeakerIndicator = () =>
 
         const formFactor = (stream?.formFactor ?? "speaker") as formFactor;
 
-        switch (formFactor) {
-          case "headphone":
-          case "headset":
-            return "";
-          case "webcam":
-          case "handset":
-          case "hands-free":
-          case "portable":
-            return "";
-          default:
-            return "";
-        }
+        return FormFactorIcon(formFactor);
       },
     ),
   });
@@ -102,6 +106,6 @@ export const VolumeWheel = () =>
       startAt: 0.4,
       endAt: 0.105,
       value: audio.speaker.bind("volume"),
-      child: SpeakerIndicator(),
+      child: VolumeIndicator(),
     }),
   });

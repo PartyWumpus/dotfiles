@@ -23,7 +23,9 @@ const batteryIcon = () =>
 
 const TimeRemaining = () =>
   Widget.Label({
-    css: "font-size: 10px;",
+    css: battery
+      .bind("charging")
+      .as((c) => `font-size: 10px;font-weight:${c ? "bold" : "normal"};`),
     label: battery
       .bind("time_remaining")
       .as(
@@ -55,8 +57,13 @@ levelbar block.filled {
 export const BatteryWheel = () =>
   Widget.CircularProgress({
     tooltipText: Utils.merge(
-      [battery.bind("percent"), battery.bind("energy_rate")],
-      (percent, watts) => `${percent}%\n${round(watts)}W`,
+      [
+        battery.bind("percent"),
+        battery.bind("energy_rate"),
+        battery.bind("charging"),
+      ],
+      (percent, watts, charging) =>
+        `${charging ? "Gaining" : "Using"}: ${round(watts)}W (${percent}%)`,
     ),
     css:
       "min-width: 40px;" + // its size is min(min-height, min-width)
