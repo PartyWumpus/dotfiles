@@ -1,6 +1,7 @@
 import * as COLOR from "colours.json";
 
-import Gtk from "gi://Gtk";
+import Gdk from "gi://Gdk";
+import { getMonitorID } from "utils";
 
 import { newAspectFrame as AspectFrame } from "widgets/AspectFrame";
 
@@ -16,7 +17,7 @@ App.applyCss(`
 const dispatch = (ws: number) =>
   hyprland.messageAsync(`dispatch workspace ${ws}`);
 
-export const Workspaces = (monitor: number) =>
+export const Workspaces = (monitor: Gdk.Monitor) =>
   Widget.EventBox({
     //onScrollUp: () => dispatch("+1"),
     //onScrollDown: () => dispatch("-1"),
@@ -38,15 +39,14 @@ export const Workspaces = (monitor: number) =>
         self.hook(hyprland, () =>
           self.children.forEach((frame) => {
             const btn = frame.child;
-            //if (btn.attribute === hyprland.active.workspace.id) {
             if (
-              btn.attribute === hyprland.monitors[monitor].activeWorkspace.id
+              btn.attribute === hyprland.monitors[getMonitorID(monitor)]?.activeWorkspace?.id
             ) {
               // active on this window
               btn.css = `background-color:${COLOR.Highlight};`;
             } else if (
               hyprland.workspaces.some(
-                (ws) => ws.id === btn.attribute && ws.monitorID === monitor,
+                (ws) => ws.id === btn.attribute && ws.monitorID === getMonitorID(monitor),
               )
             ) {
               // open on this monitor

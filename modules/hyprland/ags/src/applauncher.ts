@@ -130,7 +130,6 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
   });
 };
 
-// there needs to be only one instance
 export const AppLauncher = Widget.Window({
   css: `border-radius:25px;background-color:${COLOR.Base}`,
   name: WINDOW_NAME,

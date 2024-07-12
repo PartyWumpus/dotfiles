@@ -1,7 +1,8 @@
 // TODO:
 // use svg icon thingies instead of just nerd font icons
 // add bluetooth thingy next to volume if using bluetooth headphones
-// make the notifications betterer
+// make the notifications betterer, have them pop up for a bit
+// 	then go into a side menu or similar
 // figure out why the media wobbles a bit when sliding in
 // make media disappear if its just chrome doing nothing
 // deduplicate some code in places: popup menu list, button
@@ -18,6 +19,7 @@
 // investigate GSconnect :o
 import * as COLOR from "colours.json";
 import { nix } from "nix";
+import Gdk from "gi://Gdk";
 
 import { InfoBars } from "bar/bars";
 import { BatteryWheel } from "bar/battery";
@@ -28,6 +30,7 @@ import { FocusedTitle } from "bar/title";
 import { VolumeWheel } from "bar/volume";
 import { Workspaces } from "bar/workspaces";
 import { newAspectFrame as AspectFrame } from "widgets/AspectFrame";
+import { getMonitorID } from "utils";
 
 App.applyCss(`
 window {
@@ -72,10 +75,10 @@ color:${COLOR.Highlight};
 }
 `);
 
-export const Bar = (monitor: number) =>
+export const Bar = (monitor: Gdk.Monitor) =>
   Widget.Window({
-    monitor,
-    name: `bar-${monitor}`,
+    gdkmonitor: monitor,
+    name: `bar-${getMonitorID(monitor)}`,
     anchor: ["top", "left", "right"],
     exclusivity: "exclusive",
     margins: [1, 7, 3, 7],

@@ -1,5 +1,8 @@
 import { type Notification } from "@ags/service/notifications";
 
+import Gdk from "gi://Gdk";
+import { getMonitorID } from "utils";
+
 const notifications = await Service.import("notifications");
 
 notifications.popupTimeout = 4000;
@@ -148,7 +151,7 @@ function NotificationWidget(n: Notification) {
   );
 }
 
-export function NotificationPopups(monitor = 0) {
+export function NotificationPopups(monitor: Gdk.Monitor) {
   const list = Widget.Box({
     vertical: true,
     children: notifications.popups.map(NotificationWidget),
@@ -168,8 +171,8 @@ export function NotificationPopups(monitor = 0) {
     .hook(notifications, onDismissed, "dismissed");
 
   return Widget.Window({
-    monitor,
-    name: `notifications${monitor}`,
+    gdkmonitor: monitor,
+    name: `notifications${getMonitorID(monitor)}`,
     class_name: "notification-popups",
     anchor: ["top", "right"],
     child: Widget.Box({

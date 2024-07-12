@@ -1,5 +1,6 @@
 import Gdk from "gi://Gdk";
-import type Gtk from "gi://Gtk";
+import Gtk from "gi://Gtk";
+import { idle } from "resource:///com/github/Aylur/ags/utils/timeout.js";
 
 import { AppLauncher } from "applauncher";
 import { Bar } from "bar";
@@ -8,24 +9,42 @@ import { Popovers } from "menus/popovers";
 import { SinkPicker } from "menus/sink_picker";
 import { NotificationPopups } from "notifications";
 
-const range = (length: number, start = 0) =>
-  Array.from({ length }, (_, i) => i + start);
-function forMonitors(widget: (monitor: number) => Gtk.Window) {
-  const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
-  return range(n, 0).map(widget).flat(1);
-}
-function forMonitorsAsync(widget: (monitor: number) => Promise<Gtk.Window>) {
-  const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
-  return range(n, 0).forEach((n) => widget(n).catch(print));
-}
+import { getMonitorID } from "utils";
 
-App.config({
-  windows: [
-    forMonitors(Bar),
-    AppLauncher,
-    forMonitors(NotificationPopups),
-    Popovers,
-    Clipboard,
-    SinkPicker,
-  ].flat(1),
+const perMonitorWindows = [
+	Bar,
+	NotificationPopups
+] as const
+
+const uniqueWindows = [
+	AppLauncher,
+	Popovers,
+	Clipboard,
+	SinkPicker
+] as const
+
+idle(async () => {
+	uniqueWindows.map(m => App.addWindow(m))
+
+  const display = Gdk.Display.get_default()!;
+  for (let m = 0;  m < display?.get_n_monitors();  m++) {
+    const monitor = display?.get_monitor(m)!;
+    perMonitorWindows.map(w => App.addWindow(w(monitor)));
+  }
+
+  display?.connect("monitor-added", (disp, monitor) => {
+    perMonitorWindows.map(w => App.addWindow(w(monitor)));
+  });
+
+  display?.connect("monitor-removed", (disp, monitor) => {
+    App.windows.forEach((window) => {
+			const win = window as ReturnType<typeof Widget.Window>;
+      if(win.gdkmonitor === monitor) App.removeWindow(win);
+    });
+  });
+
+
+});
+
+App.config({ 
 });
