@@ -1,0 +1,3 @@
+plugins = ["@trivago/prettier-plugin-sort-imports"]
+importOrder = ["^@ags/(.*)$", "^(nix|colours.json|utils)$", "^gi://(.*)$", "<THIRD_PARTY_MODULES>"]
+importOrderSeparation = true

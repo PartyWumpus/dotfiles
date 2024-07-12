@@ -25,6 +25,24 @@ let
 		hyprctl dispatch exec "[tag modal] ${pkgs.blueman}/bin/blueman-manager"
 	'';
 
+	monitor_change = pkgs.writeShellScript "monitor_change" ''
+		
+		monitor_changed() {
+			pkill ags;
+			sleep 0.2;
+			ags &
+		}
+
+		handle() {
+  		case $1 in
+    		monitoradded*) monitor_changed ;;
+				monitorremoved*) monitor_changed ;;
+  		esac
+		}
+
+		${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
+	'';
+
 in {
 	home.packages = with pkgs; [
 		brightnessctl
@@ -38,6 +56,18 @@ in {
 		hypridle
 		playerctl
 	];
+
+	xdg.portal = {
+      enable = true;
+      configPackages = [
+				config.wayland.windowManager.hyprland.package
+      ];
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
+      ];
+      #config.common.default = "hyprland";
+    };
 
 	programs.hyprlock = {
 		enable = true;
@@ -95,13 +125,17 @@ in {
 				$mod = SUPER
 
 				${(if builtins.getEnv "HOSTNAME" == "desktop"
-					then "monitor=DP-1,2560x1440@144,0x0,1"
-					else "monitor=eDP-2,2560x1600@165,0x0,1,vrr,1"
+					then ''monitor=DP-1,2560x1440@144,0x0,1''
+					else ''
+					monitor=eDP-1,2560x1600@165,0x0,1.6,vrr,1
+					monitor=eDP-2,2560x1600@165,0x0,1.6,vrr,1
+					monitor=,highres,auto,1''
 					)}
 
-				exec-once = swww init && swww img ${./wallpaper.jpg}
+				exec-once = swww-daemon & sleep 1 && swww img ${./wallpaper.jpg}
 				#exec-once = waybar
 				exec-once = ags
+				exec-once = ${monitor_change} # handles ags restarting atm
 				exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 				exec-once = wl-paste --watch cliphist store
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1

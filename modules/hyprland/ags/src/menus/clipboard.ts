@@ -1,4 +1,4 @@
-import * as COLOR from "../../colours.json";
+import * as COLOR from "colours.json";
 
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";

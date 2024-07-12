@@ -1,13 +1,14 @@
-const audio = await Service.import("audio");
-const WINDOW_NAME = "sink-picker";
+import { Stream } from "@ags/service/audio";
 
-import { Stream } from "types/service/audio";
+import * as COLOR from "colours.json";
+
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
 
-import * as COLOR from "../../colours.json";
+import { FormFactorIcon } from "bar/volume";
 
-import { FormFactorIcon } from "src/bar/volume";
+const audio = await Service.import("audio");
+const WINDOW_NAME = "sink-picker";
 
 const AppItem = (app: Stream) =>
   Widget.Button({
@@ -140,8 +141,8 @@ export const SinkPicker = Widget.Window({
     self.keybind("Escape", () => {
       App.closeWindow(WINDOW_NAME);
     }),
-  visible: true,
   keymode: "exclusive",
+  visible: false,
   child: Applauncher({
     width: 500,
     height: 500,

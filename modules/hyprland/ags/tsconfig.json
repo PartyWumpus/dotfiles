@@ -10,7 +10,10 @@
 		"resolveJsonModule": true,
     "strict": true,
     "noImplicitAny": false,
-    "baseUrl": ".",
+    "baseUrl": "src",
+		"paths": {
+			"@ags/*": ["../types/*"]
+		},
     "typeRoots": [
       "./types"
     ],

@@ -1,11 +1,13 @@
-const { query } = await Service.import("applications");
-import type { Application } from "types/service/applications";
-const WINDOW_NAME = "applauncher";
+import type { Application } from "@ags/service/applications";
+
+import * as COLOR from "colours.json";
 
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
 
-import * as COLOR from "../colours.json";
+const { query } = await Service.import("applications");
+
+const WINDOW_NAME = "applauncher";
 
 const AppItem = (app: Application) =>
   Widget.Button({

@@ -1,6 +1,8 @@
+import * as COLOR from "colours.json";
+
 import Gtk from "gi://Gtk";
 
-import * as COLOR from "../../colours.json";
+import { newAspectFrame as AspectFrame } from "widgets/AspectFrame";
 
 const hyprland = await Service.import("hyprland");
 
@@ -14,9 +16,7 @@ App.applyCss(`
 const dispatch = (ws: number) =>
   hyprland.messageAsync(`dispatch workspace ${ws}`);
 
-import { newAspectFrame as AspectFrame } from "src/widgets/AspectFrame";
-
-export const Workspaces = () =>
+export const Workspaces = (monitor: number) =>
   Widget.EventBox({
     //onScrollUp: () => dispatch("+1"),
     //onScrollDown: () => dispatch("-1"),
@@ -38,14 +38,27 @@ export const Workspaces = () =>
         self.hook(hyprland, () =>
           self.children.forEach((frame) => {
             const btn = frame.child;
-            if (btn.attribute === hyprland.active.workspace.id) {
+            //if (btn.attribute === hyprland.active.workspace.id) {
+            if (
+              btn.attribute === hyprland.monitors[monitor].activeWorkspace.id
+            ) {
+              // active on this window
               btn.css = `background-color:${COLOR.Highlight};`;
             } else if (
+              hyprland.workspaces.some(
+                (ws) => ws.id === btn.attribute && ws.monitorID === monitor,
+              )
+            ) {
+              // open on this monitor
+              btn.css = `background-color:${COLOR.Overlay1};`;
+            } else if (
+              // open on a different monitor
               hyprland.workspaces.some((ws) => ws.id === btn.attribute)
             ) {
-              btn.css = `background-color:${COLOR.Overlay0};`;
+              btn.css = `background-color:${COLOR.Overlay0};opacity:0.75;`;
             } else {
-              btn.css = `background-color:${COLOR.Surface1};`;
+              // not open
+              btn.css = `background-color:${COLOR.Surface1};opacity:0.5;`;
             }
           }),
         ),

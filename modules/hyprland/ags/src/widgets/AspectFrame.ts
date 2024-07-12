@@ -1,5 +1,6 @@
+import { type BaseProps, type Widget } from "@ags/widgets/widget";
+
 import Gtk from "gi://Gtk";
-import { type BaseProps, type Widget } from "../../types/widgets/widget";
 
 export type AspectFrameProps<
   Child extends Gtk.Widget = Gtk.Widget,

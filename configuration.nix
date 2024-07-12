@@ -253,13 +253,10 @@
 	#		enable = true;
 	#		enableSSHSupport = true;
 	# };
-
-	# hyprland setup
+	
 	programs.hyprland.enable = true;
 	programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-	xdg.portal.enable = true;
-	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-	
+
 	# mime type setup
 	environment.sessionVariables.DEFAULT_BROWSER = "${pkgs.google-chrome}/bin/google-chrome-stable";
 	xdg.mime.enable = true;

@@ -1,4 +1,4 @@
-import { Notification } from "types/service/notifications";
+import { type Notification } from "@ags/service/notifications";
 
 const notifications = await Service.import("notifications");
 
@@ -85,7 +85,7 @@ function NotificationIcon({ app_entry, app_icon, image }: Notification) {
   });
 }
 
-function Notification(n: Notification) {
+function NotificationWidget(n: Notification) {
   /*const icon = Widget.Box({
     vpack: "start",
     class_name: "icon",
@@ -151,12 +151,12 @@ function Notification(n: Notification) {
 export function NotificationPopups(monitor = 0) {
   const list = Widget.Box({
     vertical: true,
-    children: notifications.popups.map(Notification),
+    children: notifications.popups.map(NotificationWidget),
   });
 
   function onNotified(_: any, id: number) {
     const n = notifications.getNotification(id);
-    if (n) list.children = [Notification(n), ...list.children];
+    if (n) list.children = [NotificationWidget(n), ...list.children];
   }
 
   function onDismissed(_: any, id: number) {

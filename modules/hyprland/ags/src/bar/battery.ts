@@ -1,5 +1,5 @@
-import * as COLOR from "../../colours.json";
-import { round } from "../utils";
+import * as COLOR from "colours.json";
+import { round } from "utils";
 
 const battery = await Service.import("battery");
 

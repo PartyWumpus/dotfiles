@@ -1,7 +1,8 @@
+import * as COLOR from "colours.json";
+
 const audio = await Service.import("audio");
 
-import { nix } from "src/nix";
-import * as COLOR from "../../colours.json";
+audio.maxStreamVolume = 1;
 
 const VolumeSlider = () =>
   Widget.Slider({
@@ -81,15 +82,14 @@ export const VolumeWheel = () =>
     className: "flat",
     css: "box-shadow: none;text-shadow: none;background: none;padding: 0;",
     onClicked: () => (audio.speaker.is_muted = !audio.speaker.is_muted),
-    onSecondaryClick: () => Utils.execAsync(nix.audio_changer).catch(print),
+    //onSecondaryClick: () => Utils.execAsync(nix.audio_changer).catch(print),
+    onSecondaryClick: () => App.openWindow("sink-picker"),
     tooltipText: Utils.merge(
       [audio.speaker.bind("volume"), audio.speaker.bind("description")],
       (vol, name) => `${name}\nVolume ${Math.floor(vol * 100)}%`,
     ),
     onScrollUp: () => {
-      if (audio.speaker.volume < 1) {
-        audio.speaker.volume += 0.015;
-      }
+      audio.speaker.volume += 0.015;
     },
     onScrollDown: () => (audio.speaker.volume -= 0.015),
 
