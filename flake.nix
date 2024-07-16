@@ -3,7 +3,7 @@
 
 	inputs = {
 		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-		utils.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
+		utils.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.5.1";
 
 		neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
@@ -20,6 +20,10 @@
 		hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
 		flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
+
+		#lix-module.url = "git+https://git.lix.systems/lix-project/nixos-module";
+		#lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+		#lix-module.follows = "nixpkgs";
 	};
 
 
@@ -39,6 +43,7 @@
 
 			# Modules shared between all hosts
 			hostDefaults.modules = [
+				#lix-module.nixosModules.default # i am stupid so this is not working
 				flatpaks.nixosModules.default
 				./configuration.nix
 				home-manager.nixosModules.default {

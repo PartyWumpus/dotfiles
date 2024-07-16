@@ -10,8 +10,9 @@
     substituters = ["https://hyprland.cachix.org"];
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
-	#nix.package = pkgs.nixVersions.unstable # switch to this once 2.21.3 releases
-	nix.package = pkgs.nixVersions.git;
+	#nix.package = pkgs.nixVersions.latest;
+	#nix.package = pkgs.nixVersions.git;
+	nix.package = pkgs.lix;
 
 	nix.registry.self.flake = inputs.self;
 
