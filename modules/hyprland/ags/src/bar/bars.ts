@@ -1,3 +1,4 @@
+import { nix } from "nix";
 import { round } from "utils";
 
 const ram = Variable(
@@ -108,6 +109,7 @@ const ip = Variable("", {
 const NetworkingBar = () =>
   Widget.EventBox({
     // TODO: onSecondaryClick: () => App.openWindow("network"),
+    onSecondaryClick: () => Utils.execAsync(nix.wifi_menu),
     child: Widget.Box({
       tooltipMarkup: Utils.merge(
         [networking.bind("wifi"), ip.bind()],

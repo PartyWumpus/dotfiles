@@ -1,7 +1,11 @@
 import { type Notification } from "@ags/service/notifications";
 
+import { getMonitorID, sleep } from "utils";
+import { nix } from "nix";
+
+
 import Gdk from "gi://Gdk";
-import { getMonitorID } from "utils";
+import GLib from "gi://GLib";
 
 const notifications = await Service.import("notifications");
 
@@ -157,7 +161,17 @@ export function NotificationPopups(monitor: Gdk.Monitor) {
     children: notifications.popups.map(NotificationWidget),
   });
 
-  function onNotified(_: any, id: number) {
+	let timeout: GLib.Source | null = null;
+
+  async function onNotified(_: any, id: number) {
+		clearTimeout(timeout!);
+		await Utils.execAsync(`hyprctl --batch keyword debug:damage_tracking 0;`)
+		//await Utils.execAsync(`hyprctl keyword decoration:screen_shader ${nix.shader}`)
+		await Utils.execAsync(`hyprctl keyword decoration:screen_shader /home/wumpus/nixos/modules/hyprland/chromatic_aberration.frag`)
+		timeout = setTimeout(() => {
+			Utils.execAsync(`hyprctl keyword decoration:screen_shader ""`)
+			Utils.execAsync(`hyprctl keyword debug:damage_tracking 2`)
+		}, 4000)
     const n = notifications.getNotification(id);
     if (n) list.children = [NotificationWidget(n), ...list.children];
   }

@@ -54,6 +54,7 @@ in {
 		cliphist
 		wl-clipboard
 		hypridle
+		cava
 		playerctl
 	];
 
@@ -117,10 +118,49 @@ in {
 
 	xdg.configFile = {
 		"hypr/hypridle.conf".source = ./hypridle.conf;
+		"tofi/config".text = /* toml */''
+fuzzy-match = true
+ascii-input = true
+hint-font = false
+
+prompt-text = ""
+placeholder-text = "> "
+
+font="/nix/store/1rxl6ipwybag00jqq151a2v18fbb2cyc-rubik-2.200/share/fonts/truetype/Rubik-Regular.ttf"
+font-size=30
+
+width = 500
+height = 620
+
+border-width = 3
+outline-width = 0
+corner-radius = 15
+
+# text
+text-color = #cad3f5
+
+# subtext 1
+placeholder-color = #b8c0e0
+
+# surface0
+background-color = #363a4f
+
+
+# mauve
+border-color = #c6a0f6
+selection-color = #c6a0f6
+
+# pink
+selection-match-color = #f5bde6
+		'';
 	};
 
 	wayland.windowManager.hyprland = {
 		enable = true;
+		package = inputs.hyprland.packages.${pkgs.system}.default.overrideAttrs (finalAttrs: previousAttrs: {
+			nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
+      patches = [ ./initialTime.patch ]; 
+   });
 		extraConfig = ''
 				$mod = SUPER
 
@@ -132,10 +172,11 @@ in {
 					monitor=,highres,auto,1''
 					)}
 
-				exec-once = swww-daemon & sleep 1 && swww img ${./wallpaper.jpg}
+				exec-once = swww-daemon
+				exec-once = sleep 10 && swww img ${./wallpaper.jpg}
 				#exec-once = waybar
 				exec-once = ags
-				#exec-once = $\{monitor_change} # handles ags restarting atm
+				#exec-once = $\{monitor_change} # handles ags restarting
 				exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 				exec-once = wl-paste --watch cliphist store
 				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
@@ -157,15 +198,19 @@ in {
 				windowrulev2 = center, tag:modal
 				windowrulev2 = bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1
 
+				# disable animations for tofi
+				layerrule = noanim, launcher
+
 				input {
 					kb_layout = gb
 				}
 
 				general {
-					gaps_in = 5
+					gaps_in = 1
 					gaps_out = 0,5,5,5
-					col.inactive_border = rgba(18192644) # CRUST
+					col.inactive_border = rgba(00000000) # CRUST
 					col.active_border = rgb(c6a0f6) # Mauve
+					border_size = 2
 				}
 
 				decoration {
@@ -173,12 +218,24 @@ in {
 					active_opacity = 1.00
 					fullscreen_opacity = 1.00
 					dim_around = 0.07 # dimming around modals
-					rounding = 10
+					rounding = 15
+					drop_shadow = 0
+					#screen_shader = /home/wumpus/Downloads/dots-hyprland/.config/hypr/shaders/chromatic_abberation.frag
 					# blur is only for top bar
 					blur {
 						size = 4
 						passes = 3
 					}
+				}
+
+				animations {
+					enabled = yes
+    			first_launch_animation = false
+				}
+
+				gestures {
+					workspace_swipe = true
+					workspace_swipe_cancel_ratio = 0.3
 				}
 				
 				dwindle {
@@ -187,6 +244,11 @@ in {
 
 				misc {
 					force_default_wallpaper = 0
+				}
+
+				xwayland {
+
+					force_zero_scaling = 1
 				}
 
 				bindm = $mod, mouse:272, movewindow
@@ -215,7 +277,8 @@ in {
 				[
 					"$mod, Q, exec, $terminal"
 					#"$mod, S, exec, $menu --insensitive --show drun -show-icons"
-					"$mod, S, exec, ags -t applauncher"
+					#"$mod, S, exec, ags -t applauncher"
+					"$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
 					"$mod, C, killactive"
 					"$mod, M, exit"
 				]
@@ -340,6 +403,7 @@ button:focus, button:active, button:hover {
 		audio_changer = "${./waybar/audio_changer.py}";
 		wifi_menu = "${wifi_menu}";
 		bluetooth_menu = "${bluetooth_menu}";
+		shader = "${./chromatic_aberration.frag}";
   };
 
 	programs.ags = {

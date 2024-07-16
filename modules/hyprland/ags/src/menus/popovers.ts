@@ -24,8 +24,8 @@ function Popover<
   startRevealed: boolean,
 ) {
   const widget = Widget.EventBox({
-		// it's okay because emitter[prop] is for sure number
-    onScrollUp: () => binding.emitter[binding.prop] += 0.015,
+    // it's okay because emitter[prop] is for sure number
+    onScrollUp: () => (binding.emitter[binding.prop] += 0.015),
     onScrollDown: () => (binding.emitter[binding.prop] -= 0.015),
     attribute: {
       reveal: () => {

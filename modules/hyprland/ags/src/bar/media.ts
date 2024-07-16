@@ -260,7 +260,7 @@ function Player(player: MprisPlayer | undefined) {
       }
     },
     child: Widget.Box(
-      { class_name: "player", attribute: player?.bus_name },
+      { class_name: "player" },
       Widget.Box(
         {
           vertical: true,
@@ -292,6 +292,7 @@ export const Media = () => {
     //vscroll: "external",
     child: Widget.EventBox({
       setup: (self) => {
+        // eat scroll events
         self.connect("scroll-event", (self, event: Gdk.Event) => {
           return Gdk.EVENT_STOP;
         });

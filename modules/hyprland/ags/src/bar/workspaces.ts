@@ -1,7 +1,7 @@
 import * as COLOR from "colours.json";
+import { getMonitorID } from "utils";
 
 import Gdk from "gi://Gdk";
-import { getMonitorID } from "utils";
 
 import { newAspectFrame as AspectFrame } from "widgets/AspectFrame";
 
@@ -40,13 +40,16 @@ export const Workspaces = (monitor: Gdk.Monitor) =>
           self.children.forEach((frame) => {
             const btn = frame.child;
             if (
-              btn.attribute === hyprland.monitors[getMonitorID(monitor)]?.activeWorkspace?.id
+              btn.attribute ===
+              hyprland.monitors[getMonitorID(monitor)]?.activeWorkspace?.id
             ) {
               // active on this window
               btn.css = `background-color:${COLOR.Highlight};`;
             } else if (
               hyprland.workspaces.some(
-                (ws) => ws.id === btn.attribute && ws.monitorID === getMonitorID(monitor),
+                (ws) =>
+                  ws.id === btn.attribute &&
+                  ws.monitorID === getMonitorID(monitor),
               )
             ) {
               // open on this monitor

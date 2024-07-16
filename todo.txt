@@ -9,3 +9,4 @@ Find a good debugger for rust cuz i want to view the assembly
 Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager && nix-channel --update` doesn't work and i need to type `manix --update-cache mergeattr` constantly :(
 Fix code actions in neovim
 use hyprs focuscurrentorlast to switch to prev window as hotkey
+check out hyprexpo

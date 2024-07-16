@@ -4,6 +4,7 @@ interface nix {
   audio_changer: string;
   wifi_menu: string;
   bluetooth_menu: string;
+	shader: string;
 }
 export const nix: nix = JSON.parse(
   Utils.readFile(`/home/${Utils.USER}/.local/share/ags/nix.json`),

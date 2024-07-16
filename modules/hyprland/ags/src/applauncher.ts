@@ -13,7 +13,7 @@ const AppItem = (app: Application) =>
   Widget.Button({
     css: "margin:2px;margin-bottom:0px",
     on_clicked: () => {
-      App.closeWindow(WINDOW_NAME);
+      globalThis.closeLauncher();
       app.launch();
     },
     attribute: { app },
@@ -91,7 +91,7 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
       const results = applications.filter((item) => item.visible);
 
       if (results[0]) {
-        App.toggleWindow(WINDOW_NAME);
+        globalThis.closeLauncher();
         results[0].attribute.app.launch();
       }
     },
@@ -104,18 +104,14 @@ const Applauncher = ({ width = 500, height = 500, spacing = 12 }) => {
     vertical: true,
     css: `margin: ${spacing * 2}px;`,
     children: [entry, scrollableList],
-    setup: (self) =>
-      self.hook(App, (_, windowName, visible) => {
-        if (windowName !== WINDOW_NAME) return;
-
-        // when the applauncher shows up
-        if (visible) {
-          repopulate();
-          entry.text = "";
-          filterList("");
-          entry.grab_focus();
-        }
-      }),
+    attribute: {
+      refresh: () => {
+        //repopulate();
+        //entry.text = "";
+        //filterList("");
+        entry.grab_focus();
+      },
+    },
   }).on("key-press-event", (_, event: Gdk.Event) => {
     const keyval = event.get_keyval()[1];
     if (keyval == Gdk.KEY_Return || keyval == Gdk.KEY_Tab) {
@@ -135,13 +131,25 @@ export const AppLauncher = Widget.Window({
   name: WINDOW_NAME,
   setup: (self) =>
     self.keybind("Escape", () => {
-      App.closeWindow(WINDOW_NAME);
+      globalThis.closeLauncher();
     }),
   visible: false,
-  keymode: "exclusive",
-  child: Applauncher({
-    width: 500,
-    height: 500,
-    spacing: 12,
+  keymode: "none",
+  child: Widget.Box({
+    css: "padding:1px;background-color:blue;",
+    child: Widget.Revealer({
+      revealChild: false,
+      transition: "none",
+      child: Applauncher({
+        width: 500,
+        height: 500,
+        spacing: 12,
+      }),
+    }),
   }),
 });
+
+//setInterval(() => {
+//Launcher2.child.child.revealChild = !Launcher2.child.child.revealChild;
+//globalThis.launcher.visible = !globalThis.launcher.visible;
+//}, 1000)
