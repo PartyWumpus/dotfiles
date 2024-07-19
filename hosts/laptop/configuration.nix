@@ -5,60 +5,57 @@
 { config, pkgs, ... }:
 
 {
-	#imports =
-	#  [ # Include the results of the hardware scan.
-	#		 ./hardware-configuration.nix
-	#  ];
+  #imports =
+  #  [ # Include the results of the hardware scan.
+  #		 ./hardware-configuration.nix
+  #  ];
 
-	# Bootloader.
-	boot.loader.systemd-boot.enable = true;
-	boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-	fileSystems = {
-		"/".options = [ "compress=zstd"];
-	};
+  fileSystems = {
+    "/".options = [ "compress=zstd" ];
+  };
 
-	services.fprintd = {
-		enable = true;
-	};
-	services.fwupd.enable = true;
+  services.fprintd = {
+    enable = true;
+  };
+  services.fwupd.enable = true;
 
-	# suspend to RAM (deep) rather than `s2idle`
-	boot.kernelParams = [ "mem_sleep_default=deep" ];
-	# suspend-then-hibernate
-	systemd.sleep.extraConfig = ''
-		HibernateDelaySec=30m
-		SuspendState=mem
-	'';
+  # suspend to RAM (deep) rather than `s2idle`
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
+  # suspend-then-hibernate
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30m
+    SuspendState=mem
+  '';
 
-	services.tlp = {
-		enable = true;
-		settings = {
-			CPU_SCALING_GOVERNOR_ON_AC = "performance";
-			CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-			CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-			CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
 
-			CPU_MIN_PERF_ON_AC = 0;
-			CPU_MAX_PERF_ON_AC = 100;
-			CPU_MIN_PERF_ON_BAT = 0;
-			CPU_MAX_PERF_ON_BAT = 20;
-		};
-	};
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 20;
+    };
+  };
 
-	# for framework 16 led thingy
-	services.udev.extraRules = ''
-		SUBSYSTEMS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0020", MODE="0660", TAG+="uaccess"
-	'';
+  # for framework 16 led thingy
+  services.udev.extraRules = ''
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0020", MODE="0660", TAG+="uaccess"
+  '';
 
-	# autosuspends keyboard so unusable
-	# also doesn't appear to make huge diff so its okay
-	#powerManagement.powertop.enable = true;
+  # autosuspends keyboard so unusable
+  # also doesn't appear to make huge diff so its okay
+  #powerManagement.powertop.enable = true;
 
-	environment.systemPackages = with pkgs; [
-		fwupd
-	];
-
+  environment.systemPackages = with pkgs; [ fwupd ];
 
 }

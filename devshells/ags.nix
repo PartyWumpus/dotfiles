@@ -1,55 +1,59 @@
 { pkgs, ... }:
 pkgs.mkShell {
-	name = "ags-dev";
+  name = "ags-dev";
 
-	packages = with pkgs; [
-		watchexec
-		nodePackages.prettier
-		# https://nixos.org/manual/nixpkgs/stable/#javascript-tool-specific
-		
-	(stdenv.mkDerivation rec {
-  pname = "@trivago/prettier-plugin-sort-imports";
-	version = "4.3.0";
+  packages = with pkgs; [
+    watchexec
+    nodePackages.prettier
+    # https://nixos.org/manual/nixpkgs/stable/#javascript-tool-specific
 
-			src = pkgs.fetchFromGitHub {
-				owner = "trivago";
-				repo = "prettier-plugin-sort-imports";
-				rev = "v${version}";
-				hash = "sha256-ClwM8dZtJlaJ549Z0UOpLE5jVd/qq3X25qlYfkIknio=";
-			};
+    (stdenv.mkDerivation rec {
+      pname = "@trivago/prettier-plugin-sort-imports";
+      version = "4.3.0";
 
-  offlineCache = fetchYarnDeps {
-    yarnLock = "${src}/yarn.lock";
-		hash = "sha256-tKY+ct/+JXqZBYp+Y5c0r63cubsimQ/ODk/QX5GUTH8=";
-  };
+      src = pkgs.fetchFromGitHub {
+        owner = "trivago";
+        repo = "prettier-plugin-sort-imports";
+        rev = "v${version}";
+        hash = "sha256-ClwM8dZtJlaJ549Z0UOpLE5jVd/qq3X25qlYfkIknio=";
+      };
 
-  nativeBuildInputs = [ yarn fixup-yarn-lock nodejs-slim ];
+      offlineCache = fetchYarnDeps {
+        yarnLock = "${src}/yarn.lock";
+        hash = "sha256-tKY+ct/+JXqZBYp+Y5c0r63cubsimQ/ODk/QX5GUTH8=";
+      };
 
-  postPatch = ''
-    export HOME=$NIX_BUILD_TOP/fake_home
-    yarn config --offline set yarn-offline-mirror $offlineCache
-    fixup-yarn-lock yarn.lock
-    yarn install --offline --frozen-lockfile --ignore-scripts --no-progress --non-interactive
-    patchShebangs node_modules/
-  '';
+      nativeBuildInputs = [
+        yarn
+        fixup-yarn-lock
+        nodejs-slim
+      ];
 
-  buildPhase = ''
-    runHook preBuild
+      postPatch = ''
+        export HOME=$NIX_BUILD_TOP/fake_home
+        yarn config --offline set yarn-offline-mirror $offlineCache
+        fixup-yarn-lock yarn.lock
+        yarn install --offline --frozen-lockfile --ignore-scripts --no-progress --non-interactive
+        patchShebangs node_modules/
+      '';
 
-    export NODE_OPTIONS=--openssl-legacy-provider
-    yarn --offline run compile
+      buildPhase = ''
+        runHook preBuild
 
-    runHook postBuild
-  '';
+        export NODE_OPTIONS=--openssl-legacy-provider
+        yarn --offline run compile
 
-  installPhase = ''
-    runHook preInstall
+        runHook postBuild
+      '';
 
-    mv lib $out
+      installPhase = ''
+        runHook preInstall
 
-    runHook postInstall
-  '';
-})
-];
+        mv lib $out
+
+        runHook postInstall
+      '';
+    })
+  ];
 
 }

@@ -1,9 +1,7 @@
 { pkgs, ... }:
 pkgs.mkShell {
-	name = "rust-dev";
+  name = "rust-dev";
 
-	packages = [
-		pkgs.rust-bin.stable.latest.default
-	];
+  packages = [ pkgs.rust-bin.stable.latest.default ];
 
 }

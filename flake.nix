@@ -51,7 +51,7 @@
     utils.lib.mkFlake {
       inherit self inputs;
 
-			supportedSystems = [ "x86_64-linux" ];
+      supportedSystems = [ "x86_64-linux" ];
 
       location = "/home/wumpus/nixos";
       # https://discourse.nixos.org/t/how-to-create-a-timestamp-in-a-nix-expression/30329
