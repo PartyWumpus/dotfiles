@@ -14,9 +14,10 @@ import { idle } from "resource:///com/github/Aylur/ags/utils/timeout.js";
 const perMonitorWindows = [Bar, NotificationPopups] as const;
 
 const uniqueWindows = [
-  AppLauncher,
+  //AppLauncher,
   Popovers,
-  /*Clipboard,*/ SinkPicker,
+  //Clipboard,
+  SinkPicker,
 ] as const;
 
 idle(async () => {

@@ -7,7 +7,7 @@ import Gtk from "gi://Gtk";
 
 const { query } = await Service.import("applications");
 
-const WINDOW_NAME = "applauncher";
+const WINDOW_NAME = "ags-applauncher";
 
 const AppItem = (app: Application) =>
   Widget.Button({

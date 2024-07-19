@@ -25,6 +25,19 @@ let
 		hyprctl dispatch exec "[tag modal] ${pkgs.blueman}/bin/blueman-manager"
 	'';
 
+	record = pkgs.writeShellScript "record" ''
+	FILE=~/.recording
+	if [ -f $FILE ]; then
+		rm $FILE
+		pkill wl-screenrec
+	else
+		touch $FILE
+		${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+		notify-send "recording ended"
+		rm $FILE
+	fi
+	'';
+
 	/*monitor_change = pkgs.writeShellScript "monitor_change" ''
 		
 		monitor_changed() {
@@ -220,7 +233,6 @@ selection-match-color = #f5bde6
 					dim_around = 0.07 # dimming around modals
 					rounding = 15
 					drop_shadow = 0
-					#screen_shader = /home/wumpus/Downloads/dots-hyprland/.config/hypr/shaders/chromatic_abberation.frag
 					# blur is only for top bar
 					blur {
 						size = 4
@@ -240,6 +252,7 @@ selection-match-color = #f5bde6
 				
 				dwindle {
 					preserve_split = 1
+					smart_split = 1
 				}
 
 				misc {
@@ -279,6 +292,7 @@ selection-match-color = #f5bde6
 					#"$mod, S, exec, $menu --insensitive --show drun -show-icons"
 					#"$mod, S, exec, ags -t applauncher"
 					"$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
+					''$mod, R, exec, ${record}''
 					"$mod, C, killactive"
 					"$mod, M, exit"
 				]

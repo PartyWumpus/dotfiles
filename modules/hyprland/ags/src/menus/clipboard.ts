@@ -3,7 +3,7 @@ import * as COLOR from "colours.json";
 import Gdk from "gi://Gdk";
 import Gtk from "gi://Gtk";
 
-const WINDOW_NAME = "clipboard";
+const WINDOW_NAME = "ags-clipboard";
 
 interface Entry {
   original: string;

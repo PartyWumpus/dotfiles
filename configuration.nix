@@ -3,8 +3,18 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, inputs, ... }:
-
+let
+spicetify = import (builtins.fetchGit {
+        url = "https://github.com/Gerg-L/spicetify-nix.git";
+    ref = "master";
+    });
+in
 {
+
+	imports = [
+	spicetify.nixosModules.default
+	];
+
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 	nix.settings = {
     substituters = ["https://hyprland.cachix.org"];
@@ -17,6 +27,21 @@
 	nix.registry.self.flake = inputs.self;
 
 	nix.settings.auto-optimise-store = true;
+
+	programs.spicetify =
+   let
+     spicePkgs = spicetify.legacyPackages.${pkgs.system};
+   in
+   {
+     enable = true;
+     enabledExtensions = with spicePkgs.extensions; [
+       adblock
+       hidePodcasts
+       shuffle # shuffle+ (special characters are sanitized out of extension names)
+     ];
+     theme = spicePkgs.themes.catppuccin;
+     colorScheme = "mocha";
+   };
 
 
 	virtualisation.containers.enable = true;
@@ -137,8 +162,9 @@
 		wget
 		tldr
 		unzip
-		watchexec
 		htop
+		nixfmt-rfc-style
+		spicetify-cli
 
 		neofetch
 		pipes

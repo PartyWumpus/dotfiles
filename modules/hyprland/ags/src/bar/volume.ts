@@ -83,7 +83,7 @@ export const VolumeWheel = () =>
     css: "box-shadow: none;text-shadow: none;background: none;padding: 0;",
     onClicked: () => (audio.speaker.is_muted = !audio.speaker.is_muted),
     //onSecondaryClick: () => Utils.execAsync(nix.audio_changer).catch(print),
-    onSecondaryClick: () => App.openWindow("sink-picker"),
+    onSecondaryClick: () => App.openWindow("ags-sinkpicker"),
     tooltipText: Utils.merge(
       [audio.speaker.bind("volume"), audio.speaker.bind("description")],
       (vol, name) => `${name}\nVolume ${Math.floor(vol * 100)}%`,

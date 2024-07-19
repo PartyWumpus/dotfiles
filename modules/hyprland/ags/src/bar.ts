@@ -71,7 +71,7 @@ Gio._promisify(
   "read_line_finish_utf8",
 );
 */
-
+/*
 const bars = Variable([...Array(128).keys()], {
   listen: [
     ["cava", "-p", "/home/wumpus/cava_raw"],
@@ -82,6 +82,7 @@ const bars = Variable([...Array(128).keys()], {
     },
   ],
 });
+*/
 
 const barFormats = [
   "\u2581",
@@ -194,7 +195,7 @@ App.applyCss(`
 
 .cava-bar block.filled {
 	min-width:0.1px;
-	background-color: pink;
+	background-color: ${COLOR.Highlight};
 }
 `);
 
@@ -203,7 +204,7 @@ const TextView = Widget.subclass(Gtk.TextView);
 export const Bar = (monitor: Gdk.Monitor) =>
   Widget.Window({
     gdkmonitor: monitor,
-    name: `bar-${getMonitorID(monitor)}`,
+    name: `ags-bar-${getMonitorID(monitor)}`,
     anchor: ["top", "left", "right"],
     exclusivity: "exclusive",
     margins: [1, 7, 3, 7],

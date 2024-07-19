@@ -1,11 +1,12 @@
 import { type Notification } from "@ags/service/notifications";
 
-import { getMonitorID, sleep } from "utils";
+import * as COLOR from "colours.json";
 import { nix } from "nix";
+import { getMonitorID, sleep } from "utils";
 
-
-import Gdk from "gi://Gdk";
 import GLib from "gi://GLib";
+// TODO: MAKE NOTIF BACKGROUND TRANSPARENT AND BLURRED!!! w/ xray too?
+import Gdk from "gi://Gdk";
 
 const notifications = await Service.import("notifications");
 
@@ -41,7 +42,8 @@ window.notification-popups box.notifications {
     border-radius: 11px;
     padding: 1em;
     margin: .5em;
-    background-color: @theme_bg_color;
+    background-color: ${COLOR.Surface1};
+		background-color: rgba(73, 77, 100,0.7);
 }
 
 .notification.critical {
@@ -161,17 +163,19 @@ export function NotificationPopups(monitor: Gdk.Monitor) {
     children: notifications.popups.map(NotificationWidget),
   });
 
-	let timeout: GLib.Source | null = null;
+  let timeout: GLib.Source | null = null;
 
   async function onNotified(_: any, id: number) {
-		clearTimeout(timeout!);
-		await Utils.execAsync(`hyprctl --batch keyword debug:damage_tracking 0;`)
-		//await Utils.execAsync(`hyprctl keyword decoration:screen_shader ${nix.shader}`)
-		await Utils.execAsync(`hyprctl keyword decoration:screen_shader /home/wumpus/nixos/modules/hyprland/chromatic_aberration.frag`)
-		timeout = setTimeout(() => {
-			Utils.execAsync(`hyprctl keyword decoration:screen_shader ""`)
-			Utils.execAsync(`hyprctl keyword debug:damage_tracking 2`)
-		}, 4000)
+    clearTimeout(timeout!);
+    await Utils.execAsync(`hyprctl --batch keyword debug:damage_tracking 0;`);
+    //await Utils.execAsync(`hyprctl keyword decoration:screen_shader ${nix.shader}`)
+    await Utils.execAsync(
+      `hyprctl keyword decoration:screen_shader /home/wumpus/nixos/modules/hyprland/chromatic_aberration.frag`,
+    );
+    timeout = setTimeout(() => {
+      Utils.execAsync(`hyprctl keyword decoration:screen_shader ""`);
+      Utils.execAsync(`hyprctl keyword debug:damage_tracking 2`);
+    }, 4000);
     const n = notifications.getNotification(id);
     if (n) list.children = [NotificationWidget(n), ...list.children];
   }
@@ -186,21 +190,14 @@ export function NotificationPopups(monitor: Gdk.Monitor) {
 
   return Widget.Window({
     gdkmonitor: monitor,
-    name: `notifications${getMonitorID(monitor)}`,
+    name: `ags-notifications${getMonitorID(monitor)}`,
     class_name: "notification-popups",
-    anchor: ["top", "right"],
+    anchor: ["top"],
     child: Widget.Box({
       css: "min-width: 2px; min-height: 2px;",
       class_name: "notifications",
       vertical: true,
       child: list,
-
-      /** this is a simple one liner that could be used instead of
-                hooking into the 'notified' and 'dismissed' signals.
-                but its not very optimized becuase it will recreate
-                the whole list everytime a notification is added or dismissed */
-      // children: notifications.bind('popups')
-      //     .as(popups => popups.map(Notification))
     }),
   });
 }

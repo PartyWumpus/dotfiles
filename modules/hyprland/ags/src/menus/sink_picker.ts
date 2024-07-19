@@ -8,7 +8,7 @@ import Gtk from "gi://Gtk";
 import { FormFactorIcon } from "bar/volume";
 
 const audio = await Service.import("audio");
-const WINDOW_NAME = "sink-picker";
+const WINDOW_NAME = "ags-sinkpicker";
 
 const AppItem = (app: Stream) =>
   Widget.Button({

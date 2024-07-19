@@ -6,10 +6,18 @@ const ram = Variable(
   {
     poll: [
       2000,
-      ["bash", "-c", `LANG=C free | awk '/^Mem/ {print $2,$3}'`],
+      [
+        "bash",
+        "-c",
+        //`LANG=C free | awk '/^Mem/ {print $2,$3}'`
+        `cat /proc/meminfo | awk '/MemTotal/ {total=$2} /MemAvailable/ {available=$2} END {print total ":" available}'`,
+      ],
       (x) => {
-        let split = x.split(" ");
-        return { total: Number(split[0]), used: Number(split[1]) };
+        let split = x.split(":");
+        return {
+          total: Number(split[0]),
+          used: Number(split[0]) - Number(split[1]),
+        };
       },
     ],
   },
@@ -49,9 +57,20 @@ const cpu = Variable(0, {
   ],
 });
 
+const cpuTemp = Variable(0, {
+  poll: [
+    5000,
+    `cat /sys/class/thermal/thermal_zone0/temp`,
+    (x) => Number(x) / 1000,
+  ],
+});
+
 const CpuBar = () =>
   Widget.Box({
-    tooltipText: cpu.bind().as((x) => `${round(x).padStart(4, "0")}%`),
+    tooltipText: Utils.merge(
+      [cpu.bind(), cpuTemp.bind()],
+      (cpu, temp) => `${round(cpu)}% (${temp}°C)`,
+    ),
     children: [
       Widget.Label({ label: "󰓅 " }),
       Widget.LevelBar({
