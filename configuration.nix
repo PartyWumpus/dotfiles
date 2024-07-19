@@ -194,7 +194,7 @@ in
       flavor = "macchiato";
       font = "Noto Sans";
       fontSize = "15";
-      background = "${./modules/hyprland/wallpaper.jpg}";
+      background = "${./assets/nix.jpg}";
       loginBackground = true;
     })
 

@@ -103,7 +103,7 @@ in
       background = [
         {
           monitor = "";
-          path = "${./wallpaper.jpg}";
+          path = "${../../assets/nix.jpg}";
           color = "rgb(36, 39, 58)";
         }
       ];
@@ -209,7 +209,7 @@ in
           }
 
       				exec-once = swww-daemon
-      				exec-once = sleep 10 && swww img ${./wallpaper.jpg}
+      				exec-once = sleep 10 && swww img ${../../assets/wallpaper.png}
       				#exec-once = waybar
       				exec-once = ags
       				#exec-once = $\{monitor_change} # handles ags restarting
