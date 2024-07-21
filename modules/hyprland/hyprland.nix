@@ -38,7 +38,7 @@ let
       pkill wl-screenrec
     else
       touch $FILE
-      if [ $1 == "area" ]; then
+      if [ "$1" == "area" ]; then
         ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
       else # full screen
         # TODO: use -o to select the current display
@@ -354,6 +354,7 @@ in
           "$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
           "$mod, R, exec, ${record} 'area'"
           "Shift + $mod, R, exec, ${record} 'screen'"
+          "SHIFT + SUPER + CTRL + ALT, L, exec, xdg-open 'https://linkedin.com/'"
           "$mod, C, killactive"
           "$mod, M, exit"
         ]

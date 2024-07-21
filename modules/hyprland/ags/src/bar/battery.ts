@@ -74,6 +74,7 @@ export const BatteryWheel = () =>
       `color: ${COLOR.Highlight};`, // set its fg color
     rounded: false,
     inverted: false,
+    visible: battery.bind('available'),
     startAt: 0.75,
     value: battery.bind("percent").as((p) => p / 100),
     child: TimeRemaining(),

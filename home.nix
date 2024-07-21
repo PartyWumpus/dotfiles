@@ -77,6 +77,13 @@
 
   xdg.enable = true;
 
+  home.activation.create_folders =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] # bash
+      ''
+        mkdir -p Videos/clips
+        mkdir -p Code
+      '';
+
   xdg.configFile = {
     "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
     "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
