@@ -55,23 +55,7 @@ const uptime = Variable(0, {
   ],
 });
 */
-/*
-const p = Gio.Subprocess.new(
-  ["cava", "-p", "/home/wumpus/cava_raw"],
-	Gio.SubprocessFlags.STDOUT_PIPE,
-);
 
-const inputStream = new Gio.DataInputStream({
-  base_stream: p.get_stdout_pipe(),
-  close_base_stream: true,
-});
-
-Gio._promisify(
-  Gio.DataInputStream.prototype,
-  "read_line_async",
-  "read_line_finish_utf8",
-);
-*/
 /*
 const bars = Variable([...Array(128).keys()], {
   listen: [
@@ -83,84 +67,6 @@ const bars = Variable([...Array(128).keys()], {
     },
   ],
 });
-*/
-
-const barFormats = [
-  "\u2581",
-  "\u2582",
-  "\u2583",
-  "\u2584",
-  "\u2585",
-  "\u2586",
-  "\u2587",
-  "\u2588",
-];
-
-/*
-(async () => {
-  while (true) {
-    try {
-      const [data, _length] = await inputStream.read_line_async(
-        GLib.PRIORITY_DEFAULT,
-        null,
-      ) as unknown as [string, number];
-			// between 0 and 1000
-			
-			const barsData = data.split(";").map(x => Number(x));
-			barsData.pop() //last value is always "" => 0
-			let out = ""
-			for (const bar of barsData) {
-				if (bar < 1000/16 * 8) { 
-					out += " "
-				} else if (bar < 1000/16 * 9) {
-					out += barFormats[0]
-				} else if (bar < 1000/16 * 10) {
-					out += barFormats[1]
-				} else if (bar < 1000/16 * 11) {
-					out += barFormats[2]
-				} else if (bar < 1000/16 * 12) {
-					out += barFormats[3]
-				} else if (bar < 1000/16 * 13) {
-					out += barFormats[4]
-				} else if (bar < 1000/16 * 14) {
-					out += barFormats[5]
-				} else if (bar < 1000/16 * 15) {
-					out += barFormats[6]
-				} else {
-					out += barFormats[7]
-				}
-			}
-
-			out += "\n";
-			for (const bar of barsData) {
-				if (bar < 10) {
-					out += " "
-				} else if (bar < 1000/16) {
-					out += barFormats[0]
-				} else if (bar < 1000/16 * 2) {
-					out += barFormats[1]
-				} else if (bar < 1000/16 * 3) {
-					out += barFormats[2]
-				} else if (bar < 1000/16 * 4) {
-					out += barFormats[3]
-				} else if (bar < 1000/16 * 5) {
-					out += barFormats[4]
-				} else if (bar < 1000/16 * 6) {
-					out += barFormats[5]
-				} else if (bar < 1000/16 * 7) {
-					out += barFormats[6]
-				} else {
-					out += barFormats[7]
-				}
-			}
-
-			bars.setValue(out);
-			//console.log(out)
-    } catch (e) {
-      logError(e, "Failed to read bytes");
-    }
-  }
-})();
 */
 
 const Container = (children) =>

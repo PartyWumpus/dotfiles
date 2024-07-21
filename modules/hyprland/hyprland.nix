@@ -32,20 +32,24 @@ let
   '';
 
   record = pkgs.writeShellScript "record" ''
-    FILE=~/.recording
-    if [ -f $FILE ]; then
-      rm $FILE
+    LOCKFILE=~/.recording
+    FILE=~/Videos/clips/wip.mp4
+    if [ -f $LOCKFILE ]; then
+      OUT="/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+      mv "$FILE" "$OUT"
+      wl-copy -t text/uri-list <<< "file://$OUT"
+      rm "$LOCKFILE"
       pkill wl-screenrec
     else
-      touch $FILE
+      touch $LOCKFILE
       if [ "$1" == "area" ]; then
-        ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+        ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "$FILE"
       else # full screen
         # TODO: use -o to select the current display
-        ${pkgs.wl-screenrec}/bin/wl-screenrec -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+        ${pkgs.wl-screenrec}/bin/wl-screenrec -f "$FILE"
       fi
       notify-send "recording ended"
-      rm $FILE
+      rm "$LOCKFILE"
     fi
   '';
 
