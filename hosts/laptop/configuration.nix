@@ -23,13 +23,22 @@
   };
   services.fwupd.enable = true;
 
-  # suspend to RAM (deep) rather than `s2idle`
-  boot.kernelParams = [ "mem_sleep_default=deep" ];
+  boot.kernelParams = [
+    # suspend to RAM (deep) rather than `s2idle`
+    #"mem_sleep_default=deep" 
+    # fix suspend
+    #"rtc_cmos.use_acpi_alarm=1" 
+  ];
+
   # suspend-then-hibernate
   systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30m
+    HibernateDelaySec=10m
     SuspendState=mem
   '';
+
+  services.logind.lidSwitch = "suspend-then-hibernate";
+  services.logind.lidSwitchExternalPower = "suspend-then-hibernate";
+  services.logind.lidSwitchDocked = "ignore";
 
   services.tlp = {
     enable = true;

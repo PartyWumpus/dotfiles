@@ -174,6 +174,7 @@ in
     tldr
     unzip
     htop
+    dash
 
     neofetch
     pipes

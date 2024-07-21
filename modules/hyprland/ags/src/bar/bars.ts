@@ -7,10 +7,10 @@ const ram = Variable(
     poll: [
       2000,
       [
-        "bash",
+        "dash",
         "-c",
         //`LANG=C free | awk '/^Mem/ {print $2,$3}'`
-        `cat /proc/meminfo | awk '/MemTotal/ {total=$2} /MemAvailable/ {available=$2} END {print total ":" available}'`,
+        `cat /proc/meminfo | awk '/MemTotal/ {tot=$2} /MemAvailable/ {avail=$2} END {print tot ":" avail}'`,
       ],
       (x) => {
         let split = x.split(":");
@@ -45,11 +45,11 @@ const cpu = Variable(0, {
   poll: [
     4000,
     [
-      "bash",
+      "dash",
       "-c",
       // returns two numbers, the first one is bad
       // the second one is the percentage IDLE time
-      String.raw`lANG=C top -bn2 | awk '/Cpu\(s\):/ { print $8 }'`,
+      String.raw`LANG=C top -bn2 | awk '/Cpu\(s\):/ { print $8 }'`,
     ],
     (idle_percents) => {
       return 100 - Number(idle_percents.split("\n")[1]);
@@ -118,7 +118,7 @@ const ip = Variable("", {
   poll: [
     60000,
     [
-      "bash",
+      "dash",
       "-c",
       `ip -o -4 addr list wlp1s0 | awk '{print $4}' | cut -d/ -f1`,
     ],

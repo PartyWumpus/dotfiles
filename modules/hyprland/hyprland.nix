@@ -13,7 +13,7 @@ let
   show_clipboard = pkgs.writeShellScript "show_clipboard" ''
     text=$(cliphist list | ${menu} --show dmenu -l top_right -p "copy"); \
     if [[ $text != "" ]]; then
-    	cliphist decode <<< "$text" | wl-copy
+      cliphist decode <<< "$text" | wl-copy
     fi
   '';
 
@@ -34,34 +34,39 @@ let
   record = pkgs.writeShellScript "record" ''
     FILE=~/.recording
     if [ -f $FILE ]; then
-    	rm $FILE
-    	pkill wl-screenrec
+      rm $FILE
+      pkill wl-screenrec
     else
-    	touch $FILE
-    	${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
-    	notify-send "recording ended"
-    	rm $FILE
+      touch $FILE
+      if [ $1 == "area" ]; then
+        ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+      else # full screen
+        # TODO: use -o to select the current display
+        ${pkgs.wl-screenrec}/bin/wl-screenrec -f "/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+      fi
+      notify-send "recording ended"
+      rm $FILE
     fi
   '';
 
   /*
     monitor_change = pkgs.writeShellScript "monitor_change" ''
 
-    		monitor_changed() {
-    			pkill ags;
-    			sleep 0.2;
-    			ags &
-    		}
+      	monitor_changed() {
+      		pkill ags;
+      		sleep 0.2;
+      		ags &
+      	}
 
-    		handle() {
-      		case $1 in
-        		monitoradded*) monitor_changed ;;
-    				monitorremoved*) monitor_changed ;;
-      		esac
-    		}
+      	handle() {
+        	case $1 in
+          	monitoradded*) monitor_changed ;;
+      			monitorremoved*) monitor_changed ;;
+        	esac
+      	}
 
-    		${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
-    	'';
+      	${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
+      '';
   */
 
 in
@@ -146,7 +151,41 @@ in
   };
 
   xdg.configFile = {
-    "hypr/hypridle.conf".source = ./hypridle.conf;
+    "hypr/hypridle.conf".text = # toml
+      ''
+        general {
+          lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
+          before_sleep_cmd = loginctl lock-session    # lock before suspend.
+          after_sleep_cmd = hyprctl dispatch dpms on  # to avoid having to press a key twice to turn on the display.
+        }
+
+        # lock screen
+        listener {
+          timeout = 300 # 5 min
+          on-timeout = loginctl lock-session
+          #on-resume = notify-send "Welcome back!"
+        }
+
+        # turn off screen
+        listener {
+          timeout = 600 # 10 min
+          on-timeout = hyprctl dispatch dpms off
+          on-resume = hyprctl dispatch dpms on
+        }
+
+        ${
+          if builtins.getEnv "HOSTNAME" == "laptop" then # toml
+            ''
+              # suspend (and then eventually hibernate)
+              listener {
+                timeout = 900 # 15min
+                on-timeout = systemctl suspend-then-hibernate
+              }
+            ''
+          else
+            ""
+        }
+      '';
     "tofi/config".text = # toml
       ''
         fuzzy-match = true
@@ -182,7 +221,7 @@ in
 
         # pink
         selection-match-color = #f5bde6
-        		'';
+      '';
   };
 
   wayland.windowManager.hyprland = {
@@ -194,117 +233,115 @@ in
       }
     );
     extraConfig = ''
-      				$mod = SUPER
+      $mod = SUPER
+      ${
+        if builtins.getEnv "HOSTNAME" == "desktop" then
+          ''monitor=DP-1,2560x1440@144,0x0,1''
+        else
+          ''
+            monitor=eDP-1,2560x1600@165,0x0,1.6,vrr,1
+            monitor=eDP-2,2560x1600@165,0x0,1.6,vrr,1
+            monitor=,highres,auto,1''
+      }
 
-      				${
-            (
-              if builtins.getEnv "HOSTNAME" == "desktop" then
-                ''monitor=DP-1,2560x1440@144,0x0,1''
-              else
-                ''
-                  monitor=eDP-1,2560x1600@165,0x0,1.6,vrr,1
-                  monitor=eDP-2,2560x1600@165,0x0,1.6,vrr,1
-                  monitor=,highres,auto,1''
-            )
-          }
+      exec-once = swww-daemon
+      exec-once = sleep 10 && swww img ${../../assets/wallpaper.png}
+      #exec-once = waybar
+      exec-once = ags
+      #exec-once = $\{monitor_change} # handles ags restarting
+      exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+      exec-once = wl-paste --watch cliphist store
+      exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
+      exec-once = hypridle
+      exec-once = hyprctl setcursor Qogir 24
 
-      				exec-once = swww-daemon
-      				exec-once = sleep 10 && swww img ${../../assets/wallpaper.png}
-      				#exec-once = waybar
-      				exec-once = ags
-      				#exec-once = $\{monitor_change} # handles ags restarting
-      				exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-      				exec-once = wl-paste --watch cliphist store
-      				exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
-      				exec-once = hypridle
-      				exec-once = hyprctl setcursor Qogir 24
+      windowrulev2 = float, initialclass: xdg-desktop-portal-gtk
+      windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
+      windowrulev2 = opacity 0.95, initialTitle: Alacritty
 
-      				windowrulev2 = float, initialclass: xdg-desktop-portal-gtk
-      				windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
-      				windowrulev2 = opacity 0.95, initialTitle: Alacritty
+      # remove blur from all windows, but not from layers
+      windowrule = noblur, .*
+      layerrule = blur, ^bar.*
+      layerrule = ignorezero, ^bar.*
 
-      				# remove blur from all windows, but not from layers
-      				windowrule = noblur, .*
-      				layerrule = blur, ^bar.*
-      				layerrule = ignorezero, ^bar.*
+      # modalify tag:modal windows
+      windowrulev2 = float, tag:modal
+      windowrulev2 = pin, tag:modal
+      windowrulev2 = center, tag:modal
+      windowrulev2 = bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1
 
-      				# modalify tag:modal windows
-      				windowrulev2 = float, tag:modal
-      				windowrulev2 = pin, tag:modal
-      				windowrulev2 = center, tag:modal
-      				windowrulev2 = bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1
+      # disable animations for tofi
+      layerrule = noanim, launcher
 
-      				# disable animations for tofi
-      				layerrule = noanim, launcher
+      input {
+        kb_layout = gb
+      }
 
-      				input {
-      					kb_layout = gb
-      				}
+      general {
+        gaps_in = 1
+        gaps_out = 0,5,5,5
+        col.inactive_border = rgba(00000000) # CRUST
+        col.active_border = rgb(c6a0f6) # Mauve
+        border_size = 2
+      }
 
-      				general {
-      					gaps_in = 1
-      					gaps_out = 0,5,5,5
-      					col.inactive_border = rgba(00000000) # CRUST
-      					col.active_border = rgb(c6a0f6) # Mauve
-      					border_size = 2
-      				}
+      decoration {
+        inactive_opacity = 0.98
+        active_opacity = 1.00
+        fullscreen_opacity = 1.00
+        dim_around = 0.07 # dimming around modals
+        rounding = 15
+        drop_shadow = 0
+        # blur is only for top bar
+        blur {
+          size = 4
+          passes = 3
+        }
+      }
 
-      				decoration {
-      					inactive_opacity = 0.98
-      					active_opacity = 1.00
-      					fullscreen_opacity = 1.00
-      					dim_around = 0.07 # dimming around modals
-      					rounding = 15
-      					drop_shadow = 0
-      					# blur is only for top bar
-      					blur {
-      						size = 4
-      						passes = 3
-      					}
-      				}
+      animations {
+        enabled = yes
+        first_launch_animation = false
+      }
 
-      				animations {
-      					enabled = yes
-          			first_launch_animation = false
-      				}
+      gestures {
+        workspace_swipe = true
+        workspace_swipe_cancel_ratio = 0.3
+      }
 
-      				gestures {
-      					workspace_swipe = true
-      					workspace_swipe_cancel_ratio = 0.3
-      				}
-      				
-      				dwindle {
-      					preserve_split = 1
-      					smart_split = 1
-      				}
+      dwindle {
+        preserve_split = 1
+        smart_split = 1
+      }
 
-      				misc {
-      					force_default_wallpaper = 0
-      				}
+      misc {
+        force_default_wallpaper = 0
+        mouse_move_enables_dpms = 1
+        key_press_enables_dpms = 1
+      }
 
-      				xwayland {
+      xwayland {
+        force_zero_scaling = 1
+      }
 
-      					force_zero_scaling = 1
-      				}
+      bindm = $mod, mouse:272, movewindow
+      bindm = ALT, mouse:272, resizewindow
 
-      				bindm = $mod, mouse:272, movewindow
-      				bindm = ALT, mouse:272, resizewindow
+      bind=$mod, P, exec, ${show_clipboard}
 
-      				bind=$mod, P, exec, ${show_clipboard}
+      bindl=, XF86AudioPlay, exec, playerctl play-pause # the stupid key is called play , but it toggles 
+      bindl=, XF86AudioNext, exec, playerctl next 
+      bindl=, XF86AudioPrev, exec, playerctl previous
 
-      				bindl=, XF86AudioPlay, exec, playerctl play-pause # the stupid key is called play , but it toggles 
-      				bindl=, XF86AudioNext, exec, playerctl next 
-      				bindl=, XF86AudioPrev, exec, playerctl previous
+      bind=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+      bind=, XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-
+      bind=, XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
 
-      				bind=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      				bind=, XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-
-      				bind=, XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
-
-      				bind=, XF86MonBrightnessUp,  exec, brightnessctl s +5%
-      				bind=, XF86MonBrightnessDown,  exec, brightnessctl s 5%-
-      				bind=, F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
-      				bind=Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
-      		'';
+      bind=, XF86MonBrightnessUp,  exec, brightnessctl s +5%
+      bind=, XF86MonBrightnessDown,  exec, brightnessctl s 5%-
+      bind=, F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
+      bind=Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
+    '';
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "alacritty"; # todo
@@ -315,7 +352,8 @@ in
           #"$mod, S, exec, $menu --insensitive --show drun -show-icons"
           #"$mod, S, exec, ags -t applauncher"
           "$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
-          ''$mod, R, exec, ${record}''
+          "$mod, R, exec, ${record} 'area'"
+          "Shift + $mod, R, exec, ${record} 'screen'"
           "$mod, C, killactive"
           "$mod, M, exit"
         ]
@@ -370,7 +408,7 @@ in
       }
       {
         label = "suspend";
-        action = "systemctl suspend";
+        action = "systemctl suspend-then-hibernate";
         text = "Suspend";
         keybind = "u";
       }
@@ -384,29 +422,29 @@ in
     style = # css
       ''
         * {
-        	background-image: none;
-        	box-shadow: none;
+          background-image: none;
+          box-shadow: none;
         }
 
         window {
-        	background-color: rgba(12, 12, 12, 0.9);
+          background-color: rgba(12, 12, 12, 0.9);
         }
 
         button {
-        	text-decoration-color: #FFFFFF;
+          text-decoration-color: #FFFFFF;
           color: #FFFFFF;
-        	background-color: #363a4f;
-        	background-repeat: no-repeat;
-        	background-position: center;
-        	background-size: 25%;
+          background-color: #363a4f;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 25%;
 
-        	margin:5px;
-        	border-radius: 15px;
+          margin:5px;
+          border-radius: 15px;
         }
 
         button:focus, button:active, button:hover {
-        	background-color: #c6a0f6;
-        	outline-style: none;
+          background-color: #c6a0f6;
+          outline-style: none;
         }
 
         #lock {
@@ -453,15 +491,13 @@ in
     configDir = ./ags;
     # extraPackages isn't working for some reason
     #extraPackages = with pkgs; [
-    #	bun
+    #  bun
     #];
   };
 
   programs.waybar = {
     enable = true;
-    style = ''
-            ${builtins.readFile ./waybar/waybar.css}
-      		'';
+    style = ''${builtins.readFile ./waybar/waybar.css}'';
     # thank you https://git.sr.ht/~begs/dotfiles/tree/master/item/.config/waybar/config
     settings = [
       {
@@ -545,10 +581,10 @@ in
         };
 
         #"hyprland/language" = {
-        #	format = " {}";
-        #	min-length = 5;
-        #	on-click = "swaymsg 'input * xkb_switch_layout next'";
-        #	tooltip = false;
+        #  format = " {}";
+        #  min-length = 5;
+        #  on-click = "swaymsg 'input * xkb_switch_layout next'";
+        #  tooltip = false;
         #};
 
         disk = {

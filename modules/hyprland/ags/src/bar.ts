@@ -28,7 +28,7 @@ import Gtk from "gi://Gtk";
 import { InfoBars } from "bar/bars";
 import { BatteryWheel } from "bar/battery";
 import { BluetoothWheels } from "bar/bluetooth";
-import { Date } from "bar/date";
+import { DateComponent } from "bar/date";
 import { Media } from "bar/media";
 import { FocusedTitle } from "bar/title";
 import { VolumeWheel } from "bar/volume";
@@ -42,6 +42,7 @@ window {
 	color: ${COLOR.Text};
 }`);
 
+/*
 const uptime = Variable(0, {
   poll: [
     5000,
@@ -53,7 +54,7 @@ const uptime = Variable(0, {
     },
   ],
 });
-
+*/
 /*
 const p = Gio.Subprocess.new(
   ["cava", "-p", "/home/wumpus/cava_raw"],
@@ -220,7 +221,7 @@ export const Bar = (monitor: Gdk.Monitor) =>
       center_widget: Widget.Box({
         children: [
           Container([Workspaces(monitor)]),
-          Container([Date(), InfoBars(), BatteryWheel(), BluetoothWheels()]),
+          Container([DateComponent(), InfoBars(), BatteryWheel(), BluetoothWheels()]),
           Container([VolumeWheel()]),
           Media(),
           /*Container([
