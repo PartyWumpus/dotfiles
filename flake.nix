@@ -47,6 +47,10 @@
     let
       pkgs = self.pkgs.x86_64-linux.nixpkgs;
       eachSystem = utils.lib.eachDefaultSystem;
+      hmModules = [
+        ags.homeManagerModules.default
+        #hyprlock.homeManagerModules.hyprlock
+      ];
     in
     utils.lib.mkFlake {
       inherit self inputs;
@@ -70,16 +74,7 @@
         flatpaks.nixosModules.default
         ./configuration.nix
         home-manager.nixosModules.default
-        {
-          home-manager.sharedModules = [
-            {
-              imports = [
-                ags.homeManagerModules.default
-                #hyprlock.homeManagerModules.hyprlock
-              ];
-            }
-          ];
-        }
+        { home-manager.sharedModules = [ { imports = hmModules; } ]; }
         nix-index-database.nixosModules.nix-index
         #inputs.spicetify-nix.nixosModules.default
       ];
@@ -102,6 +97,14 @@
 
       #formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
+
+      homeConfigurations."wumpus" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./home.nix ] ++ hmModules;
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+      };
 
     }
     // eachSystem (

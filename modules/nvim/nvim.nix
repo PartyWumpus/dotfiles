@@ -17,6 +17,9 @@
     ripgrep
     fd
 
+    # languages
+    (python312.withPackages (ps: [ ps.pynvim ]))
+
     # lsp packages
     lua-language-server
     nodePackages.typescript-language-server

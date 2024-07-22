@@ -8,18 +8,7 @@
   inputs,
   ...
 }:
-let
-  spicetify = import (
-    builtins.fetchGit {
-      url = "https://github.com/Gerg-L/spicetify-nix.git";
-      ref = "master";
-    }
-  );
-in
 {
-
-  imports = [ spicetify.nixosModules.default ];
-
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -35,21 +24,6 @@ in
   nix.registry.self.flake = inputs.self;
 
   nix.settings.auto-optimise-store = true;
-
-  programs.spicetify =
-    let
-      spicePkgs = spicetify.legacyPackages.${pkgs.system};
-    in
-    {
-      enable = true;
-      enabledExtensions = with spicePkgs.extensions; [
-        adblock
-        hidePodcasts
-        shuffle # shuffle+ (special characters are sanitized out of extension names)
-      ];
-      theme = spicePkgs.themes.catppuccin;
-      colorScheme = "mocha";
-    };
 
   virtualisation.containers.enable = true;
   #virtualisation.docker = {
@@ -114,6 +88,7 @@ in
   # Configure console keymap
   console.keyMap = "uk";
 
+  # this is just so nix doesn't worry about zsh being missing
   programs.zsh.enable = true;
   programs.command-not-found.enable = false;
   programs.nix-index.enable = true;
@@ -167,26 +142,14 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     sof-firmware
-    # packages
-    zsh
-    micro
-    wget
-    tldr
-    unzip
-    htop
-    dash
-
-    neofetch
-    pipes
 
     # bluetooth info for ags
     gnome.gnome-bluetooth
-
-    fzf
     manix
 
     steam-run
     distrobox
+    docker-compose
 
     # themes
     libsForQt5.qtstyleplugin-kvantum
@@ -205,23 +168,12 @@ in
     libsecret
 
     # apps
-    alacritty
-    google-chrome
-    vesktop
-    transmission_3-gtk
-    pinta
-    yt-dlp
-    kid3
-    ranger
-    kdenlive
-    prismlauncher
     spotify
+    vesktop
+    kid3
+    yt-dlp
+    prismlauncher
     r2modman
-    protonvpn-cli_2
-    feishin
-
-    # languages
-    (python312.withPackages (ps: [ ps.pynvim ]))
 
     # productivity
     libreoffice-qt
@@ -242,9 +194,6 @@ in
 
   services.flatpak.enable-debug = true;
   services.flatpak.enable = true;
-  services.flatpak.preInstallCommand = ''${pkgs.libnotify}/bin/notify-send "Updating Flatpaks"'';
-  services.flatpak.preDedupeCommand = ''${pkgs.libnotify}/bin/notify-send "Deduping Flatpaks"'';
-  services.flatpak.UNCHECKEDpostEverythingCommand = ''${pkgs.libnotify}/bin/notify-send "Flatpaks Updated"'';
   # docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md
   services.flatpak.overrides = {
     "global" = {

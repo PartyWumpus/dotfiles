@@ -87,6 +87,7 @@ in
     hypridle
     cava
     playerctl
+    dash
   ];
 
   xdg.portal = {
