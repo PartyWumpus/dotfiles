@@ -16,7 +16,7 @@ require('lspconfig').lua_ls.setup(lua_opts)
 require('lspconfig').tsserver.setup({})
 require('lspconfig').rust_analyzer.setup({})
 require('lspconfig').pyright.setup({})
-require('lspconfig').nil_ls.setup({})
+require('lspconfig').nixd.setup({})
 
 
 local cmp = require('cmp')

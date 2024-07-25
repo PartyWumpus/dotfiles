@@ -167,7 +167,7 @@ export function NotificationPopups(monitor: Gdk.Monitor) {
 
   async function onNotified(_: any, id: number) {
     clearTimeout(timeout!);
-    await Utils.execAsync(`hyprctl --batch keyword debug:damage_tracking 0;`);
+    await Utils.execAsync(`hyprctl keyword debug:damage_tracking 0;`);
     //await Utils.execAsync(`hyprctl keyword decoration:screen_shader ${nix.shader}`)
     await Utils.execAsync(
       `hyprctl keyword decoration:screen_shader /home/wumpus/nixos/modules/hyprland/chromatic_aberration.frag`,
