@@ -18,6 +18,21 @@
         "type": "github"
       }
     },
+    "catppuccin": {
+      "locked": {
+        "lastModified": 1721784420,
+        "narHash": "sha256-bgF6fN4Qgk7NErFKGuuqWXcLORsiykTYyqMUFRiAUBY=",
+        "owner": "catppuccin",
+        "repo": "nix",
+        "rev": "8bdb55cc1c13f572b6e4307a3c0d64f1ae286a4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -540,6 +555,7 @@
     "root": {
       "inputs": {
         "ags": "ags",
+        "catppuccin": "catppuccin",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
@@ -547,7 +563,9 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_5",
         "rust-overlay": "rust-overlay",
-        "utils": "utils_2"
+        "utils": "utils_2",
+        "yazi-flavors": "yazi-flavors",
+        "yazi-plugins": "yazi-plugins"
       }
     },
     "rust-overlay": {
@@ -677,6 +695,38 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    },
+    "yazi-flavors": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720835548,
+        "narHash": "sha256-566RFL1Wng7yr5OS3UtKEy+ZLrgwfCdX9FAtwRQK2oM=",
+        "owner": "yazi-rs",
+        "repo": "flavors",
+        "rev": "2d7dd2afe253c30943e9cd05158b1560a285eeab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yazi-rs",
+        "repo": "flavors",
+        "type": "github"
+      }
+    },
+    "yazi-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721281433,
+        "narHash": "sha256-jg8+GDsHOSIh8QPYxCvMde1c1D9M78El0PljSerkLQc=",
+        "owner": "yazi-rs",
+        "repo": "plugins",
+        "rev": "06e5fe1c7a2a4009c483b28b298700590e7b6784",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yazi-rs",
+        "repo": "plugins",
         "type": "github"
       }
     }

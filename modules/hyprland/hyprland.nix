@@ -155,78 +155,80 @@ in
     };
   };
 
-  xdg.configFile = {
-    "hypr/hypridle.conf".text = # toml
-      ''
-        general {
-          lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
-          before_sleep_cmd = loginctl lock-session    # lock before suspend.
-          after_sleep_cmd = hyprctl dispatch dpms on  # to avoid having to press a key twice to turn on the display.
-        }
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
+        before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
+        after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+      };
 
-        # lock screen
-        listener {
-          timeout = 300 # 5 min
-          on-timeout = loginctl lock-session
+      # lock screen
+      listener = [
+        {
+          timeout = 300; # 5 min
+          on-timeout = "loginctl lock-session";
           #on-resume = notify-send "Welcome back!"
         }
-
         # turn off screen
-        listener {
-          timeout = 600 # 10 min
-          on-timeout = hyprctl dispatch dpms off
-          on-resume = hyprctl dispatch dpms on
+        {
+          timeout = 600; # 10 min
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
         }
-
-        ${
-          if builtins.getEnv "HOSTNAME" == "laptop" then # toml
-            ''
-              # suspend (and then eventually hibernate)
-              listener {
-                timeout = 900 # 15min
-                on-timeout = systemctl suspend-then-hibernate
-              }
-            ''
+        (
+          if builtins.getEnv "HOSTNAME" == "laptop" then
+            # suspend (and then eventually hibernate)
+            {
+              timeout = 900; # 15min
+              on-timeout = "systemctl suspend-then-hibernate";
+            }
           else
-            ""
-        }
-      '';
-    "tofi/config".text = # toml
-      ''
-        fuzzy-match = true
-        ascii-input = true
-        hint-font = false
+            { }
+        )
+      ];
+    };
+  };
 
-        prompt-text = ""
-        placeholder-text = "> "
+  programs.tofi = {
+    enable = true;
+    catppuccin.enable = false;
+    settings = {
+      fuzzy-match = "true";
+      ascii-input = "true";
+      hint-font = "false";
 
-        font="/nix/store/1rxl6ipwybag00jqq151a2v18fbb2cyc-rubik-2.200/share/fonts/truetype/Rubik-Regular.ttf"
-        font-size=30
+      prompt-text = ''"" '';
+      placeholder-text = "> ";
 
-        width = 500
-        height = 620
+      font = "${pkgs.rubik}/share/fonts/truetype/Rubik-Regular.ttf";
+      font-size = 30;
 
-        border-width = 3
-        outline-width = 0
-        corner-radius = 15
+      width = 500;
+      height = 620;
 
-        # text
-        text-color = #cad3f5
+      border-width = 3;
+      outline-width = 0;
+      corner-radius = 15;
 
-        # subtext 1
-        placeholder-color = #b8c0e0
+      # text
+      text-color = "#cad3f5";
 
-        # surface0
-        background-color = #363a4f
+      # subtext 1
+      placeholder-color = "#b8c0e0";
 
+      # surface0
+      background-color = "#363a4f";
 
-        # mauve
-        border-color = #c6a0f6
-        selection-color = #c6a0f6
+      # mauve
+      border-color = "#c6a0f6";
+      selection-color = "#c6a0f6";
 
-        # pink
-        selection-match-color = #f5bde6
-      '';
+      # pink
+      selection-match-color = "#f5bde6";
+
+    };
   };
 
   wayland.windowManager.hyprland = {
@@ -237,131 +239,139 @@ in
         patches = [ ./initialTime.patch ];
       }
     );
-    extraConfig = ''
-      $mod = SUPER
-      ${
-        if builtins.getEnv "HOSTNAME" == "desktop" then
-          ''monitor=DP-1,2560x1440@144,0x0,1''
-        else
-          ''
-            monitor=eDP-1,2560x1600@165,0x0,1.6,vrr,1
-            monitor=eDP-2,2560x1600@165,0x0,1.6,vrr,1
-            monitor=,highres,auto,1''
-      }
-
-      exec-once = swww-daemon
-      exec-once = sleep 10 && swww img ${../../assets/wallpaper.png}
-      #exec-once = waybar
-      exec-once = ags
-      #exec-once = $\{monitor_change} # handles ags restarting
-      exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-      exec-once = wl-paste --watch cliphist store
-      exec-once = ${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
-      exec-once = hypridle
-      exec-once = hyprctl setcursor Qogir 24
-
-      windowrulev2 = float, initialclass: xdg-desktop-portal-gtk
-      windowrulev2 = dimaround, initialclass: xdg-desktop-portal-gtk
-      windowrulev2 = opacity 0.95, initialTitle: Alacritty
-
-      # remove blur from all windows, but not from layers
-      windowrule = noblur, .*
-      layerrule = blur, ^bar.*
-      layerrule = ignorezero, ^bar.*
-
-      # modalify tag:modal windows
-      windowrulev2 = float, tag:modal
-      windowrulev2 = pin, tag:modal
-      windowrulev2 = center, tag:modal
-      windowrulev2 = bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1
-
-      # disable animations for tofi
-      layerrule = noanim, launcher
-
-      input {
-        kb_layout = gb
-      }
-
-      general {
-        gaps_in = 1
-        gaps_out = 0,5,5,5
-        col.inactive_border = rgba(00000000) # CRUST
-        col.active_border = rgb(c6a0f6) # Mauve
-        border_size = 2
-      }
-
-      decoration {
-        inactive_opacity = 0.98
-        active_opacity = 1.00
-        fullscreen_opacity = 1.00
-        dim_around = 0.07 # dimming around modals
-        rounding = 15
-        drop_shadow = 0
-        # blur is only for top bar
-        blur {
-          size = 4
-          passes = 3
-        }
-      }
-
-      animations {
-        enabled = yes
-        first_launch_animation = false
-      }
-
-      gestures {
-        workspace_swipe = true
-        workspace_swipe_cancel_ratio = 0.3
-      }
-
-      dwindle {
-        preserve_split = 1
-        smart_split = 1
-      }
-
-      misc {
-        force_default_wallpaper = 0
-        mouse_move_enables_dpms = 1
-        key_press_enables_dpms = 1
-      }
-
-      xwayland {
-        force_zero_scaling = 1
-      }
-
-      bindm = $mod, mouse:272, movewindow
-      bindm = ALT, mouse:272, resizewindow
-
-      bind=$mod, P, exec, ${show_clipboard}
-
-      bindl=, XF86AudioPlay, exec, playerctl play-pause # the stupid key is called play , but it toggles 
-      bindl=, XF86AudioNext, exec, playerctl next 
-      bindl=, XF86AudioPrev, exec, playerctl previous
-
-      bind=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      bind=, XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-
-      bind=, XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
-
-      bind=, XF86MonBrightnessUp,  exec, brightnessctl s +5%
-      bind=, XF86MonBrightnessDown,  exec, brightnessctl s 5%-
-      bind=, F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
-      bind=Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"
-    '';
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "alacritty"; # todo
       "$menu" = "${menu}";
+
+      monitor = (
+        if builtins.getEnv "HOSTNAME" == "desktop" then
+          [ ''monitor=DP-1,2560x1440@144,0x0,1'' ]
+        else
+          [
+            "monitor=eDP-1,2560x1600@165,0x0,1.6,vrr,1"
+            "monitor=eDP-2,2560x1600@165,0x0,1.6,vrr,1"
+            "monitor=,highres,auto,1"
+          ]
+      );
+
+      input = {
+        kb_layout = "gb";
+      };
+
+      general = {
+        gaps_in = 1;
+        gaps_out = "0,5,5,5";
+        "col.inactive_border" = "rgba(00000000)"; # transparent
+        "col.active_border" = "rgb(c6a0f6)"; # Mauve
+        border_size = 2;
+      };
+
+      decoration = {
+        inactive_opacity = 0.98;
+        active_opacity = 1.0;
+        fullscreen_opacity = 1.0;
+        dim_around = 7.0e-2; # dimming around modals
+        rounding = 15;
+        drop_shadow = 0;
+        # blur is only for top bar
+        blur = {
+          size = 4;
+          passes = 3;
+        };
+      };
+
+      animations = {
+        enabled = "yes";
+        first_launch_animation = "false";
+      };
+
+      gestures = {
+        workspace_swipe = "true";
+        workspace_swipe_cancel_ratio = 0.3;
+      };
+
+      dwindle = {
+        preserve_split = 1;
+        smart_split = 1;
+      };
+
+      misc = {
+        force_default_wallpaper = 0;
+        mouse_move_enables_dpms = 1;
+        key_press_enables_dpms = 1;
+      };
+
+      xwayland = {
+        force_zero_scaling = 1;
+      };
+      windowrulev2 = [
+        # disable blur for all windows by default
+        "noblur, initialtitle:.*"
+
+        "float, initialclass: xdg-desktop-portal-gtk"
+        "dimaround, initialclass: xdg-desktop-portal-gtk"
+        "opacity 0.95, initialTitle: Alacritty"
+
+        # modalify tag:modal windows
+        "float, tag:modal"
+        "pin, tag:modal"
+        "center, tag:modal"
+        "bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1"
+      ];
+      layerrule = [
+        "blur, ^bar.*"
+        "ignorezero, ^bar.*"
+
+        # disable animations for tofi
+        "noanim, launcher"
+      ];
+      exec-once = [
+        "swww-daemon"
+        "sleep 10 && swww img ${../../assets/wallpaper.png}"
+        #"waybar"
+        "ags"
+        #"$\{monitor_change} # handles ags restarting"
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        "wl-paste --watch cliphist store"
+        "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+        "hypridle"
+        "hyprctl setcursor Qogir 24"
+      ];
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "ALT, mouse:272, resizewindow"
+      ];
+      bindl = [
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPrev, exec, playerctl previous"
+      ];
+
       bind =
         [
           "$mod, Q, exec, $terminal"
+          "$mod, M, exit"
+          "$mod, C, killactive"
+
           #"$mod, S, exec, $menu --insensitive --show drun -show-icons"
           #"$mod, S, exec, ags -t applauncher"
           "$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
+
+          '', F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"''
+          ''Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"''
           "$mod, R, exec, ${record} 'area'"
           "Shift + $mod, R, exec, ${record} 'screen'"
           "SHIFT + SUPER + CTRL + ALT, L, exec, xdg-open 'https://linkedin.com/'"
-          "$mod, C, killactive"
-          "$mod, M, exit"
+
+          "$mod, P, exec, ${show_clipboard}"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+
+          ", XF86MonBrightnessUp,  exec, brightnessctl s +5%"
+          ", XF86MonBrightnessDown,  exec, brightnessctl s 5%-"
+
         ]
         ++ (
           # binds $mod + 1..10 to workspace 1..10

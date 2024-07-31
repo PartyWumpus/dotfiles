@@ -26,6 +26,13 @@
 
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
 
+    yazi-flavors.url = "github:yazi-rs/flavors";
+    yazi-flavors.flake = false;
+    yazi-plugins.url = "github:yazi-rs/plugins";
+    yazi-plugins.flake = false;
+
+    catppuccin.url = "github:catppuccin/nix";
+
     #lix-module.url = "git+https://git.lix.systems/lix-project/nixos-module";
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
     #lix-module.follows = "nixpkgs";
@@ -42,6 +49,7 @@
       hyprland,
       flatpaks,
       ags,
+      catppuccin,
       ...
     }:
     let
@@ -49,6 +57,7 @@
       eachSystem = utils.lib.eachDefaultSystem;
       hmModules = [
         ags.homeManagerModules.default
+        catppuccin.homeManagerModules.catppuccin
         #hyprlock.homeManagerModules.hyprlock
       ];
     in
@@ -72,6 +81,7 @@
       hostDefaults.modules = [
         #lix-module.nixosModules.default # i am stupid so this is not working
         flatpaks.nixosModules.default
+        catppuccin.nixosModules.catppuccin
         ./configuration.nix
         home-manager.nixosModules.default
         { home-manager.sharedModules = [ { imports = hmModules; } ]; }

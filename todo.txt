@@ -10,3 +10,4 @@ Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manage
 Fix code actions in neovim
 use hyprs focuscurrentorlast to switch to prev window as hotkey
 check out hyprexpo
+check out harpoon

@@ -21,6 +21,18 @@ require("lazy").setup({
 	{'nvim-treesitter/nvim-treesitter', cmd = 'TSUpdate'},
 
 	{'nvim-tree/nvim-web-devicons'},
+  {
+    "rachartier/tiny-devicons-auto-colors.nvim",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons"
+    },
+    event = "VeryLazy",
+    config = function()
+        require('tiny-devicons-auto-colors').setup({
+          colors = require("catppuccin.palettes").get_palette("macchiato")
+        })
+    end
+  },
 	{"nvim-telescope/telescope-frecency.nvim",
 		config = function()
 			require("telescope").load_extension "frecency"

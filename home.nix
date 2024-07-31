@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -25,6 +26,14 @@
   # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
+  catppuccin = {
+    accent = "mauve";
+    flavor = "macchiato";
+  };
+
+  programs.fzf.enable = true;
+  programs.fzf.catppuccin.enable = true;
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
@@ -33,10 +42,11 @@
     tldr
     unzip
     htop
-    fzf
+    #fzf
 
     neofetch
     pipes
+    foot
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -49,22 +59,20 @@
     kdenlive
     feishin
 
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    # for yazi
+    file # find mimetypes
+    ffmpegthumbnailer # video thumbnails
+    unar # archive preview
+    jq # JSON preview
+    poppler # PDF preview
+    fd # file searching
+    ripgrep # file content searching
+    fzf # quick file subtree navigation
+    zoxide # historical directories navigation
+    ueberzugpp # display images
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
     qogir-icon-theme
   ];
-
-  #xdg.configFile = {
-  #	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.kvconfig".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.kvconfig";
-  #	"Kvantum/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender/Catppuccin-Macchiato-Lavender.svg".source = "${pkgs.catppuccin-kvantum}/share/Kvantum/Catppuccin-Macchiato-Lavender/Cattpuccin-Macchiato-Lavender.svg";
-  #};
 
   gtk = {
     enable = true;
@@ -123,6 +131,56 @@
       PATH="$PATH:${pkgs.zsh}/bin"
       container_init_hook="${pkgs.zsh}/bin/zsh"
     '';
+  };
+
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true;
+
+    package = pkgs.yazi-unwrapped.overrideAttrs (
+      finalAttrs: previousAttrs: {
+        buildInputs = previousAttrs.buildInputs ++ [
+
+        ];
+      }
+    );
+
+    flavors = {
+      catppuccin-macchiato = "${inputs.yazi-flavors}/catppuccin-macchiato.yazi";
+    };
+
+    plugins = {
+      full-border = "${inputs.yazi-plugins}/full-border.yazi";
+    };
+
+    settings = {
+      manager = {
+        show_hidden = true;
+      };
+      preview = {
+        max_width = 1000;
+        max_height = 1000;
+      };
+    };
+
+    theme =
+      /*(builtins.fromTOML (
+        builtins.readFile "${
+          pkgs.fetchFromGitHub {
+            owner = "Mellbourn";
+            repo = "ls-colors.yazi";
+            rev = "1401880b1a44e2c1809af75adb3da2a9ccb6b472";
+            hash = "sha256-oAoRBD0FFxVuaQ8AAA35x5eTptVtDV7/qNYR+XrGSGE=";
+          }
+        }/theme.toml"
+      ))
+      // */
+      # ls-colors was ugly
+      {
+        flavor = {
+          use = "catppuccin-macchiato";
+        };
+      };
   };
 
   #home.pointerCursor = {
