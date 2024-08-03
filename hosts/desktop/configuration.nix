@@ -13,28 +13,31 @@
   # Bootloader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
+  config = {
 
-  boot.loader = {
-    systemd-boot.enable = false;
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
+    local.isDesktop = true;
+
+    boot.loader = {
+      systemd-boot.enable = false;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+      grub = {
+        devices = [ "nodev" ];
+        enable = true;
+        efiSupport = true;
+        useOSProber = true;
+      };
     };
-    grub = {
-      devices = [ "nodev" ];
-      enable = true;
-      efiSupport = true;
-      useOSProber = true;
+
+    fileSystems."/mnt" = {
+      device = "/dev/disk/by-uuid/f346c230-d657-4376-a161-b29a9055568c";
+      fsType = "btrfs";
+      options = [
+        "noatime"
+        "compress=zstd:5"
+      ];
     };
   };
-
-  fileSystems."/mnt" = {
-    device = "/dev/disk/by-uuid/f346c230-d657-4376-a161-b29a9055568c";
-    fsType = "btrfs";
-    options = [
-      "noatime"
-      "compress=zstd:5"
-    ];
-  };
-
 }

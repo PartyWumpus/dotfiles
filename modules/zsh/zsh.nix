@@ -23,9 +23,8 @@
     ];
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch --flake ~/nixos#${builtins.getEnv "HOSTNAME"} --impure";
       test = ''manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix '';
-      #update = "sudo nixos-rebuild switch --flake ~/nixos#default --impure";
+      update = "sudo nixos-rebuild switch --flake ~/nixos --impure";
     };
 
     history.size = 10000;
