@@ -236,12 +236,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.default.overrideAttrs (
-        finalAttrs: previousAttrs: {
-          nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
-          patches = [ ./initialTime.patch ];
-        }
-      );
+      package = inputs.hyprland.packages.${pkgs.system}.default;
       settings = {
         "$mod" = "SUPER";
         "$terminal" = "alacritty"; # todo
