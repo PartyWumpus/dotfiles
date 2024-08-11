@@ -17,5 +17,5 @@ export const DateComponent = () =>
     hpack: "start",
     useMarkup: true,
 		//label: time.bind()
-    label: time.bind().as(x => `${pad(x.getHours())}:${pad(x.getMinutes())}:<span fgalpha='60%'>${pad(x.getSeconds())}</span>\n${pad(x.getFullYear())}/${pad(x.getMonth())}/${pad(x.getDate())}`),
+    label: time.bind().as(x => `${pad(x.getHours())}:${pad(x.getMinutes())}:<span fgalpha='60%'>${pad(x.getSeconds())}</span>\n${pad(x.getFullYear())}/${pad(x.getMonth()+1)}/${pad(x.getDate())}`),
   });

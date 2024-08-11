@@ -17,6 +17,7 @@ require('lspconfig').tsserver.setup({})
 require('lspconfig').rust_analyzer.setup({})
 require('lspconfig').pyright.setup({})
 require('lspconfig').nixd.setup({})
+require('lspconfig').astro.setup({})
 
 
 local cmp = require('cmp')

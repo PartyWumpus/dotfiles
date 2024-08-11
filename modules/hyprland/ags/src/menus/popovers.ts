@@ -9,7 +9,7 @@ import Gtk from "gi://Gtk";
 
 import brightness from "services/brightness";
 
-const WINDOW_NAME = "popovers";
+const WINDOW_NAME = "ags-popovers";
 
 const audio = await Service.import("audio");
 const mpris = await Service.import("mpris");

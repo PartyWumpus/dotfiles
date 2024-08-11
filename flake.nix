@@ -65,6 +65,7 @@
       inherit self inputs;
 
       supportedSystems = [ "x86_64-linux" ];
+      nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
       location = "/home/wumpus/nixos";
       # https://discourse.nixos.org/t/how-to-create-a-timestamp-in-a-nix-expression/30329
