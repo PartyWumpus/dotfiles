@@ -24,7 +24,8 @@
 
     shellAliases = {
       test = ''manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix '';
-      update = "sudo nixos-rebuild switch --flake ~/nixos --impure";
+      update = "sudo nixos-rebuild switch --flake ~/nixos --impure --log-format multiline";
+      config = "cd ~/nixos && nvim .";
     };
 
     history.size = 10000;

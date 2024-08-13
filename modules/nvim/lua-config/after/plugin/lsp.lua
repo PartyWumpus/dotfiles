@@ -3,9 +3,9 @@ local lsp_zero = require('lsp-zero')
 -- https://lsp-zero.netlify.app/v3.x/language-server-configuration.html
 
 lsp_zero.on_attach(function(client, bufnr)
-	-- see :help lsp-zero-keybindings
-	-- to learn the available actions
-	lsp_zero.default_keymaps({buffer = bufnr})
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp_zero.default_keymaps({ buffer = bufnr })
 end)
 
 -- set up language servers
@@ -22,8 +22,21 @@ require('lspconfig').astro.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-	mapping = cmp.mapping.preset.insert({
-		['<CR>'] = cmp.mapping.confirm({ select = true }),
+  mapping = cmp.mapping.preset.insert({
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
-	})
+  })
+})
+
+-- format on save (source https://www.mitchellhanberg.com/modern-format-on-save-in-neovim/)
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp", { clear = true }),
+  callback = function(args)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = args.buf,
+      callback = function()
+        vim.lsp.buf.format { async = false, id = args.data.client_id }
+      end,
+    })
+  end
 })

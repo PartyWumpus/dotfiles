@@ -8,11 +8,11 @@
 }:
 
 {
-  #xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/modules/nvim/lua-config";
+  xdg.configFile."nvim_live".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/modules/nvim/lua-config";
   xdg.configFile."nvim".source = ./lua-config;
 
   programs.zsh.shellAliases = {
-    nvimc = "nvim -u ~/nixos/modules/nvim/lua-config/init.lua";
+    nvimc = "NVIM_APPNAME=nvim_live nvim";
   };
 
   programs.neovim = {
@@ -25,6 +25,7 @@
       tree-sitter
       ripgrep
       fd
+      gcc
 
       # languages
       (python312.withPackages (ps: [ ps.pynvim ]))

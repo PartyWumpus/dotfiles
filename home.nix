@@ -9,9 +9,9 @@
 
 {
   imports = [
-    ./modules/hyprland/hyprland.nix
-    ./modules/zsh/zsh.nix
-    ./modules/nvim/nvim.nix
+    ./modules/hyprland
+    ./modules/zsh
+    ./modules/nvim
   ];
 
   config = {

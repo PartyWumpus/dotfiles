@@ -21,7 +21,7 @@ export function newAspectFrame<
   return new AspectFrame(...props);
 }
 
-export interface AspectFrame<Child, Attr> extends Widget<Attr> {}
+export interface AspectFrame<Child, Attr> extends Widget<Attr> { }
 export class AspectFrame<
   Child extends Gtk.Widget,
   Attr,

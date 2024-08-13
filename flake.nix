@@ -33,9 +33,9 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    #lix-module.url = "git+https://git.lix.systems/lix-project/nixos-module";
-    #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
-    #lix-module.follows = "nixpkgs";
+    # TODO: once 2.91 is in nixpkgs, just use that
+    lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+    lix-module.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -46,7 +46,7 @@
       rust-overlay,
       home-manager,
       nix-index-database,
-      hyprland,
+      lix-module,
       flatpaks,
       ags,
       catppuccin,
@@ -80,7 +80,7 @@
 
       # Modules shared between all hosts
       hostDefaults.modules = [
-        #lix-module.nixosModules.default # i am stupid so this is not working
+        lix-module.nixosModules.default
         flatpaks.nixosModules.default
         catppuccin.nixosModules.catppuccin
         ./configuration.nix
