@@ -20,12 +20,17 @@
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     viAlias = true;
     #withPython3 = true;
+    extraLuaPackages = luaPkgs: [
+      luaPkgs.pathlib-nvim
+      luaPkgs.lua-utils-nvim
+    ];
 
     extraPackages = with pkgs; [
       tree-sitter
       ripgrep
       fd
       gcc
+      lua
 
       # languages
       (python312.withPackages (ps: [ ps.pynvim ]))

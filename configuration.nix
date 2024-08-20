@@ -155,6 +155,7 @@
       manix
 
       steam-run
+      mpv
       distrobox
       docker-compose
 
@@ -181,6 +182,48 @@
       yt-dlp
       prismlauncher
       r2modman
+
+      (writeShellScriptBin "sedAll" ''
+        include_hidden="false"
+        dry_run="false"
+        expression="NONE"
+
+        print_usage() {
+          printf "Provide an expression via -f in the form 'before/after'
+          -h will include hidden files
+          -d will show what files will be changed"
+        }
+
+        while getopts 'hdf:' flag; do
+          case "''${flag}" in
+            h) include_hidden='true' ;;
+            d) dry_run='true' ;;
+            f) expression="''${OPTARG}" ;;
+            *) print_usage
+               exit 1 ;;
+          esac
+        done
+
+        if [ $expression == "NONE" ]; then
+          echo "Please provide an expression via -f"
+          print_usage
+          exit 1
+        fi
+
+        if [ $include_hidden == "true" ]; then
+          if [ $dry_run == "true" ]; then
+            find . -type f -exec sed --quiet "s/$expression/gp" {} +
+          else
+            find . -type f -exec sed -i "s/$expression/g" {} +
+          fi
+        else
+          if [ $dry_run == "true" ]; then
+            find . -type f -not -path '*/\.*' -exec sed --quiet "s/$expression/gp" {} +
+          else
+            find . -type f -not -path '*/\.*' -exec sed -i "s/$expression/g" {} +
+          fi
+        fi
+      '')
 
       # productivity
       libreoffice-qt

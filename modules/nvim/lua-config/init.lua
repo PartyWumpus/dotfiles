@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = ","
+
 require("lazy").setup({
   { 'ThePrimeagen/vim-be-good' },
   { 'nvim-telescope/telescope.nvim',   tag = '0.1.5',       dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -82,6 +84,31 @@ require("lazy").setup({
   },
 
   { 'tris203/precognition.nvim' },
+  {
+    "nvim-neorg/neorg",
+    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = "*", -- Pin Neorg to the latest stable release
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {},
+          ["core.summary"] = {},
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+              default_workspace = "notes",
+            },
+          },
+        },
+      }
+
+      vim.wo.foldlevel = 99
+      vim.wo.conceallevel = 2
+    end,
+  },
 
   { 'VonHeikemen/lsp-zero.nvim',           branch = 'v3.x' },
   { 'neovim/nvim-lspconfig' },

@@ -72,7 +72,6 @@
       ripgrep # file content searching
       fzf # quick file subtree navigation
       zoxide # historical directories navigation
-      ueberzugpp # display images
 
       qogir-icon-theme
     ];

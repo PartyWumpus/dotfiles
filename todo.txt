@@ -11,3 +11,4 @@ Fix code actions in neovim
 use hyprs focuscurrentorlast to switch to prev window as hotkey
 check out hyprexpo
 check out harpoon
+Try out either neorg & neorg-telescope 
