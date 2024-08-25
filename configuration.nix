@@ -15,7 +15,9 @@
     default = false;
   };
 
+
   config = {
+    programs.partition-manager.enable = true;
 
     nix.settings.experimental-features = [
       "nix-command"
