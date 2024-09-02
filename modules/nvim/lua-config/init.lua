@@ -36,14 +36,25 @@ require("lazy").setup({
     end
   },
   {
-    "nvim-telescope/telescope-frecency.nvim",
-    config = function()
-      require("telescope").load_extension "frecency"
-    end,
-  },
-  {
     'folke/todo-comments.nvim',
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {
+      preset = "helix",
+      expand = 2,
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
   },
   {
     "folke/trouble.nvim",
@@ -124,21 +135,8 @@ require("lazy").setup({
 
 
 -- my config
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename)
-
--- Copy to clipboard
-vim.keymap.set("v", "<leader>y", '"+y')
---nnoremap  <leader>Y  "+yg_
---nnoremap  <leader>y  "+y
-vim.keymap.set("n", "<leader>yy", '"+yy')
-
--- Paste from clipboard
---nnoremap <leader>p "+p
---nnoremap <leader>P "+P
---vnoremap <leader>p "+p
---vnoremap <leader>P "+P
-
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "File explorer" })
+vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Replace" })
 
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2

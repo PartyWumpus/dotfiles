@@ -200,7 +200,7 @@ export const Bar = (monitor: Gdk.Monitor) =>
               label: " 󰍜 ",
               setup: (self) => {
                 let dropdown = Widget.Menu({
-									sensitive: false,
+                  sensitive: false,
                   canFocus: false,
                   canDefault: false,
                   children: [
@@ -210,11 +210,11 @@ export const Bar = (monitor: Gdk.Monitor) =>
                   ],
                 });
 
-								self.on_primary_click = () => {
-									let popover = Gtk.Popover.new(self);
-									popover.show();
-									popover.child = dotsMenu();
-								};
+                self.on_primary_click = () => {
+                  let popover = Gtk.Popover.new(self);
+                  popover.show();
+                  popover.child = dotsMenu();
+                };
 
                 //self.on_primary_click = (_, event) => dropdown.popup_at_pointer(event);
                 //self.on_primary_click = (_, event) => dropdown.popup_at_widget(self,Gdk.Gravity.SOUTH_EAST,Gdk.Gravity.WEST, event);

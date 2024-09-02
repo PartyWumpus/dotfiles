@@ -43,21 +43,15 @@
       self,
       nixpkgs,
       utils,
-      rust-overlay,
       home-manager,
-      nix-index-database,
-      lix-module,
-      flatpaks,
-      ags,
-      catppuccin,
       ...
     }:
     let
       pkgs = self.pkgs.x86_64-linux.nixpkgs;
       eachSystem = utils.lib.eachDefaultSystem;
       hmModules = [
-        ags.homeManagerModules.default
-        catppuccin.homeManagerModules.catppuccin
+        inputs.ags.homeManagerModules.default
+        inputs.catppuccin.homeManagerModules.catppuccin
         #hyprlock.homeManagerModules.hyprlock
       ];
     in
@@ -78,13 +72,13 @@
 
       # Modules shared between all hosts
       hostDefaults.modules = [
-        lix-module.nixosModules.default
-        flatpaks.nixosModules.default
-        catppuccin.nixosModules.catppuccin
+        inputs.lix-module.nixosModules.default
+        inputs.flatpaks.nixosModules.default
+        inputs.catppuccin.nixosModules.catppuccin
         ./configuration.nix
         home-manager.nixosModules.default
         { home-manager.sharedModules = [ { imports = hmModules; } ]; }
-        nix-index-database.nixosModules.nix-index
+        inputs.nix-index-database.nixosModules.nix-index
         #inputs.spicetify-nix.nixosModules.default
       ];
 
@@ -104,7 +98,6 @@
         ];
       };
 
-      #formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
 
       homeConfigurations."wumpus" = home-manager.lib.homeManagerConfiguration {
@@ -124,7 +117,7 @@
           config = {
             allowUnfree = true;
           };
-          overlays = [ (import rust-overlay) ];
+          overlays = [ (import inputs.rust-overlay) ];
         };
 
       in
