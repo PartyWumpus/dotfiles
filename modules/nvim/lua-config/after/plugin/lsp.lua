@@ -13,7 +13,7 @@ end)
 local lua_opts = lsp_zero.nvim_lua_ls()
 require('lspconfig').lua_ls.setup(lua_opts)
 
-require('lspconfig').tsserver.setup({})
+require('lspconfig').ts_ls.setup({})
 require('lspconfig').rust_analyzer.setup({})
 require('lspconfig').pyright.setup({})
 require('lspconfig').nixd.setup({})

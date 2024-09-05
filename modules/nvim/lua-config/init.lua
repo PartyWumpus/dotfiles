@@ -138,6 +138,9 @@ require("lazy").setup({
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "File explorer" })
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Replace" })
 
+vim.opt.wildoptions = { "tagfile" }
+vim.opt.gdefault = true
+
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
