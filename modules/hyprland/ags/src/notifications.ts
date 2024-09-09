@@ -167,15 +167,17 @@ export function NotificationPopups(monitor: Gdk.Monitor) {
 
   async function onNotified(_: any, id: number) {
     clearTimeout(timeout!);
-    await Utils.execAsync(`hyprctl keyword debug:damage_tracking 0`);
-    //await Utils.execAsync(`hyprctl keyword decoration:screen_shader ${nix.shader}`)
+    await Utils.execAsync(`hyprctl --batch "keyword debug:damage_tracking 0; keyword misc:vfr 0"`);
     await Utils.execAsync(
-      `hyprctl keyword decoration:screen_shader /home/wumpus/nixos/modules/hyprland/chromatic_aberration.frag`,
+      `hyprctl keyword decoration:screen_shader /home/wumpus/.config/hypr/shaders/chromatic_aberration.frag`,
     );
     timeout = setTimeout(() => {
+      // hyprland does not properly clear (some) errors, so we must do it, as any mistakes are (about to be) undone
+      Utils.execAsync(`hyprctl seterror ""`);
+
       Utils.execAsync(`hyprctl keyword decoration:screen_shader ""`);
-      Utils.execAsync(`hyprctl keyword debug:damage_tracking 2`);
-    }, 4000);
+      Utils.execAsync(`hyprctl --batch "keyword debug:damage_tracking 1; keyword misc:vfr 1"`);
+    }, 1500);
     const n = notifications.getNotification(id);
     if (n) list.children = [NotificationWidget(n), ...list.children];
   }

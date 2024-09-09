@@ -92,6 +92,8 @@ in
     dash
   ];
 
+  xdg.configFile."hypr/shaders".source = "${./shaders}";
+
   xdg.portal = {
     enable = true;
     configPackages = [ config.wayland.windowManager.hyprland.package ];
@@ -498,7 +500,6 @@ in
     audio_changer = "${./waybar/audio_changer.py}";
     wifi_menu = "${wifi_menu}";
     bluetooth_menu = "${bluetooth_menu}";
-    shader = "${./chromatic_aberration.frag}";
   };
 
   programs.ags = {
