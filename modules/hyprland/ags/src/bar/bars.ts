@@ -114,7 +114,7 @@ const NetworkIcon = () =>
     ),
   });
 
-const ip = Variable("", {
+const ip = Variable(null, {
   poll: [
     60000,
     [
@@ -122,6 +122,13 @@ const ip = Variable("", {
       "-c",
       `ip -o -4 addr list wlp1s0 | awk '{print $4}' | cut -d/ -f1`,
     ],
+    (ip) => {
+      if (ip === '') {
+        return null
+      } else {
+        return ip
+      }
+    }
   ],
 });
 
@@ -131,14 +138,36 @@ const NetworkingBar = () =>
     onSecondaryClick: () => Utils.execAsync(nix.wifi_menu),
     child: Widget.Box({
       tooltipMarkup: Utils.merge(
-        [networking.bind("wifi"), ip.bind()],
-        (wifi, ip) => `${wifi.ssid} (${wifi.strength}%)\n${ip}`,
+        [networking.bind("primary"), networking.bind("wired"), networking.bind("wifi"), ip.bind()],
+        (primary, wired, wifi, ip) => {
+          if (primary === 'wifi') {
+            return `${wifi.ssid} (${wifi.strength}%)\n${ip ?? 'ip unknown'}`
+          } else if (primary === 'wired') {
+            return `${wired.internet}\n${ip ?? 'ip unknown'}`
+          } else {
+            return `Wired: ${wired.state}\nWireless: ${wifi.state}`
+          }
+        },
       ),
       children: [
         NetworkIcon(),
         Widget.LevelBar({
           widthRequest: 100,
-          value: networking.wifi.bind("strength").as((x) => Math.abs(x) / 100),
+          value: Utils.merge([
+            // strength is not re-sent when the access point (networking._ap) disconnects
+            // so we actually *need* to listen to primary here or bugs
+            networking.wifi.bind("strength"),
+            networking.bind("primary"),
+          ], (strength, primary) => {
+            switch (primary) {
+              case 'wifi':
+                return Math.abs(strength) / 100
+              case 'wired':
+                return 1
+              default:
+                return 0
+            }
+          }),
           css: "border: 1px transparent solid;",
         }),
       ],

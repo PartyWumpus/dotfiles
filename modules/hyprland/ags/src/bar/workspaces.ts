@@ -19,8 +19,6 @@ const dispatch = (ws: number) =>
 
 export const Workspaces = (monitor: Gdk.Monitor) =>
   Widget.EventBox({
-    //onScrollUp: () => dispatch("+1"),
-    //onScrollDown: () => dispatch("-1"),
     child: Widget.Box({
       children: Array.from({ length: 10 }, (_, i) => i + 1).map((i) =>
         AspectFrame({
@@ -35,35 +33,40 @@ export const Workspaces = (monitor: Gdk.Monitor) =>
         }),
       ),
 
-      setup: (self) =>
-        self.hook(hyprland, () =>
+      setup: (self) => {
+        const funcy = () => {
+          const monitorId = getMonitorID(monitor)
           self.children.forEach((frame) => {
             const btn = frame.child;
-            if (
-              btn.attribute ===
-              hyprland.monitors[getMonitorID(monitor)]?.activeWorkspace?.id
-            ) {
-              // active on this window
-              btn.css = `background-color:${COLOR.Highlight};`;
-            } else if (
-              hyprland.workspaces.some(
-                (ws) =>
-                  ws.id === btn.attribute &&
-                  ws.monitorID === getMonitorID(monitor),
-              )
-            ) {
-              // open on this monitor
-              btn.css = `background-color:${COLOR.Overlay1};`;
-            } else if (
-              // open on a different monitor
-              hyprland.workspaces.some((ws) => ws.id === btn.attribute)
-            ) {
-              btn.css = `background-color:${COLOR.Overlay0};opacity:0.75;`;
-            } else {
+            const workspace = hyprland.workspaces.find((ws) => ws.id === btn.attribute)
+
+            if (workspace === undefined) {
               // not open
               btn.css = `background-color:${COLOR.Surface1};opacity:0.5;`;
+              btn.tooltipText = ''
+              return
             }
-          }),
-        ),
+
+            btn.tooltipText = workspace.windows === 0 ? '' : String(workspace.windows)
+
+            const activeWorkspace = hyprland.monitors[monitorId]?.activeWorkspace?.id
+            if (btn.attribute === activeWorkspace) {
+              // currently active on this monitor
+              btn.css = `background-color:${COLOR.Highlight};`;
+              return
+            }
+
+            if (workspace.monitorID === monitorId) {
+              // open on this monitor
+              btn.css = `background-color:${COLOR.Overlay1};`;
+            } else {
+              // open on another monitor
+              btn.css = `background-color:${COLOR.Overlay0};opacity:0.75;`;
+            }
+          })
+        }
+        funcy()
+        self.hook(hyprland, funcy)
+      },
     }),
   });
