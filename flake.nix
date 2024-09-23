@@ -64,7 +64,9 @@
       location = "/home/wumpus/nixos";
       # https://discourse.nixos.org/t/how-to-create-a-timestamp-in-a-nix-expression/30329
       # seems to be behind an hour because of timezone fuckery and defaulting to utc but still does its job
-      my_timestamp = nixpkgs.lib.readFile "${pkgs.runCommandLocal "timestamp" {} "echo -n `date -d @${toString builtins.currentTime} +%Y-%m-%d_%H-%M-%S` > $out"}";
+      my_timestamp = nixpkgs.lib.readFile "${pkgs.runCommandLocal "timestamp" { }
+        "echo -n `date -d @${toString builtins.currentTime} +%Y-%m-%d_%H-%M-%S` > $out"
+      }";
 
       # Channel definitions.
       channelsConfig.allowUnfree = true;

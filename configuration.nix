@@ -15,7 +15,6 @@
     default = false;
   };
 
-
   config = {
     programs.partition-manager.enable = true;
 
@@ -153,7 +152,7 @@
       sof-firmware
 
       # bluetooth info for ags
-      gnome.gnome-bluetooth
+      gnome-bluetooth
       manix
 
       steam-run

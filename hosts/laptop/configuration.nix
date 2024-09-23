@@ -11,16 +11,26 @@
   #  ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = false;
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      devices = [ "nodev" ];
+      enable = true;
+      efiSupport = true;
+      useOSProber = true;
+    };
+  };
 
   fileSystems = {
     "/".options = [ "compress=zstd" ];
   };
 
-  services.fprintd = {
-    enable = true;
-  };
+  # fingerprint
+  services.fprintd.enable = true;
   services.fwupd.enable = true;
 
   boot.kernelParams = [
