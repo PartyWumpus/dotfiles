@@ -24,7 +24,7 @@
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
+    flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
 
     yazi-flavors.url = "github:yazi-rs/flavors";
     yazi-flavors.flake = false;
@@ -33,9 +33,8 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    # TODO: once 2.91 is in nixpkgs, just use that
-    lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-    lix-module.inputs.nixpkgs.follows = "nixpkgs";
+    #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+    #lix-module.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -74,7 +73,6 @@
 
       # Modules shared between all hosts
       hostDefaults.modules = [
-        inputs.lix-module.nixosModules.default
         inputs.flatpaks.nixosModules.default
         inputs.catppuccin.nixosModules.catppuccin
         ./configuration.nix

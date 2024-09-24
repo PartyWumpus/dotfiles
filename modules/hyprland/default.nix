@@ -240,7 +240,7 @@ in
     package = inputs.hyprland.packages.${pkgs.system}.default;
     settings = {
       "$mod" = "SUPER";
-      "$terminal" = "alacritty"; # todo
+      "$terminal" = "footclient";
       "$menu" = "${menu}";
 
       monitor = (
@@ -256,6 +256,7 @@ in
 
       input = {
         kb_layout = "gb";
+        kb_options = "caps:swapescape";
       };
 
       general = {
@@ -311,6 +312,7 @@ in
         "float, initialclass: xdg-desktop-portal-gtk"
         "dimaround, initialclass: xdg-desktop-portal-gtk"
         "opacity 0.95, initialTitle: Alacritty"
+        "opacity 0.95, initialTitle: foot"
 
         # modalify tag:modal windows
         "float, tag:modal"
@@ -337,6 +339,7 @@ in
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
         "hypridle"
         "hyprctl setcursor Qogir 24"
+        "foot --server"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
@@ -361,8 +364,6 @@ in
           "$mod, M, exit"
           "$mod, C, killactive"
 
-          #"$mod, S, exec, $menu --insensitive --show drun -show-icons"
-          #"$mod, S, exec, ags -t applauncher"
           "$mod, S, exec, ${pkgs.tofi}/bin/tofi-drun --drun-launch=true"
 
           '', F12, exec, grimshot --notify savecopy area "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"''

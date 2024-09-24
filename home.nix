@@ -36,6 +36,21 @@
 
     programs.fzf.enable = true;
     programs.fzf.catppuccin.enable = true;
+    programs.foot = {
+      enable = true;
+      catppuccin.enable = true;
+      settings = {
+        main = {
+          font = "MesloLGS NF:size=12";
+          resize-delay-ms = 200;
+          pad = "5x5 center";
+        };
+        scrollback = {
+          lines = 100000;
+          multiplier = 3.5; # scroll speed
+        };
+      };
+    };
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
@@ -49,7 +64,6 @@
 
       neofetch
       pipes
-      foot
       # # Adds the 'hello' command to your environment. It prints a friendly
       # # "Hello, world!" when run.
       # pkgs.hello
@@ -65,13 +79,14 @@
       # for yazi
       file # find mimetypes
       ffmpegthumbnailer # video thumbnails
-      unar # archive preview
+      p7zip # archive preview
       jq # JSON preview
       poppler # PDF preview
       fd # file searching
       ripgrep # file content searching
       fzf # quick file subtree navigation
       zoxide # historical directories navigation
+      imagemagick # font preview i think
 
       qogir-icon-theme
     ];

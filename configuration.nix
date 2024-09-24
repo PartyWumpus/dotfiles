@@ -299,6 +299,9 @@
       "x-scheme-handler/unknown" = "google-chrome.desktop";
     };
 
+    # allow appimages to run
+    programs.appiamge.binfmt = true;
+
     # sound setup
     security.rtkit.enable = true;
     services.pipewire = {
