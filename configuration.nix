@@ -300,7 +300,7 @@
     };
 
     # allow appimages to run
-    programs.appiamge.binfmt = true;
+    programs.appimage.binfmt = true;
 
     # sound setup
     security.rtkit.enable = true;

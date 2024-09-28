@@ -22,6 +22,37 @@ require("lazy").setup({
   { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
   { 'nvim-treesitter/nvim-treesitter', cmd = 'TSUpdate' },
 
+  {
+    "mikavilpas/yazi.nvim",
+    event = "VeryLazy",
+    keys = {
+      -- 👇 in this section, choose your own keymappings!
+      {
+        "<leader>-",
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
+      },
+      {
+        -- Open in the current working directory
+        "<leader>cw",
+        "<cmd>Yazi cwd<cr>",
+        desc = "Open the file manager in nvim's working directory",
+      },
+      {
+        '<c-up>',
+        "<cmd>Yazi toggle<cr>",
+        desc = "Resume the last yazi session",
+      },
+    },
+    opts = {
+      -- if you want to open yazi instead of netrw, see below for more info
+      open_for_directories = false,
+      keymaps = {
+        show_help = '<f1>',
+      },
+    },
+  },
+
   { 'nvim-tree/nvim-web-devicons' },
   {
     "rachartier/tiny-devicons-auto-colors.nvim",
@@ -121,6 +152,20 @@ require("lazy").setup({
     end,
   },
 
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
+  { "Bilal2453/luvit-meta",                lazy = true }, -- optional `vim.uv` typings
+
   { 'VonHeikemen/lsp-zero.nvim',           branch = 'v3.x' },
   { 'neovim/nvim-lspconfig' },
   { 'hrsh7th/cmp-nvim-lsp' },
@@ -135,7 +180,7 @@ require("lazy").setup({
 
 
 -- my config
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "File explorer" })
+vim.keymap.set("n", "<leader>pv", "<cmd>Yazi<cr>", { desc = "File explorer" })
 vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Replace" })
 
 vim.opt.wildoptions = { "tagfile" }

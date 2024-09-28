@@ -43,7 +43,7 @@
         main = {
           font = "MesloLGS NF:size=12";
           resize-delay-ms = 200;
-          pad = "5x5 center";
+          pad = "4x4 center";
         };
         scrollback = {
           lines = 100000;

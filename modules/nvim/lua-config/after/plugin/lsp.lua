@@ -38,11 +38,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.buf.format { async = false, id = args.data.client_id }
       end,
     });
-    vim.api.nvim_create_autocmd("BufWritePost", {
-      pattern = "*.norg",
-      callback = function()
-        local buf = vim.fn.bufadd("/home/wumpus/notes/index.norg")
-      end,
-    })
+    --vim.api.nvim_create_autocmd("BufWritePost", {
+    --  pattern = "*.norg",
+    --  callback = function()
+    --    local buf = vim.fn.bufadd("/home/wumpus/notes/index.norg")
+    --  end,
+    --})
   end
 })
