@@ -18,6 +18,10 @@
   config = {
     programs.partition-manager.enable = true;
 
+    systemd.services.bluetooth.serviceConfig = {
+      TimeoutStopSec = 15;
+    };
+
     nix.settings.experimental-features = [
       "nix-command"
       "flakes"
@@ -112,7 +116,10 @@
         "wheel"
       ];
       shell = pkgs.zsh;
-      packages = with pkgs; [ ];
+      packages =
+        with pkgs;
+        [
+        ];
     };
 
     home-manager = {

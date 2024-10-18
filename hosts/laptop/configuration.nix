@@ -34,6 +34,7 @@
   services.fwupd.enable = true;
 
   boot.kernelParams = [
+    "amd_pstate=passive"
     # suspend to RAM (deep) rather than `s2idle`
     #"mem_sleep_default=deep" 
     # fix suspend

@@ -76,6 +76,8 @@
       kdenlive
       feishin
 
+      radicle-node
+
       # for yazi
       file # find mimetypes
       ffmpegthumbnailer # video thumbnails
