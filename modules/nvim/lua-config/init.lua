@@ -125,10 +125,20 @@ require("lazy").setup({
     },
   },
 
-  { 'tris203/precognition.nvim' },
+  { 'tris203/precognition.nvim',  event = "VeryLazy" },
+
+  {
+    '3rd/image.nvim',
+    event = "VeryLazy",
+    config = function()
+      require("image").setup({
+        backend = "kitty",
+      })
+    end
+  },
   {
     "nvim-neorg/neorg",
-    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    event = "VeryLazy",
     version = "*", -- Pin Neorg to the latest stable release
     config = function()
       require("neorg").setup {
@@ -144,6 +154,7 @@ require("lazy").setup({
               default_workspace = "notes",
             },
           },
+          ["core.latex.renderer"] = {},
         },
       }
 
@@ -170,11 +181,10 @@ require("lazy").setup({
   { 'neovim/nvim-lspconfig' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/nvim-cmp' },
-  { 'L3MON4D3/LuaSnip' },
+  { 'L3MON4D3/LuaSnip',                    event = "VeryLazy" },
 
-  { 'lewis6991/hover.nvim' },
-  { 'lukas-reineke/indent-blankline.nvim', main = 'ibl',   opts = {} },
-  { 'HiPhish/rainbow-delimiters.nvim' },
+  { 'lukas-reineke/indent-blankline.nvim', main = 'ibl',      opts = {} },
+  { 'HiPhish/rainbow-delimiters.nvim',     event = "VeryLazy" },
   { 'nvim-lualine/lualine.nvim' },
 })
 
@@ -202,3 +212,5 @@ vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
 
 vim.opt.fileformats = "unix,dos,mac"
+
+print("hiii :3")

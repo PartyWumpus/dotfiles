@@ -29,35 +29,15 @@ require("ibl").setup { scope = { enabled = false } }
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
 
---- hover config
-require("hover").setup {
-  init = function()
-    require("hover.providers.lsp")
-  end,
-
-  preview_opts = {
-    border = 'single'
-  },
-
-  -- Whether the contents of a currently open hover window should be moved
-  -- to a :h preview-window when pressing the hover keymap.
-  preview_window = false,
-  title = true,
-  mouse_providers = {
-    'LSP'
-  },
-  mouse_delay = 800
-}
-
 -- Setup keymaps
-vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "hover.nvim" })
 --vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
 --vim.keymap.set("n", "<C-p>", function() require("hover").hover_switch("previous") end, {desc = "hover.nvim (previous source)"})
 --vim.keymap.set("n", "<C-n>", function() require("hover").hover_switch("next") end, {desc = "hover.nvim (next source)"})
 
 -- Mouse support -- appears to only work in nvim 0.10+
-vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
-vim.o.mousemoveevent = true
+--vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
+--vim.o.mousemoveevent = true
 
 
 vim.keymap.set('n', "F", require('precognition').peek)

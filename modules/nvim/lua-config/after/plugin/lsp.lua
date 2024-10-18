@@ -25,7 +25,11 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
-  })
+  }),
+  window = {
+    --completion = cmp.config.window.bordered(),
+    --documentation = cmp.config.window.bordered(),
+  }
 })
 
 -- format on save (source https://www.mitchellhanberg.com/modern-format-on-save-in-neovim/)
