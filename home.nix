@@ -69,6 +69,7 @@
       # pkgs.hello
 
       alacritty
+      kitty
       google-chrome
       transmission_3-gtk
       pinta

@@ -343,7 +343,7 @@ in
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
-        "ALT, mouse:272, resizewindow"
+        "$mod ALT, mouse:272, resizewindow"
       ];
       bindl = [
         ", XF86AudioPlay, exec, playerctl play-pause"
@@ -373,6 +373,7 @@ in
           "SHIFT + SUPER + CTRL + ALT, L, exec, xdg-open 'https://linkedin.com/'"
 
           "$mod, P, exec, ${show_clipboard}"
+          "$mod, F, fullscreen"
 
         ]
         ++ (

@@ -40,7 +40,7 @@
     #nix.package = pkgs.nixVersions.git;
     nix.package = pkgs.lix;
 
-    nix.registry.self.flake = inputs.self;
+    nix.registry.system.flake = inputs.self;
 
     nix.settings.auto-optimise-store = true;
 
@@ -144,7 +144,7 @@
         }
 
         dev() {
-          nix develop self#"$1" -c zsh
+          nix develop system#"$1" -c zsh
         }
       '';
 
