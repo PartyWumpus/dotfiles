@@ -1,14 +1,14 @@
 Properly set up various programming languages
-Figure out how to put the hyprland config.nix stuff in the module
 Switch to firefox??
-Figure out how to tell steam to start with -vgui (seems to magically fix it)
-Figure out why chrome is being funky™, prob just needs updating
-Fix sddm theme
-Add shortcut for editing config, and make nvim CD when a opening dir is specificied
-Find a good debugger for rust cuz i want to view the assembly
 Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager && nix-channel --update` doesn't work and i need to type `manix --update-cache mergeattr` constantly :(
-Fix code actions in neovim
 use hyprs focuscurrentorlast to switch to prev window as hotkey
 check out hyprexpo
+
+NVIM:
+Switch to nvf
+Add underline errors (toggle with hotkey?)
+Make lualine more compact
 check out harpoon
-Try out either neorg & neorg-telescope 
+Add shortcut for editing config
+make nvim CD when a opening dir is specificied (ie `nvim src` changes working dir to src)
+

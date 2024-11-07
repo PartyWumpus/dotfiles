@@ -240,7 +240,7 @@ in
     package = inputs.hyprland.packages.${pkgs.system}.default;
     settings = {
       "$mod" = "SUPER";
-      "$terminal" = "footclient";
+      "$terminal" = "kitty";
       "$menu" = "${menu}";
 
       monitor = (
@@ -268,10 +268,10 @@ in
       };
 
       decoration = {
-        inactive_opacity = 0.98;
+        #inactive_opacity = 0.98;
         active_opacity = 1.0;
         fullscreen_opacity = 1.0;
-        dim_around = 7.0e-2; # dimming around modals
+        dim_around = 7.0; # dimming around modals
         rounding = 15;
         drop_shadow = 0;
         # blur is only for top bar
@@ -311,8 +311,8 @@ in
 
         "float, initialclass: xdg-desktop-portal-gtk"
         "dimaround, initialclass: xdg-desktop-portal-gtk"
-        "opacity 0.95, initialTitle: Alacritty"
-        "opacity 0.95, initialTitle: foot"
+        #"opacity 0.95, initialTitle: Alacritty"
+        #"opacity 0.95, initialTitle: foot"
 
         # modalify tag:modal windows
         "float, tag:modal"
@@ -339,7 +339,6 @@ in
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
         "hypridle"
         "hyprctl setcursor Qogir 24"
-        "foot --server"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"

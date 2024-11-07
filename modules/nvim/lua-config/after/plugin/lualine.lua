@@ -18,17 +18,40 @@ require('lualine').setup {
     }
   },
   sections = {
-    lualine_a = { 'mode' },
+    lualine_a = {
+      { 'mode', fmt = function(str) return str:sub(1, 1) end }
+    },
     lualine_b = { 'branch', 'diff', 'diagnostics' },
-    lualine_c = { 'filename' },
-    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+    lualine_c = {
+      { 'filename',
+        path = 0,
+        shorting_target = 20,
+        symbols = {
+          modified = '*',
+          readonly = '',
+          unnamed = '[No Name]',
+          newfile = '[New]',
+        }
+      } },
+    lualine_x = { 'encoding', { 'filetype', icon_only = true } },
     lualine_y = { 'progress' },
     lualine_z = { 'location' }
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { 'filename' },
+    lualine_c = {
+      { 'filename',
+        path = 1, -- relative path instead of just filename
+        symbols = {
+          modified = '*',
+          readonly = '',
+          unnamed = '[No Name]',
+          newfile = '[New]',
+        },
+        shorting_target = 5
+      }
+    },
     lualine_x = { 'filetype', 'location' },
     lualine_y = {},
     lualine_z = {}

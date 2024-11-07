@@ -18,6 +18,7 @@
       efiSysMountPoint = "/boot";
     };
     grub = {
+      configurationLimit = 20;
       devices = [ "nodev" ];
       enable = true;
       efiSupport = true;

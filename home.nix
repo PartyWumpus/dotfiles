@@ -52,6 +52,17 @@
       };
     };
 
+    programs.kitty = {
+      enable = true;
+      catppuccin.enable = true;
+      settings = {
+        scrollback_lines = 10000;
+        enable_audio_bell = false;
+        window_padding_width = 2;
+        background_opacity = 0.96;
+      };
+    };
+
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
@@ -59,6 +70,12 @@
       wget
       tldr
       unzip
+      /*(htop.overrideAttrs (
+      finalAttrs: previousAttrs: {
+        nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
+        patches = [./nix.patch];
+      }
+      ))*/
       htop
       #fzf
 
@@ -68,8 +85,6 @@
       # # "Hello, world!" when run.
       # pkgs.hello
 
-      alacritty
-      kitty
       google-chrome
       transmission_3-gtk
       pinta
@@ -139,8 +154,8 @@
       };
       "Kvantum/Catppuccin-Macchiato-Mauve".source = "${
         (pkgs.catppuccin-kvantum.override {
-          accent = "Mauve";
-          variant = "Macchiato";
+          accent = "mauve";
+          variant = "macchiato";
         })
       }/share/Kvantum/Catppuccin-Macchiato-Mauve";
     };
@@ -256,7 +271,7 @@
     #
     home.sessionVariables = {
       EDITOR = "nvim";
-      TERMINAL = "alacritty";
+      TERMINAL = "kitty";
     };
 
     programs.git = {
