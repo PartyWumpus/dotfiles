@@ -33,6 +33,11 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
     #lix-module.inputs.nixpkgs.follows = "nixpkgs";
   };
