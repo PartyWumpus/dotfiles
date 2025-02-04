@@ -57,6 +57,8 @@ in
       #ueberzugpp # <- this sucks
       #texlive.combined.scheme-medium
       tex
+      typst
+
 
       # languages
       (python312.withPackages (ps: [ ps.pynvim ]))
@@ -67,6 +69,7 @@ in
       rust-analyzer
       pyright
       nixd
+      tinymist
     ];
   };
 

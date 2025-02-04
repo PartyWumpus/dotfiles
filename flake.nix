@@ -9,7 +9,7 @@
 
     rust-overlay.url = "github:oxalica/rust-overlay";
 
-    ags.url = "github:/Aylur/ags";
+    ags.url = "github:/Aylur/ags/v1";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -32,11 +32,6 @@
     yazi-plugins.flake = false;
 
     catppuccin.url = "github:catppuccin/nix";
-
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
     #lix-module.inputs.nixpkgs.follows = "nixpkgs";

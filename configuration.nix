@@ -18,6 +18,23 @@
   config = {
     programs.partition-manager.enable = true;
 
+/*
+    nix.settings.system-features = [
+      "benchmark"
+      "big-parallel"
+      "kvm"
+      "nixos-test"
+      "gccarch-znver3"
+      "gccarch-x86-64-v2"
+      "gccarch-x86-64-v3" 
+    ];
+
+nixpkgs.localSystem = {
+    gcc.arch = "skylake";
+    gcc.tune = "skylake";
+};
+*/
+
     systemd.services.bluetooth.serviceConfig = {
       TimeoutStopSec = 15;
     };

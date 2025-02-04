@@ -36,21 +36,23 @@ let
   record = pkgs.writeShellScript "record" ''
     LOCKFILE=~/.recording
     FILE=~/Videos/clips/wip.mp4
-    if [ -f $LOCKFILE ]; then
-      OUT="/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
-      mv "$FILE" "$OUT"
-      wl-copy -t text/uri-list <<< "file://$OUT"
-      rm "$LOCKFILE"
-      pkill wl-screenrec
-    else
+    
+    if [ ! -f $LOCKFILE ]; then  # Not yet recording a clip so start recording
       touch $LOCKFILE
       if [ "$1" == "area" ]; then
         ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "$FILE"
       else # full screen
-        # TODO: use -o to select the current display
-        ${pkgs.wl-screenrec}/bin/wl-screenrec --audio -f "$FILE"
+        # TODO: use -o and do 'current screen'
+        ${pkgs.wl-screenrec}/bin/wl-screenrec --audio "$(${pkgs.pulseaudio}/bin/pactl get-default-sink)" -f "$FILE"
       fi
       notify-send "recording ended"
+      rm "$LOCKFILE"
+    else # Already recording a clip so stop and save it
+      OUT="/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
+      pkill wl-screenrec
+      # TODO: replace me with ffmpeg compression
+      mv "$FILE" "$OUT"
+      wl-copy -t text/uri-list <<< "file://$OUT"
       rm "$LOCKFILE"
     fi
   '';
@@ -260,24 +262,21 @@ in
       };
 
       general = {
-        gaps_in = 1;
-        gaps_out = "0,5,5,5";
-        "col.inactive_border" = "rgba(00000000)"; # transparent
+        gaps_in = -1;
+        gaps_out = 0;
+        "col.inactive_border" = "rgb(363a4f)"; # Surface 0
         "col.active_border" = "rgb(c6a0f6)"; # Mauve
         border_size = 2;
       };
 
       decoration = {
-        #inactive_opacity = 0.98;
-        active_opacity = 1.0;
-        fullscreen_opacity = 1.0;
-        dim_around = 7.0; # dimming around modals
-        rounding = 15;
-        drop_shadow = 0;
-        # blur is only for top bar
+        dim_around = 0.2; # dimming around modals
+        rounding = 0;
         blur = {
-          size = 4;
-          passes = 3;
+          enabled = false;
+        };
+        shadow = {
+          enabled = false;
         };
       };
 
@@ -373,6 +372,11 @@ in
 
           "$mod, P, exec, ${show_clipboard}"
           "$mod, F, fullscreen"
+
+          "$mod, Left, movefocus, l"
+          "$mod, Right, movefocus, r"
+          "$mod, Up, movefocus, u"
+          "$mod, Down, movefocus, d"
 
         ]
         ++ (

@@ -18,6 +18,15 @@ require('lspconfig').rust_analyzer.setup({})
 require('lspconfig').pyright.setup({})
 require('lspconfig').nixd.setup({})
 require('lspconfig').astro.setup({})
+require('lspconfig').tinymist.setup({
+  single_file_support = true,
+  offset_encoding = "utf-8",
+  settings = {
+    formatterMode = "typstyle",
+    exportPdf = "never",
+    semanticTokens = "disable"
+  }
+})
 
 
 local cmp = require('cmp')

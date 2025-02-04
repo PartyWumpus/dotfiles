@@ -21,6 +21,14 @@ require("lazy").setup({
   { 'nvim-telescope/telescope.nvim',   tag = '0.1.5',       dependencies = { 'nvim-lua/plenary.nvim' } },
   { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
   { 'nvim-treesitter/nvim-treesitter', cmd = 'TSUpdate' },
+  { 'Saghen/blink.cmp' },
+
+  {
+    "catgoose/nvim-colorizer.lua",
+    event = "BufReadPre",
+    opts = { -- set to setup table
+    },
+  },
 
   {
     "mikavilpas/yazi.nvim",
@@ -127,7 +135,7 @@ require("lazy").setup({
 
   { 'tris203/precognition.nvim',  event = "VeryLazy" },
 
-  {
+  --[[{
     '3rd/image.nvim',
     event = "VeryLazy",
     config = function()
@@ -135,13 +143,14 @@ require("lazy").setup({
         backend = "kitty",
       })
     end
-  },
-  {
+  },]] --
+  --[[{
     "nvim-neorg/neorg",
     event = "VeryLazy",
     version = "*", -- Pin Neorg to the latest stable release
     config = function()
       require("neorg").setup {
+
         load = {
           ["core.defaults"] = {},
           ["core.concealer"] = {},
@@ -161,7 +170,26 @@ require("lazy").setup({
       vim.wo.foldlevel = 99
       vim.wo.conceallevel = 2
     end,
+  },]] --
+
+
+  {
+    dir = '~/Code/typst-plugin',
+    name = 'typst-concealer',
+    config = function()
+      local typst = require('typst-concealer')
+      typst.setup {}
+
+      vim.keymap.set("n", "<leader>ts", function()
+        typst.enable_buf(vim.fn.bufnr())
+      end, { desc = "[typst-concealer] re-render" })
+      vim.keymap.set("n", "<leader>th", function()
+        typst.disable_buf(vim.fn.bufnr())
+      end, { desc = "[typst-concealer] clear" })
+    end,
+    event = "VeryLazy"
   },
+  --{ 'PartyWumpus/typst-concealer', config = function() require('typst-concealer').setup() end },
 
   {
     "folke/lazydev.nvim",
@@ -186,6 +214,7 @@ require("lazy").setup({
   { 'lukas-reineke/indent-blankline.nvim', main = 'ibl',      opts = {} },
   { 'HiPhish/rainbow-delimiters.nvim',     event = "VeryLazy" },
   { 'nvim-lualine/lualine.nvim' },
+
 })
 
 

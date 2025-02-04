@@ -59,7 +59,7 @@
         scrollback_lines = 10000;
         enable_audio_bell = false;
         window_padding_width = 2;
-        background_opacity = 0.96;
+        background_opacity = 1;
       };
     };
 
@@ -70,12 +70,14 @@
       wget
       tldr
       unzip
-      /*(htop.overrideAttrs (
-      finalAttrs: previousAttrs: {
-        nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
-        patches = [./nix.patch];
-      }
-      ))*/
+      /*
+        (htop.overrideAttrs (
+        finalAttrs: previousAttrs: {
+          nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
+          patches = [./nix.patch];
+        }
+        ))
+      */
       htop
       #fzf
 
