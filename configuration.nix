@@ -129,6 +129,7 @@ nixpkgs.localSystem = {
       isNormalUser = true;
       description = "wumpus";
       extraGroups = [
+        "dialout"
         "networkmanager"
         "wheel"
       ];
@@ -293,6 +294,7 @@ nixpkgs.localSystem = {
     fonts.packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
+      #noto-fonts-monochrome-emoji
       noto-fonts-emoji
       meslo-lgs-nf
       rubik

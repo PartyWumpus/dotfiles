@@ -27,10 +27,12 @@ let
 
   wifi_menu = pkgs.writeShellScript "wifi_menu" ''
     hyprctl dispatch exec "[tag modal] alacritty -e bash -c 'unset COLORTERM; TERM=xterm-old nmtui'"
+    sleep 0.5 && hyprctl dispatch focuswindow "floating"
   '';
 
   bluetooth_menu = pkgs.writeShellScript "bluetooth_menu" ''
     hyprctl dispatch exec "[tag modal] ${pkgs.blueman}/bin/blueman-manager"
+    sleep 0.5 && hyprctl dispatch focuswindow "floating"
   '';
 
   record = pkgs.writeShellScript "record" ''
@@ -56,26 +58,6 @@ let
       rm "$LOCKFILE"
     fi
   '';
-
-  /*
-    monitor_change = pkgs.writeShellScript "monitor_change" ''
-
-      	monitor_changed() {
-      		pkill ags;
-      		sleep 0.2;
-      		ags &
-      	}
-
-      	handle() {
-        	case $1 in
-          	monitoradded*) monitor_changed ;;
-      			monitorremoved*) monitor_changed ;;
-        	esac
-      	}
-
-      	${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
-      '';
-  */
 
 in
 {
@@ -304,6 +286,9 @@ in
       xwayland = {
         force_zero_scaling = 1;
       };
+      ecosystem = {
+        no_update_news = true;
+      };
       windowrulev2 = [
         # disable blur for all windows by default
         "noblur, initialtitle:.*"
@@ -316,10 +301,14 @@ in
         # modalify tag:modal windows
         "float, tag:modal"
         "pin, tag:modal"
+        "noanim, tag:modal"
         "center, tag:modal"
         "bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1"
       ];
       layerrule = [
+        # no black border on grimblast screenshots
+        "noanim, ^(selection)$"
+        
         "blur, ^bar.*"
         "ignorezero, ^bar.*"
 
@@ -329,15 +318,14 @@ in
       ];
       exec-once = [
         "swww-daemon"
-        "sleep 10 && swww img ${../../assets/wallpaper.png}"
-        #"waybar"
-        "ags"
-        #"$\{monitor_change} # handles ags restarting"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "wl-paste --watch cliphist store"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
         "hypridle"
         "hyprctl setcursor Qogir 24"
+        "${pkgs.waycorner}/bin/waycorner"
+        "sleep 10 && swww img ${../../assets/nix.jpg}"
+        "sleep 5 && ${inputs.ags.packages.${pkgs.system}.default}/bin/ags-desktop"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
@@ -495,268 +483,18 @@ in
       '';
   };
 
-  # symlink the ags types into the config directory.
-  # TODO: find a better way of symlinking the ags types
-  home.file."${inputs.self.location}/modules/hyprland/ags/types".source = "${inputs.ags.packages.x86_64-linux.agsWithTypes.out}/share/com.github.Aylur.ags/types";
-
   home.file.".local/share/ags/nix.json".text = builtins.toJSON {
-    bun = "${pkgs.bun}/bin/bun"; # workaround for extraPackages being broken
     show_clipboard = "${show_clipboard}";
-    audio_changer = "${./waybar/audio_changer.py}";
     wifi_menu = "${wifi_menu}";
     bluetooth_menu = "${bluetooth_menu}";
   };
-
-  programs.ags = {
-    enable = true;
-    configDir = ./ags;
-    # extraPackages isn't working for some reason
-    #extraPackages = with pkgs; [
-    #  bun
-    #];
-  };
-
-  programs.waybar = {
-    enable = true;
-    style = ''${builtins.readFile ./waybar/waybar.css}'';
-    # thank you https://git.sr.ht/~begs/dotfiles/tree/master/item/.config/waybar/config
-    settings = [
-      {
-        layer = "top";
-        position = "top";
-
-        modules-left = [
-          "hyprland/mode"
-          "hyprland/workspaces"
-          "custom/arrow10"
-          "hyprland/window"
-        ];
-
-        modules-right = [
-          "custom/arrow9"
-          "pulseaudio"
-          "custom/arrow8"
-          "network"
-          "custom/arrow7"
-          "memory"
-          "custom/arrow6"
-          "cpu"
-          "custom/arrow5"
-          "temperature"
-          "custom/arrow4"
-          (if osConfig.local.isDesktop then "disk" else "battery")
-          "custom/arrow3"
-          "custom/clipboard"
-          "custom/arrow2"
-          "clock#date"
-          "custom/arrow1"
-          "clock#time"
-        ];
-
-        # modules
-
-        battery = {
-          interval = 10;
-          states = {
-            warning = 30;
-            critical = 15;
-          };
-          format-time = "{H}:{M:02}";
-          format = "{icon} {capacity}% ({time})";
-          format-charging = " {capacity}% ({time})";
-          format-charging-full = " {capacity}%";
-          format-full = "{icon} {capacity}%";
-          format-alt = "{icon} {power}W";
-          format-icons = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
-          tooltip = false;
-        };
-
-        "clock#time" = {
-          interval = 10;
-          format = "{:%H:%M}";
-          tooltip = false;
-        };
-
-        "clock#date" = {
-          interval = 20;
-          format = "{:%e %b %Y}";
-          tooltip = false;
-          # tooltip-format = "{:%e %B %Y}"
-        };
-
-        cpu = {
-          interval = 5;
-          tooltip = false;
-          format = " {usage}%";
-          format-alt = " {load}";
-          states = {
-            warning = 70;
-            critical = 90;
-          };
-        };
-
-        #"hyprland/language" = {
-        #  format = " {}";
-        #  min-length = 5;
-        #  on-click = "swaymsg 'input * xkb_switch_layout next'";
-        #  tooltip = false;
-        #};
-
-        disk = {
-          format = " {percentage_used}%";
-          format-alt = " {used}/{total}";
-        };
-
-        # thank you random reddit thread https://www.reddit.com/r/swaywm/comments/z4lq76/comment/ixse0tm/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-        "custom/clipboard" = {
-          format = "󱉫";
-          interval = "once";
-          return-type = "json";
-          on-click = "sleep 0.1 && ${show_clipboard}";
-          on-click-right = "sleep 0.1 && ${delete_clipboard}";
-          #on-click-middle = "swaymsg -q exec '$clipboard-del-all'";
-          exec = "printf '{\"tooltip\":\"%s\"}' $(cliphist list | wc -l)";
-          exec-if = "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]";
-          signal = 9;
-        };
-
-        memory = {
-          interval = 5;
-          format = " {used:0.1f}G/{total:0.1f}G";
-          states = {
-            warning = 70;
-            critical = 90;
-          };
-          tooltip = false;
-        };
-
-        network = {
-          interval = 5;
-          format-wifi = " {essid} ({signalStrength}%)";
-          format-ethernet = " {ifname}";
-          format-disconnected = "No connection";
-          format-alt = " {ipaddr}/{cidr}";
-          tooltip = false;
-          on-click-right = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-        };
-
-        "hyprland/mode" = {
-          format = "{}";
-          tooltip = false;
-        };
-
-        "hyprland/window" = {
-          format = "{}";
-          max-length = 30;
-          tooltip = false;
-        };
-
-        "hyprland/workspaces" = {
-          disable-scroll-wraparound = true;
-          smooth-scrolling-threshold = 4;
-          enable-bar-scroll = true;
-          format = "{name}";
-        };
-
-        pulseaudio = {
-          format = "{icon} {volume}%";
-          format-bluetooth = "{icon} {volume}%";
-          format-muted = "";
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            #headset = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [
-              ""
-              ""
-            ];
-          };
-          scroll-step = 1;
-          #on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          # sleep is needed because of waybar & hyprland bug https://github.com/Alexays/Waybar/issues/1850
-          on-click = "sleep 0.1 && ${./waybar/audio_changer.py}";
-          tooltip = false;
-        };
-
-        temperature = {
-          critical-threshold = 90;
-          interval = 5;
-          format = "{icon} {temperatureC}°";
-          format-icons = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
-          tooltip = false;
-        };
-
-        tray = {
-          icon-size = 18;
-          # spacing = 10
-        };
-
-        "custom/arrow1" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow2" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow3" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow4" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow5" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow6" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow7" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow8" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow9" = {
-          format = "";
-          tooltip = false;
-        };
-
-        "custom/arrow10" = {
-          format = "";
-          tooltip = false;
-        };
-      }
-    ];
-  };
+  
+  xdg.configFile."waycorner/config.toml".text = ''
+    [hotcorner_in]
+    enter_command = [ "${inputs.ags.packages.${pkgs.system}.ags_bin}/bin/ags", "request", "hotcorner" ]
+    locations = ["top_right"]
+    size = 18
+    timeout_ms = 5
+    color = "#FFFF0000"
+    '';
 }

@@ -9,8 +9,6 @@
 
     rust-overlay.url = "github:oxalica/rust-overlay";
 
-    ags.url = "github:/Aylur/ags/v1";
-
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -33,6 +31,8 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    ags.url = "./modules/hyprland/ags2/";
+
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
     #lix-module.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -49,7 +49,6 @@
       pkgs = self.pkgs.x86_64-linux.nixpkgs;
       eachSystem = utils.lib.eachDefaultSystem;
       hmModules = [
-        inputs.ags.homeManagerModules.default
         inputs.catppuccin.homeManagerModules.catppuccin
         #hyprlock.homeManagerModules.hyprlock
       ];
