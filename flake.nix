@@ -31,7 +31,7 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    ags.url = "./modules/hyprland/ags2/";
+    ags.url = "path:./modules/hyprland/ags/";
 
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
     #lix-module.inputs.nixpkgs.follows = "nixpkgs";

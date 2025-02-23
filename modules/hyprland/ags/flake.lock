@@ -30,15 +30,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1739787548,
-        "narHash": "sha256-Gt4yc0nM4l63NIBgSznxriZQtrE1Xk6NlZauGiMmJ/4=",
-        "owner": "aylur",
+        "lastModified": 1740270404,
+        "narHash": "sha256-A+4t6wCD+l2JAzTDN4t8xI0LOSJ+sPyAZghUUT8cnjI=",
+        "owner": "PartyWumpus",
         "repo": "astal",
-        "rev": "cbfe69a9c22f3b0e59c6e09fffbe0b7af4f543d1",
+        "rev": "871e9af702e1c79d996b31a39d457d61bac8fc60",
         "type": "github"
       },
       "original": {
-        "owner": "aylur",
+        "owner": "PartyWumpus",
+        "ref": "wireplumber-improvements",
         "repo": "astal",
         "type": "github"
       }

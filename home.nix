@@ -95,20 +95,6 @@
       feishin
 
       radicle-node
-
-      # for yazi
-      file # find mimetypes
-      ffmpegthumbnailer # video thumbnails
-      p7zip # archive preview
-      jq # JSON preview
-      poppler # PDF preview
-      fd # file searching
-      ripgrep # file content searching
-      fzf # quick file subtree navigation
-      zoxide # historical directories navigation
-      imagemagick # font preview i think
-
-      qogir-icon-theme
     ];
 
     gtk = {
@@ -126,10 +112,8 @@
         name = "Qogir";
         package = pkgs.qogir-icon-theme;
       };
-      iconTheme = {
-        name = "Qogir";
-        package = pkgs.qogir-icon-theme;
-      };
+      iconTheme.package = pkgs.tela-icon-theme;
+      iconTheme.name = "Tela-dark";
     };
 
     qt = {

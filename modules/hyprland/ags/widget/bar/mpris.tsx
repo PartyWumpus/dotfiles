@@ -10,7 +10,7 @@ const hyprland = Hyprland.get_default()
 
 const transition_duration = 500
 
-const enum SLIDE_STATE { 
+const enum SLIDE_STATE {
   STOPPED,
   DOWN,
   UP
@@ -71,22 +71,22 @@ Album: ${player.album}`)}
           }}
         ><box><scrollable
           setup={(self) => {
-            setInterval(() => {
+            timeouts.push(setInterval(() => {
               if (animation === SLIDE_STATE.STOPPED) {
                 return
               }
               const prev = self.vadjustment.value
 
               if (animation === SLIDE_STATE.UP) {
-                self.vadjustment.value -= 5
+                self.vadjustment.value -= 2
               } else if (animation === SLIDE_STATE.DOWN) {
-                self.vadjustment.value += 5
+                self.vadjustment.value += 2
               }
 
               if (prev === self.vadjustment.value) {
                 animation = SLIDE_STATE.STOPPED
               }
-            }, 50)
+            }, 10))
           }}
           heightRequest={18}
           hscroll={Gtk.PolicyType.NEVER}
@@ -99,14 +99,14 @@ Album: ${player.album}`)}
               hscroll={Gtk.PolicyType.EXTERNAL}
               vscroll={Gtk.PolicyType.EXTERNAL}
               setup={(self) => {
-                const a = setTimeout(() => {
+                timeouts.push(setTimeout(() => {
                   if (self.vadjustment.lower !== 0 || self.vadjustment.upper !== 15) {
                     console.log("vadjustment assumption 1 is wrong.", self.vadjustment.lower, self.vadjustment.upper)
                   }
                   self.vadjustment.value = 2
-                }, 200)
+                }, 200))
 
-                const b = setInterval(() => {
+                timeouts.push(setInterval(() => {
                   if (self.hadjustment.upper === 100) {
                     return
                   }
@@ -120,9 +120,7 @@ Album: ${player.album}`)}
                     lock = true
                     setTimeout(() => { direction = !direction; lock = false }, 1250)
                   }
-                }, 120)
-                timeouts.push(a)
-                timeouts.push(b)
+                }, 120))
               }}
             >
 
@@ -147,13 +145,12 @@ Album: ${player.album}`)}
               hscroll={Gtk.PolicyType.NEVER}
               vscroll={Gtk.PolicyType.EXTERNAL}
               setup={(self) => {
-                const a = setTimeout(() => {
+                timeouts.push(setTimeout(() => {
                   if (self.vadjustment.lower !== 0 || self.vadjustment.upper !== 9) {
                     console.log("vadjustment assumption 2 is wrong.", self.vadjustment.lower, self.vadjustment.upper)
                   }
                   self.vadjustment.value = 2
-                }, 200)
-                timeouts.push(a)
+                }, 200))
               }}
             >
               <eventbox
@@ -196,6 +193,7 @@ Album: ${player.album}`)}
                 <icon icon="media-skip-backward-symbolic" />
               </button>
               <button
+                css={"padding:0px 3px"}
                 onClicked={() => player.play_pause()}
                 visible={bind(player, "canControl")}>
                 <icon icon={bind(player, "playbackStatus").as(s => (s === Mpris.PlaybackStatus.PLAYING) ? "media-playback-pause-symbolic" : "media-playback-start-symbolic")} />
@@ -264,22 +262,28 @@ export default function MediaInfo() {
 
 
     mpris.connect("player-added", (_, player) => {
+      console.log("added", player.busName)
       const widget = MediaPlayerRevealer(player)
       players[player.busName] = widget
       self.pack_end(widget, true, true, 0)
       self.show_all()
     })
 
+    // This may be triggered more than once per player
     mpris.connect("player-closed", (_, player) => {
+      console.log("closed", player.busName)
       const widget = players[player.busName]
-      widget.revealChild = false
-      setTimeout(() => {
-        widget.destroy()
+      if (widget) {
+        widget.revealChild = false
         delete players[player.busName]
-      }, transition_duration * 1.2)
+        setTimeout(() => {
+          widget?.destroy()
+        }, transition_duration * 1.2)
+      }
     })
 
   }
   }
   />
 }
+

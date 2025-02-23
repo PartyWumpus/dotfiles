@@ -45,13 +45,13 @@ let
         ${pkgs.wl-screenrec}/bin/wl-screenrec -g "$(${pkgs.slurp}/bin/slurp)" -f "$FILE"
       else # full screen
         # TODO: use -o and do 'current screen'
-        ${pkgs.wl-screenrec}/bin/wl-screenrec --audio "$(${pkgs.pulseaudio}/bin/pactl get-default-sink)" -f "$FILE"
+        ${pkgs.wl-screenrec}/bin/wl-screenrec --audio --audio-device "$(${pkgs.pulseaudio}/bin/pactl get-default-sink)" -f "$FILE"
       fi
-      notify-send "recording ended"
       rm "$LOCKFILE"
     else # Already recording a clip so stop and save it
       OUT="/home/wumpus/Videos/clips/$(date +%Y-%m-%d_%H-%M-%S).mp4"
       pkill wl-screenrec
+      pkill slurp
       # TODO: replace me with ffmpeg compression
       mv "$FILE" "$OUT"
       wl-copy -t text/uri-list <<< "file://$OUT"
@@ -487,14 +487,6 @@ in
     show_clipboard = "${show_clipboard}";
     wifi_menu = "${wifi_menu}";
     bluetooth_menu = "${bluetooth_menu}";
+    record = "${record}";
   };
-  
-  xdg.configFile."waycorner/config.toml".text = ''
-    [hotcorner_in]
-    enter_command = [ "${inputs.ags.packages.${pkgs.system}.ags_bin}/bin/ags", "request", "hotcorner" ]
-    locations = ["top_right"]
-    size = 18
-    timeout_ms = 5
-    color = "#FFFF0000"
-    '';
 }

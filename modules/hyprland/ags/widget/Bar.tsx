@@ -1,4 +1,4 @@
-import { App, Astal, Gtk, Gdk, Widget } from "astal/gtk3"
+import { App, Astal, Gdk, Gtk, Widget } from "astal/gtk3"
 
 import Time from "./bar/time"
 import Workspaces from "./bar/workspaces"
@@ -7,6 +7,7 @@ import VolumeInfo from "./bar/volume"
 import BluetoothInfo from "./bar/bluetooth"
 import MediaInfo from "./bar/mpris"
 import CpuInfo from "./bar/cpu"
+import RecordingIndicator from "./bar/recording"
 
 // <icon icon={GLib.get_os_info("LOGO") ?? "missing-symbolic"}/>
 
@@ -47,6 +48,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         <MediaInfo />
       </box>
       <box halign={Gtk.Align.END}>
+        <RecordingIndicator />
         <BatteryInfo />
         <label>{" | "}</label>
         <Time />

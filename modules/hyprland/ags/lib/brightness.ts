@@ -62,10 +62,10 @@ export default class Brightness extends GObject.Object {
             this.notify("screen")
         })
 
-        monitorFile(kbdPath, async f => {
+        /*monitorFile(kbdPath, async f => {
             const v = await readFileAsync(f)
             this.#kbd = Number(v) / this.#kbdMax
             this.notify("kbd")
-        })
+        })*/
     }
 }

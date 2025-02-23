@@ -37,9 +37,9 @@
   boot.kernelParams = [
     "amd_pstate=passive"
     # suspend to RAM (deep) rather than `s2idle`
-    #"mem_sleep_default=deep" 
+    #"mem_sleep_default=deep"
     # fix suspend
-    #"rtc_cmos.use_acpi_alarm=1" 
+    #"rtc_cmos.use_acpi_alarm=1"
   ];
 
   # suspend-then-hibernate
@@ -60,7 +60,6 @@
 
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-
 
       CPU_MIN_PERF_ON_AC = 0;
       CPU_MAX_PERF_ON_AC = 100;

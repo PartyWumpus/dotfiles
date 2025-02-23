@@ -47,6 +47,8 @@ const time = Variable<PlainDate>(dateToPlain()).poll(1000, () => {
   return dateToPlain()
 })
 
+const counter = Variable(0).poll(1, (x) => x+1)
+
 export default function Time() {
   return <label
     css="padding-right:3px;"

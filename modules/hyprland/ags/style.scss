@@ -42,6 +42,8 @@ tooltip {
   background: rgba($base, 0.98);
   border: solid 1px $mauve;
   font-family: "roboto";
+  // TODO: consider
+  //box-shadow: 3px 3px 7px 0 rgba(0,0,0,.4);
 }
 
 window.Popovers {
@@ -174,3 +176,70 @@ window.Bar {
   }
 }
 
+window.OSD {
+    box.OSD {
+        border-radius: 100px;
+        background-color: $surface2;
+        padding: 6px 8px;
+        margin: 13px;
+        box-shadow: 3px 3px 7px 0 rgba(0,0,0,.4);
+    }
+
+    icon {
+        font-size: 25px;
+        color: $mauve;
+    }
+
+    label {
+        font-size: 25px;
+    }
+
+  levelbar {
+    trough {
+      background-color: $surface1;
+      border-radius: 4px;
+    }
+
+    block {
+        min-height: 10px;
+    }
+
+    block.empty {
+      background-color: transparent;
+    }
+
+    block.filled {
+      background-color: $mauve;
+      border-radius: 4px;
+    }
+  }
+}
+
+.audioPicker {
+  > button {
+    border: 1px solid transparent;
+  }
+
+  .selected {
+    border: 1px solid $mauve;
+  }
+}
+
+.bluetoothPicker {
+  > button {
+    border: 1px solid transparent;
+  }
+
+  .connected {
+    border: 1px solid $mauve;
+  }
+
+  .connecting {
+    // TODO: consider animation
+    border: 1px dashed $mauve;
+  }
+
+  .disconnecting {
+    border: 1px dotted $mauve;
+  }
+}
