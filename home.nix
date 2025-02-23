@@ -32,13 +32,15 @@
     catppuccin = {
       accent = "mauve";
       flavor = "macchiato";
+      kitty.enable = true;
+      tofi.enable = false;
+      foot.enable = true;
+      fzf.enable = true;
     };
 
     programs.fzf.enable = true;
-    programs.fzf.catppuccin.enable = true;
     programs.foot = {
       enable = true;
-      catppuccin.enable = true;
       settings = {
         main = {
           font = "MesloLGS NF:size=12";
@@ -54,7 +56,6 @@
 
     programs.kitty = {
       enable = true;
-      catppuccin.enable = true;
       settings = {
         scrollback_lines = 10000;
         enable_audio_bell = false;
@@ -154,64 +155,6 @@
       '';
     };
 
-    programs.yazi = {
-      enable = true;
-      enableZshIntegration = true;
-
-      package = pkgs.yazi-unwrapped.overrideAttrs (
-        finalAttrs: previousAttrs: {
-          buildInputs = previousAttrs.buildInputs ++ [
-
-          ];
-        }
-      );
-
-      flavors = {
-        catppuccin-macchiato = "${inputs.yazi-flavors}/catppuccin-macchiato.yazi";
-      };
-
-      plugins = {
-        full-border = "${inputs.yazi-plugins}/full-border.yazi";
-      };
-
-      settings = {
-        manager = {
-          show_hidden = true;
-        };
-        preview = {
-          max_width = 1000;
-          max_height = 1000;
-        };
-      };
-
-      theme =
-        /*
-          (builtins.fromTOML (
-            builtins.readFile "${
-              pkgs.fetchFromGitHub {
-                owner = "Mellbourn";
-                repo = "ls-colors.yazi";
-                rev = "1401880b1a44e2c1809af75adb3da2a9ccb6b472";
-                hash = "sha256-oAoRBD0FFxVuaQ8AAA35x5eTptVtDV7/qNYR+XrGSGE=";
-              }
-            }/theme.toml"
-          ))
-          //
-        */
-        # ls-colors was ugly
-        {
-          flavor = {
-            use = "catppuccin-macchiato";
-          };
-        };
-    };
-
-    #home.pointerCursor = {
-    #  gtk.enable = true;
-    #  package = pkgs.bibata-cursors;
-    #  name = "Bibata-Modern-Classic";
-    #  size = 24;
-    #};
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
@@ -294,7 +237,7 @@
 
     programs.obs-studio = {
       enable = true;
-      plugins = [ pkgs.obs-studio-plugins.droidcam-obs ];
+      #plugins = [ pkgs.obs-studio-plugins.droidcam-obs ];
     };
 
     # Let Home Manager install and manage itself.

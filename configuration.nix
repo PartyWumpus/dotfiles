@@ -268,7 +268,7 @@ nixpkgs.localSystem = {
     # caching of cover art
     services.gvfs.enable = true;
 
-    services.flatpak.enable-debug = true;
+    services.flatpak.debug = true;
     services.flatpak.enable = true;
     # docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md
     services.flatpak.overrides = {

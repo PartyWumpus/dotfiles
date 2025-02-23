@@ -24,11 +24,6 @@
 
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
 
-    yazi-flavors.url = "github:yazi-rs/flavors";
-    yazi-flavors.flake = false;
-    yazi-plugins.url = "github:yazi-rs/plugins";
-    yazi-plugins.flake = false;
-
     catppuccin.url = "github:catppuccin/nix";
 
     ags.url = "path:./modules/hyprland/ags/";

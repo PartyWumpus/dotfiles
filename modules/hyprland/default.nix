@@ -83,7 +83,6 @@ in
     configPackages = [ config.wayland.windowManager.hyprland.package ];
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
     ];
     #config.common.default = "hyprland";
   };
@@ -181,7 +180,6 @@ in
 
   programs.tofi = {
     enable = true;
-    catppuccin.enable = false;
     settings = {
       fuzzy-match = "true";
       ascii-input = "true";
