@@ -5,8 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.5.1";
 
-    #neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     rust-overlay.url = "github:oxalica/rust-overlay";
 
     home-manager.url = "github:nix-community/home-manager";
@@ -26,7 +24,8 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    ags.url = "path:./modules/hyprland/ags/";
+    my-ags.url = "path:./modules/hyprland/ags/";
+    my-nvim.url = "path:./modules/nvim";
 
     #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
     #lix-module.inputs.nixpkgs.follows = "nixpkgs";

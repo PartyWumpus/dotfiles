@@ -11,7 +11,6 @@
   imports = [
     ./modules/hyprland
     ./modules/zsh
-    ./modules/nvim
   ];
 
   config = {
