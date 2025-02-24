@@ -56,11 +56,12 @@
       };
 
       devShells.${system} = {
-        default = pkgs.mkShell {
+        default = pkgs.mkShellNoCC {
           nativeBuildInputs = [
             pkgs.watchexec
             ags_package
           ];
+
         };
       };
     };

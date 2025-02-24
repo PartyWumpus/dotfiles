@@ -85,18 +85,6 @@ function BluetoothPicker() {
           if (icon_data) {
             return d.icon
           } else {
-            switch (formFactor) {
-              case "headphone":
-              case "headset":
-                return "";
-              case "webcam":
-              case "handset":
-              case "hands-free":
-              case "portable":
-                return "";
-              default:
-                return "";
-            }
             return "audio-x-generic"
           }
         })} />
@@ -111,6 +99,7 @@ export default function Hotcorner(gdkmonitor: Gdk.Monitor) {
   const { TOP, RIGHT } = Astal.WindowAnchor
   let hover = false
   let hoverTimeout: GLib.Source | undefined = undefined
+  const visible = Variable(false)
 
   return <window
     className="Hotcorner"
@@ -124,7 +113,7 @@ export default function Hotcorner(gdkmonitor: Gdk.Monitor) {
     <eventbox
       heightRequest={10}
       onHover={(self, ev) => {
-        globalThis?.enableHotcorner?.()
+        visible.set(true)
         hover = true
       }}
       onHoverLost={(self) => {
@@ -135,24 +124,15 @@ export default function Hotcorner(gdkmonitor: Gdk.Monitor) {
 
         hoverTimeout = setTimeout(() => {
           if (hover === false) {
-            globalThis?.disableHotcorner?.()
+            visible.set(false)
           }
-        }, 800)
+        }, 300)
       }}
     >
       <revealer
-        revealChild={false}
+        revealChild={visible()}
         transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
         transitionDuration={100}
-        setup={(self) => {
-          globalThis.enableHotcorner = () => {
-            self.revealChild = true
-            hover = true
-          }
-          globalThis.disableHotcorner = () => {
-            self.revealChild = false
-          }
-        }}
       >
         <box vertical={true} className={"container"}>
           <Controls />

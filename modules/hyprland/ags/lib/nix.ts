@@ -8,7 +8,7 @@ interface nix {
 }
 export const nix: nix = JSON.parse(
   // FIXME: no hardcode wumpus >:(
-  await readFileAsync(`${GLib.getenv("HOME")}.local/share/ags/nix.json`),
+  await readFileAsync(`${GLib.getenv("HOME")}/.local/share/ags/nix.json`),
 );
 
 export type audioFormFactor =

@@ -629,7 +629,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-Ptw8zC1DiZx8+jtBsxuo0QocwsK4BW3M9Je+zCvtPvw=",
+        "narHash": "sha256-DDf/nZm+h7JGuk1+NxMXp4KKSZJXYWFZ5l60y6m9hWE=",
         "path": "./modules/hyprland/ags/",
         "type": "path"
       },
