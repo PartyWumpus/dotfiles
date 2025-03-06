@@ -17,6 +17,9 @@ servers.lua_ls = {
 servers.nixd = {}
 servers.ts_ls = {}
 servers.clangd = {}
+servers.astro = {}
+servers.pyright = {}
+servers.rust_analyzer = {}
 
 servers.tinymist = {
   single_file_support = true,
