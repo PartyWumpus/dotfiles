@@ -10,6 +10,8 @@
   #		 ./hardware-configuration.nix
   #  ];
 
+  networking.hostName = "laptop";
+
   # Bootloader.
   boot.loader = {
     systemd-boot.enable = false;
@@ -28,6 +30,12 @@
 
   fileSystems = {
     "/".options = [ "compress=zstd" ];
+  };
+
+  nixpkgs.hostPlatform = {
+    system = "x86_64-linux";
+    gcc.arch = "znver4";
+    gcc.tune = "znver4";
   };
 
   # fingerprint

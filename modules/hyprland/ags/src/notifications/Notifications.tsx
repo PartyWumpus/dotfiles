@@ -116,7 +116,7 @@ function Notification(props: Props) {
   </eventbox>
 }
 
-const transition_duration = 500
+const transition_duration = 400
 
 function NotificationRevealer(visible: Variable<boolean>, props: Props) {
   return <revealer

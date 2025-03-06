@@ -88,6 +88,7 @@
       # pkgs.hello
 
       google-chrome
+      firefox-bin
       transmission_3-gtk
       pinta
       ranger
@@ -108,12 +109,15 @@
           variant = "macchiato";
         };
       };
-      cursorTheme = {
-        name = "Qogir";
-        package = pkgs.qogir-icon-theme;
-      };
       iconTheme.package = pkgs.tela-icon-theme;
       iconTheme.name = "Tela-dark";
+    };
+
+    home.pointerCursor = {
+      gtk.enable = true;
+      name = "Qogir";
+      package = pkgs.qogir-icon-theme;
+      size = 22;
     };
 
     qt = {
@@ -132,9 +136,12 @@
         '';
 
     xdg.configFile = {
-      "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
-      "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
-      "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
+      "gtk-4.0/assets".source =
+        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
+      "gtk-4.0/gtk.css".source =
+        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
+      "gtk-4.0/gtk-dark.css".source =
+        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
       "Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini { }).generate "kvantum.kvconfig" {
         General.theme = "Catppuccin-Macchiato-Mauve";
       };
@@ -153,7 +160,6 @@
         container_init_hook="${pkgs.zsh}/bin/zsh"
       '';
     };
-
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.

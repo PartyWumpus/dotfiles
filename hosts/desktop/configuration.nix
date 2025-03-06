@@ -14,8 +14,9 @@
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
   config = {
-
     local.isDesktop = true;
+
+    networking.hostName = "desktop"
 
     boot.loader = {
       systemd-boot.enable = false;

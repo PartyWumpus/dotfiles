@@ -18,22 +18,17 @@
   config = {
     programs.partition-manager.enable = true;
 
-/*
     nix.settings.system-features = [
       "benchmark"
       "big-parallel"
       "kvm"
       "nixos-test"
-      "gccarch-znver3"
+      "gccarch-znver4"
       "gccarch-x86-64-v2"
-      "gccarch-x86-64-v3" 
+      "gccarch-x86-64-v3"
     ];
 
-nixpkgs.localSystem = {
-    gcc.arch = "skylake";
-    gcc.tune = "skylake";
-};
-*/
+    nixpkgs.config.allowUnfree = true;
 
     systemd.services.bluetooth.serviceConfig = {
       TimeoutStopSec = 15;
@@ -136,10 +131,8 @@ nixpkgs.localSystem = {
         "wheel"
       ];
       shell = pkgs.zsh;
-      packages =
-        with pkgs;
-        [
-        ];
+      packages = with pkgs; [
+      ];
     };
 
     home-manager = {
@@ -210,6 +203,7 @@ nixpkgs.localSystem = {
       yt-dlp
       prismlauncher
       r2modman
+      bitwarden-desktop
 
       # productivity
       libreoffice-qt
@@ -304,7 +298,7 @@ nixpkgs.localSystem = {
     programs.steam = {
       enable = true;
       #TODO: figure this out
-      #package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; }; 
+      #package = pkgs.steam.override { commandLineArgs = [ "-vgui" ]; };
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       gamescopeSession.enable = true;
@@ -340,7 +334,7 @@ nixpkgs.localSystem = {
           "hfp_ag"
         ];
       };
-    }; 
+    };
 
     # List services that you want to enable:
 

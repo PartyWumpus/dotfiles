@@ -1,5 +1,4 @@
 Properly set up various programming languages
-Switch to firefox??
 Find a way to fix manix, `nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager && nix-channel --update` doesn't work and i need to type `manix --update-cache mergeattr` constantly :(
 use hyprs focuscurrentorlast to switch to prev window as hotkey
 check out hyprexpo

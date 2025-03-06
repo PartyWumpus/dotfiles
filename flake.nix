@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.5.1";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
 
@@ -35,87 +34,62 @@
     inputs@{
       self,
       nixpkgs,
-      utils,
       home-manager,
       ...
     }:
     let
-      pkgs = self.pkgs.x86_64-linux.nixpkgs;
-      eachSystem = utils.lib.eachDefaultSystem;
+      pkgs = import nixpkgs {
+        localSytem = {
+          gcc.arch = "znver4";
+          gcc.tune = "znver4";
+          system = "x86_64-linux";
+        };
+        config.allowUnfree = true;
+        overlays = [ (import inputs.rust-overlay) ];
+      };
       hmModules = [
         inputs.catppuccin.homeManagerModules.catppuccin
-        #hyprlock.homeManagerModules.hyprlock
+      ];
+      nixosModules = [
+        inputs.flatpaks.nixosModules.declarative-flatpak
+        inputs.catppuccin.nixosModules.catppuccin
+        ./configuration.nix
+        home-manager.nixosModules.default
+        {
+          home-manager.sharedModules = [ { imports = hmModules; } ];
+        }
+        inputs.nix-index-database.nixosModules.nix-index
       ];
     in
-    utils.lib.mkFlake {
+    {
       inherit self inputs;
-
-      supportedSystems = [ "x86_64-linux" ];
-      nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
       location = "/home/wumpus/nixos";
       # https://discourse.nixos.org/t/how-to-create-a-timestamp-in-a-nix-expression/30329
-      # seems to be behind an hour because of timezone fuckery and defaulting to utc but still does its job
+      # seems to be behind an hour because of timezone fuckery and defaulting to utc but still does a job
       my_timestamp = nixpkgs.lib.readFile "${pkgs.runCommandLocal "timestamp" { }
         "echo -n `date -d @${toString builtins.currentTime} +%Y-%m-%d_%H-%M-%S` > $out"
       }";
 
-      # Channel definitions.
-      channelsConfig.allowUnfree = true;
-      #sharedOverlays = [ neovim.overlay ];
-
-      # Modules shared between all hosts
-      hostDefaults.modules = [
-        inputs.flatpaks.nixosModules.default
-        inputs.catppuccin.nixosModules.catppuccin
-        ./configuration.nix
-        home-manager.nixosModules.default
-        { home-manager.sharedModules = [ { imports = hmModules; } ]; }
-        inputs.nix-index-database.nixosModules.nix-index
-        #inputs.spicetify-nix.nixosModules.default
-      ];
-
-      ### Hosts ###
-
-      hosts.laptop = {
+      nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit self inputs; };
         modules = [
           ./hosts/laptop/configuration.nix
           ./hosts/laptop/hardware-configuration.nix
-        ];
+        ] ++ nixosModules;
       };
 
-      hosts.desktop = {
+      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         modules = [
           ./hosts/desktop/configuration.nix
           ./hosts/desktop/hardware-configuration.nix
-        ];
+        ] ++ nixosModules;
       };
 
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
 
-      homeConfigurations."wumpus" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home.nix ] ++ hmModules;
-        extraSpecialArgs = {
-          inherit inputs;
-        };
-      };
-
-    }
-    // eachSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config = {
-            allowUnfree = true;
-          };
-          overlays = [ (import inputs.rust-overlay) ];
-        };
-
-      in
-      {
-        devShells = import ./devshells { inherit system pkgs; };
-      }
-    );
+      devShells.x86_64-linux = import ./devshells { inherit pkgs; };
+    };
 }
