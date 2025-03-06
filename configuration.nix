@@ -57,6 +57,8 @@ nixpkgs.localSystem = {
     #nix.package = pkgs.nixVersions.git;
     nix.package = pkgs.lix;
 
+    systemd.extraConfig = "DefaultLimitNOFILE=4096";
+
     nix.registry.system.flake = inputs.self;
 
     nix.settings.auto-optimise-store = true;
