@@ -38,7 +38,7 @@ let
   record = pkgs.writeShellScript "record" ''
     LOCKFILE=~/.recording
     FILE=~/Videos/clips/wip.mp4
-    
+
     if [ ! -f $LOCKFILE ]; then  # Not yet recording a clip so start recording
       touch $LOCKFILE
       if [ "$1" == "area" ]; then
@@ -306,12 +306,10 @@ in
       layerrule = [
         # no black border on grimblast screenshots
         "noanim, ^(selection)$"
-        
-        "blur, ^bar.*"
-        "ignorezero, ^bar.*"
 
         # disable animations for tofi
         "noanim, launcher"
+
         "noanim, ^ags-.*"
       ];
       exec-once = [
@@ -323,7 +321,7 @@ in
         "hyprctl setcursor Qogir 24"
         "${pkgs.waycorner}/bin/waycorner"
         "sleep 10 && swww img ${../../assets/nix.jpg}"
-        "sleep 5 && ${inputs.my-ags.packages.${pkgs.system}.default}/bin/ags-desktop"
+        "${inputs.my-ags.packages.${pkgs.system}.default}/bin/ags-desktop"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
@@ -354,16 +352,21 @@ in
           ''Shift, F12, exec, grimshot --notify savecopy active "${config.xdg.userDirs.pictures}/screenshots/$(TZ=utc date +'%d-%m-%Y %H:%M:%S %2N.png')"''
           "$mod, R, exec, ${record} 'area'"
           "Shift + $mod, R, exec, ${record} 'screen'"
-          "SHIFT + SUPER + CTRL + ALT, L, exec, xdg-open 'https://linkedin.com/'"
 
           "$mod, P, exec, ${show_clipboard}"
+          "$mod, B, exec, ${bluetooth_menu}"
+
+          "$mod, T, togglefloating"
           "$mod, F, fullscreen"
+
+          "$mod, L, exec, 'loginctl lock-session'"
 
           "$mod, Left, movefocus, l"
           "$mod, Right, movefocus, r"
           "$mod, Up, movefocus, u"
           "$mod, Down, movefocus, d"
 
+          "SHIFT + SUPER + CTRL + ALT, L, exec, xdg-open 'https://linkedin.com/'"
         ]
         ++ (
           # binds $mod + 1..10 to workspace 1..10

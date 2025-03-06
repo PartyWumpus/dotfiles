@@ -134,7 +134,7 @@ export default function Hotcorner(gdkmonitor: Gdk.Monitor) {
         transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
         transitionDuration={100}
       >
-        <box vertical={true} className={"container"}>
+        <box vertical className={"container"}>
           <Controls />
           <AudioInputPicker />
           <BluetoothPicker />

@@ -45,7 +45,7 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
         }
       }}
       revealChild={visible()}
-      transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+      transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}
     >
       <box className="OSD">
         <icon icon={iconName()} />
@@ -68,7 +68,7 @@ export default function OSD(monitor: Gdk.Monitor) {
       application={App}
       layer={Astal.Layer.OVERLAY}
       keymode={Astal.Keymode.NONE}
-      anchor={Astal.WindowAnchor.TOP}
+      anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.LEFT}
     >
       <eventbox onClick={() => visible.set(false)}>
         <OnScreenProgress visible={visible} />

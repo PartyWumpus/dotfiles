@@ -32,6 +32,7 @@
         apps
         wireplumber
         bluetooth
+        notifd
         mpris
         pkgs.libgtop
       ];

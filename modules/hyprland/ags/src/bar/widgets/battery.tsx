@@ -16,12 +16,13 @@ export default function BatteryInfo() {
   const tooltip_info = Variable.derive(
     [bind(bat, 'percentage'), bind(bat, 'energyRate'), bind(bat, 'charging')],
     (percent, watts, charging) =>
-      `${charging ? "Gaining" : "Using"}: ${Math.round(watts * 10) / 10}W (${percent * 100}%)`,
+      `${charging ? "Gaining" : "Using"}: ${Math.round(watts * 10) / 10}W (${Math.round(percent * 100)}%)`,
   )
 
   return <box
     tooltipText={bind(tooltip_info)}
-    className={"batteryInfo"}
+    className="batteryInfo"
+    css="padding: 0 4px"
   >
     <label
     >

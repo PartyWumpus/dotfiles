@@ -30,7 +30,7 @@ function dateToPlain(): PlainDate {
 
     date: {
       day: pad(date.getDate()),
-      month: pad(date.getMonth()+1),
+      month: pad(date.getMonth() + 1),
       year: pad(date.getFullYear())
     },
 
@@ -47,14 +47,22 @@ const time = Variable<PlainDate>(dateToPlain()).poll(1000, () => {
   return dateToPlain()
 })
 
-const counter = Variable(0).poll(1, (x) => x+1)
-
 export default function Time() {
-  return <label
-    css="padding-right:3px;"
-    useMarkup={true}
-    justify={Gtk.Justification.CENTER}
-    label={time(t => `${t.time.hrs}:${t.time.mins}:<span fgalpha='60%'>${t.time.secs}</span> | ${t.date.year}/${t.date.month}/${t.date.day}`)}
-    tooltipText={time(t => t.datestring)}
-  />
+  return <box>
+    <label
+      css="padding: 0 2px 0 4px;"
+      useMarkup
+      justify={Gtk.Justification.CENTER}
+      label={time(t => `${t.time.hrs}:${t.time.mins}:<span fgalpha='60%'>${t.time.secs}</span>`)}
+      tooltipText={time(t => t.datestring)}
+    />
+    <Gtk.Separator visible orientation={Gtk.Orientation.VERTICAL} />
+    <label
+      css="padding:0 0 0 4px;"
+      justify={Gtk.Justification.CENTER}
+      label={time(t => `${t.date.year}/${t.date.month}/${t.date.day}`)}
+      tooltipText={time(t => t.datestring)}
+    />
+  </box>
+
 }
