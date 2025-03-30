@@ -16,7 +16,7 @@
   config = {
     local.isDesktop = true;
 
-    networking.hostName = "desktop"
+    networking.hostName = "desktop";
 
     boot.loader = {
       systemd-boot.enable = false;

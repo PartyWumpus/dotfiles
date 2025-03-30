@@ -611,7 +611,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-Sa0nPqvxeMgDISEk8fhzuUYYSTFuhq2RrOhevnePHGs=",
+        "narHash": "sha256-VfaVDSDd0ntKMpIG1lPNBpFqfPQtN2vCRU8wkK8R78g=",
         "path": "./modules/hyprland/ags/",
         "type": "path"
       },
@@ -630,7 +630,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-gATQ2zOZlk9ROy3TDINRzyEt3b8NLC3PcotQX7wRNEQ=",
+        "narHash": "sha256-5Sf6leytBki6nWgciLv5eHxLvcvFfcF5I6ykSbzzTO0=",
         "path": "./modules/nvim",
         "type": "path"
       },
