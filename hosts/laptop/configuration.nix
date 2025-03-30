@@ -32,12 +32,6 @@
     "/".options = [ "compress=zstd" ];
   };
 
-  nixpkgs.hostPlatform = {
-    system = "x86_64-linux";
-    gcc.arch = "znver4";
-    gcc.tune = "znver4";
-  };
-
   # fingerprint
   services.fprintd.enable = true;
   services.fwupd.enable = true;

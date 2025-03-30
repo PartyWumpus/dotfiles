@@ -39,11 +39,7 @@
     }:
     let
       pkgs = import nixpkgs {
-        localSytem = {
-          gcc.arch = "znver4";
-          gcc.tune = "znver4";
-          system = "x86_64-linux";
-        };
+        system = "x86_64-linux";
         config.allowUnfree = true;
         overlays = [ (import inputs.rust-overlay) ];
       };

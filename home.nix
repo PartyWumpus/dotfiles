@@ -205,6 +205,7 @@
     #
     home.sessionVariables = {
       EDITOR = "nvim";
+      MANPAGER = "nvim +Man!";
       TERMINAL = "kitty";
     };
 
