@@ -4,6 +4,9 @@ import Hyprland from "gi://AstalHyprland"
 // TODO: support multimonitor again
 export default function Workspaces() {
   const hypr = Hyprland.get_default()
+  if (!hypr) {
+    return <box />
+  }
 
 
   return <box className={"workspaces"} css="padding-left:2px;">

@@ -1,4 +1,4 @@
-import { GLib, Variable } from "astal"
+import { execAsync, GLib, Variable } from "astal"
 import { Gtk, Astal, Gdk } from "astal/gtk3"
 import Notifd from "gi://AstalNotifd"
 
@@ -27,6 +27,29 @@ const urgency = (n: Notifd.Notification) => {
 type Props = {
   notification: Notifd.Notification
   deleteNotif: () => void
+}
+
+
+let lastShaderTime: Date = new Date();
+let shaderTimeout: GLib.Source | undefined = undefined;
+
+async function notifEffect() {
+  const now = new Date()
+  if (lastShaderTime.getTime() + 400 < now.getTime()) {
+  clearTimeout(shaderTimeout!)
+  lastShaderTime = now
+  await execAsync(`hyprctl --batch "keyword debug:damage_tracking 0; keyword misc:vfr 0"`)
+  await execAsync(
+    `hyprctl keyword decoration:screen_shader /home/wumpus/.config/hypr/shaders/chromatic_aberration.frag`,
+  )
+  shaderTimeout = setTimeout(async () => {
+    // hyprland does not properly clear (some) errors, so we must do it, as any mistakes are (about to be) undone
+    await execAsync(`hyprctl seterror ""`);
+
+    await execAsync(`hyprctl keyword decoration:screen_shader ""`);
+    await execAsync(`hyprctl --batch "keyword debug:damage_tracking 1; keyword misc:vfr 1"`);
+  }, 1500);
+  }
 }
 
 function Notification(props: Props) {
@@ -190,9 +213,9 @@ export default function Notifications(gdkmonitor: Gdk.Monitor) {
           self.show_all()
         }
 
-        notifd.connect("notified", (_, id) => {
-          console.log("notif", id)
+        notifd.connect("notified", async (_, id) => {
           addNotif(id)
+          await notifEffect()
         })
 
         notifd.connect("resolved", (_, id) => {

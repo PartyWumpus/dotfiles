@@ -20,16 +20,13 @@ App.start({
     App.get_monitors().map(Hotcorner)
     App.get_monitors().map(Notifications)
   },
-  /*
   requestHandler(request, res) {
     // getting Gio.IOErrorEnum "Stream has outstanding operation"
     switch (request) {
-      case "hotcorner":
-        globalThis?.enableHotcorner?.()
-        res("hotcorner success")
+      case "hello":
+        res(`hi :)`)
       default:
         res(`ERROR: ${request} is an invalid request`)
     }
   },
-  */
 })

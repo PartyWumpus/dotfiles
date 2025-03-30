@@ -136,7 +136,9 @@ export default function Hotcorner(gdkmonitor: Gdk.Monitor) {
       >
         <box vertical className={"container"}>
           <Controls />
+          <Gtk.Separator visible orientation={Gtk.Orientation.HORIZONTAL} />
           <AudioInputPicker />
+          <Gtk.Separator visible orientation={Gtk.Orientation.HORIZONTAL} />
           <BluetoothPicker />
         </box>
       </revealer>
