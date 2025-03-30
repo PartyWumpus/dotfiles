@@ -70,3 +70,5 @@ require('blink.cmp').setup({
 
 
 require('lazydev').setup()
+
+vim.diagnostic.config({ virtual_lines = true, signs = false })
