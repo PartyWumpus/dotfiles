@@ -3,6 +3,12 @@ import Battery from "gi://AstalBattery"
 
 export default function BatteryInfo() {
   const bat = Battery.get_default()
+
+  // no battery info if no battery. assumes battery existence is static
+  if (bat.device_type === Battery.Type.UNKNOWN) {
+    return <box />
+  }
+
   const time_remaining = Variable.derive(
     [bind(bat, "time_to_full"), bind(bat, "time_to_empty")],
     (t1, t2) => {

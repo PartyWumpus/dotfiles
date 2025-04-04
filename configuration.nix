@@ -175,6 +175,7 @@
       mpv
       distrobox
       docker-compose
+      gdu
 
       # themes
       libsForQt5.qtstyleplugin-kvantum
@@ -200,6 +201,7 @@
       prismlauncher
       r2modman
       bitwarden-desktop
+      pavucontrol
 
       # productivity
       libreoffice-qt
@@ -241,6 +243,8 @@
       "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
       "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
     };
+
+    services.tailscale.enable = true;
 
     # fonts
     fonts.packages = with pkgs; [
