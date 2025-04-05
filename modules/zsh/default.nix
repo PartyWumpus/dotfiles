@@ -26,6 +26,11 @@
       test = ''manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix '';
       update = "sudo nixos-rebuild switch --flake ~/nixos --impure --log-format multiline";
       config = "cd ~/nixos && nvim .";
+        ls = "eza --icons -a";
+        l = "eza --icons -lha --git";
+        untar = "tar -xvf";
+        untargz = "tar -xzf";
+        ":q" = "exit";
     };
 
     # Case insensitive tab completion
