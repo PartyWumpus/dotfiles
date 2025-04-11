@@ -157,8 +157,6 @@
         }
       '';
 
-    # Allow unfree packages
-    #nixpkgs.config.allowUnfree = true;
     #nixpkgs.overlays = [ inputs.neovim.overlay ];
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -248,6 +246,7 @@
 
     # fonts
     fonts.packages = with pkgs; [
+      oswald
       noto-fonts
       noto-fonts-cjk-sans
       #noto-fonts-monochrome-emoji

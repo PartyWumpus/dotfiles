@@ -17,7 +17,7 @@
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
 
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland";
 
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
 
@@ -82,6 +82,15 @@
         modules = [
           ./hosts/desktop/configuration.nix
           ./hosts/desktop/hardware-configuration.nix
+        ] ++ nixosModules;
+      };
+
+nixosConfigurations.thespare = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit self inputs; };
+        modules = [
+          ./hosts/thespare/configuration.nix
+          ./hosts/thespare/hardware-configuration.nix
         ] ++ nixosModules;
       };
 
