@@ -225,6 +225,13 @@
       };
     };
 
+    programs.gh = {
+    enable = true;
+    gitCredentialHelper = {
+      enable = true;
+    };
+  };
+
     programs.alacritty = {
       enable = true;
       settings = {
