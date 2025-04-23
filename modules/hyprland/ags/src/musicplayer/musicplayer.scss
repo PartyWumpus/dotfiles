@@ -1,0 +1,29 @@
+@use 'variables' as *;
+
+
+.MusicPlayer {
+  font-family: "oswald";
+  background-color: $surface0;
+  color: $text;
+  
+  background-image: url("templater.png");
+  color: $surface0;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  > box > * {
+    margin: 0 18px;
+  }
+
+  .buttons {
+  font-size: 20px;
+  .play {color:$teal}
+
+  .shuffle {color:$green}
+
+  .list {color:$peach}
+
+  .heart {color:$red}
+  }
+}

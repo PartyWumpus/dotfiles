@@ -213,6 +213,10 @@ Album: ${player.album}`)}
         <button
           onClick={() => {
             hyprland.dispatch("focuswindow", playerMaps[player.identity])
+            // not to be trusted sadly :(
+            //if (player.canRaise) {
+            //  player.raise()
+            //}
           }}
           onScroll={(_, ev) => {
             player.volume += ev.delta_y * -0.02
@@ -241,12 +245,12 @@ function checkEmptyPlayer(player: Mpris.Player): boolean {
 
 function MediaPlayerSimple({ player }: { player: Mpris.Player }) {
   return <Icon icon={bind(player, "entry").as(e => {
-              if (e === null) {
-                return "audio-x-generic-symbolic"
-              }
-              return (Icon.lookup_icon(e) ? e : "audio-x-generic-symbolic")
-            })}
-            />
+    if (e === null) {
+      return "audio-x-generic-symbolic"
+    }
+    return (Icon.lookup_icon(e) ? e : "audio-x-generic-symbolic")
+  })}
+  />
 }
 
 function MediaPlayerRevealer(player: Mpris.Player): Gtk.Revealer {
