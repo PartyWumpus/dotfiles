@@ -25,6 +25,9 @@
     ];
 
     nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-33.4.11"
+    ];
 
     systemd.services.bluetooth.serviceConfig = {
       TimeoutStopSec = 15;

@@ -44,7 +44,7 @@
         overlays = [ (import inputs.rust-overlay) ];
       };
       hmModules = [
-        inputs.catppuccin.homeManagerModules.catppuccin
+        inputs.catppuccin.homeModules.catppuccin
       ];
       nixosModules = [
         inputs.flatpaks.nixosModules.declarative-flatpak

@@ -22,7 +22,7 @@ function BluetoothDevice(device: Bluetooth.Device) {
         endAt={0.75}
         value={bind(device, "batteryPercentage").as(p => p)}
       >
-      <icon icon={"bluetooth-symbolic"} />
+      <icon icon="bluetooth-symbolic" />
       </circularprogress>
     </box>
   </revealer>

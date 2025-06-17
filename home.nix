@@ -93,7 +93,7 @@
       transmission_3-gtk
       pinta
       ranger
-      kdenlive
+      kdePackages.kdenlive
       feishin
 
       radicle-node

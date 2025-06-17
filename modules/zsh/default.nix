@@ -34,7 +34,7 @@
     };
 
     # Case insensitive tab completion
-    initExtra = "zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'";
+    initContent = "zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'";
 
     history.size = 10000;
     history.path = "${config.xdg.dataHome}/zsh/history";

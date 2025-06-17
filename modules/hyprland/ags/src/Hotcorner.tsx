@@ -23,8 +23,7 @@ function AudioInputPicker() {
         onClick={() => d.set_is_default(true)}
       >
         <icon icon={bind(d, "icon").as(() => {
-          const icon_data = Icon.lookup_icon(d.icon)
-          if (icon_data) {
+          if (d.icon && Icon.lookup_icon(d.icon)) {
             return d.icon
           } else {
             console.warn(`icon '${d.icon}' for audio device '${d.description}' not found`)
@@ -81,11 +80,11 @@ function BluetoothPicker() {
         }}
       >
         <icon icon={bind(d, "icon").as(() => {
-          const icon_data = Icon.lookup_icon(d.icon)
-          if (icon_data) {
+          if (d.icon && Icon.lookup_icon(d.icon)) {
             return d.icon
           } else {
-            return "audio-x-generic"
+            console.warn(`icon '${d.icon}' for audio device '${d.name}' not found`)
+            return "bluetooth-active"
           }
         })} />
       </button>
