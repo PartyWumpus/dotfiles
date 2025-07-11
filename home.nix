@@ -63,6 +63,13 @@
       };
     };
 
+    programs.htop = {
+      enable = true;
+      settings = {
+        show_program_path = 0;
+      };
+    };
+
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
@@ -70,23 +77,10 @@
       wget
       tldr
       unzip
-      /*
-        (htop.overrideAttrs (
-        finalAttrs: previousAttrs: {
-          nativeBuildInputs = previousAttrs.nativeBuildInputs ++ [ pkgs.git ];
-          patches = [./nix.patch];
-        }
-        ))
-      */
-      htop
-      #fzf
 
       neofetch
       pipes
       eza
-      # # Adds the 'hello' command to your environment. It prints a friendly
-      # # "Hello, world!" when run.
-      # pkgs.hello
 
       google-chrome
       firefox-bin
