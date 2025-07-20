@@ -209,7 +209,7 @@
       hunspell
       hunspellDicts.en_GB-ize
 
-      inputs.my-nvim.packages.${pkgs.system}.default
+      inputs.self.packages.${pkgs.system}.nvim
     ];
 
     # thunar

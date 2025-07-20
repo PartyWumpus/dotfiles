@@ -23,11 +23,33 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    my-ags.url = "path:./modules/hyprland/ags/";
-    my-nvim.url = "path:./modules/nvim";
+    # NEOVIM
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+    };
+    plugin-typst-concealer = {
+      url = "github:PartyWumpus/typst-concealer";
+      #url = "git+file:///home/wumpus/Code/typst-plugin";
+      flake = false;
+    };
+    plugin-screenkey = {
+      url = "github:NStefan002/screenkey.nvim";
+      flake = false;
+    };
 
-    #lix-module.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-    #lix-module.inputs.nixpkgs.follows = "nixpkgs";
+    # AGS
+    astal = {
+      #url = "github:aylur/astal";
+      url = "github:PartyWumpus/astal/wireplumber-improvements";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ags = {
+      url = "github:aylur/ags?rev=a6a7a0adb17740f4c34a59902701870d46fbb6a4";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.astal.follows = "astal";
+    };
   };
 
   outputs =
@@ -85,7 +107,7 @@
         ] ++ nixosModules;
       };
 
-nixosConfigurations.thespare = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.thespare = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit self inputs; };
         modules = [
@@ -94,8 +116,19 @@ nixosConfigurations.thespare = nixpkgs.lib.nixosSystem {
         ] ++ nixosModules;
       };
 
+      packages.x86_64-linux.nvim = (import ./modules/nvim { inherit inputs; }).packages.x86_64-linux.nvim;
+      packages.x86_64-linux.nvim_impure =
+        (import ./modules/nvim { inherit inputs; }).packages.x86_64-linux.impure;
+
+      packages.x86_64-linux.bar =
+        (import ./modules/hyprland/ags { inherit inputs; }).packages.x86_64-linux.default;
+      packages.x86_64-linux.ags =
+        (import ./modules/hyprland/ags { inherit inputs; }).packages.x86_64-linux.default;
+
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
 
-      devShells.x86_64-linux = import ./devshells { inherit pkgs; };
+      devShells.x86_64-linux = import ./devshells { inherit pkgs; } // {
+        ags = (import ./modules/hyprland/ags { inherit inputs; }).devShells.x86_64-linux.default;
+      };
     };
 }

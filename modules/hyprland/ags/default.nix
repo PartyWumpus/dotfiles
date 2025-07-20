@@ -1,29 +1,11 @@
-{
-  description = "AGS shell";
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-
-    astal = {
-      #url = "github:aylur/astal";
-      url = "github:PartyWumpus/astal/wireplumber-improvements";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ags = {
-      url = "github:aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.astal.follows = "astal";
-    };
-  };
-
-  outputs =
     {
-      nixpkgs,
-      ags,
+      inputs,
       ...
     }:
     let
+      inherit (inputs) ags nixpkgs;
+
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       astallibs = with ags.packages.${system}; [
@@ -65,5 +47,4 @@
 
         };
       };
-    };
-}
+    }

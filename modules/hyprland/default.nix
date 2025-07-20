@@ -321,7 +321,7 @@ in
         "hyprctl setcursor Qogir 24"
         "${pkgs.waycorner}/bin/waycorner"
         "sleep 10 && swww img ${../../assets/nix.jpg}"
-        "${inputs.my-ags.packages.${pkgs.system}.default}/bin/ags-desktop"
+        "${inputs.self.packages.${pkgs.system}.bar}/bin/ags-desktop"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"

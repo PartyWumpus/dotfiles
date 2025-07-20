@@ -18,11 +18,6 @@ return {
       },
       compress_after = 3,
       clear_after = 3,
-      disable = {
-        filetypes = {},
-        buftypes = {},
-        events = false,
-      },
       show_leader = true,
       group_mappings = true,
     })
