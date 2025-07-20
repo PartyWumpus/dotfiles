@@ -121,14 +121,14 @@
         (import ./modules/nvim { inherit inputs; }).packages.x86_64-linux.impure;
 
       packages.x86_64-linux.bar =
-        (import ./modules/hyprland/ags { inherit inputs; }).packages.x86_64-linux.default;
+        (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.default;
       packages.x86_64-linux.ags =
-        (import ./modules/hyprland/ags { inherit inputs; }).packages.x86_64-linux.default;
+        (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.ags_bin;
 
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
 
       devShells.x86_64-linux = import ./devshells { inherit pkgs; } // {
-        ags = (import ./modules/hyprland/ags { inherit inputs; }).devShells.x86_64-linux.default;
+        ags = (import ./modules/ags { inherit inputs; }).devShells.x86_64-linux.default;
       };
     };
 }
