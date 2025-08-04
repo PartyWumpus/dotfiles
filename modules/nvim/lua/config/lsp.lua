@@ -20,6 +20,7 @@ servers.clangd = {}
 servers.astro = {}
 servers.pyright = {}
 servers.rust_analyzer = {}
+servers.qmlls = {}
 
 servers.tinymist = {
   single_file_support = true,

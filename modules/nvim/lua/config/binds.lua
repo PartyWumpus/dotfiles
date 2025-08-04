@@ -57,7 +57,7 @@ local nmap = function(keys, func, desc)
 end
 
 local tele = require('config.telescope')
-nmap('<leader>fp', tele.live_grep_git_root, '[F]ile find [P]roject')
+nmap('<leader>fs', tele.live_grep_git_root, '[F]ile [S]earch')
 nmap('<leader>ff', tele.builtin.find_files, '[F]ile [F]ind')
 
 -- Typst concealer

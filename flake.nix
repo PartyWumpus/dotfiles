@@ -50,6 +50,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.astal.follows = "astal";
     };
+
+    # QS
+    quickshell = {
+      # add ?ref=<tag> to track a tag
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+
+      # THIS IS IMPORTANT
+      # Mismatched system dependencies will lead to crashes and other issues.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -129,6 +139,8 @@
 
       devShells.x86_64-linux = import ./devshells { inherit pkgs; } // {
         ags = (import ./modules/ags { inherit inputs; }).devShells.x86_64-linux.default;
+        qs = (import ./modules/quickshell { inherit inputs; }).devShell;
       };
+
     };
 }

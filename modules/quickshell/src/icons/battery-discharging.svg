@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Find, www.svgrepo.com, Generator: SVG Find Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   version="1.1"
+   viewBox="144 144 512 512"
+   id="svg5"
+   sodipodi:docname="battery-full-symbolic.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.56568542"
+     inkscape:cx="319.08194"
+     inkscape:cy="417.193"
+     inkscape:window-width="1596"
+     inkscape:window-height="978"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g5" />
+  <defs
+     id="defs2">
+    <clipPath
+       id="b">
+      <path
+         d="m316 148.09h168v63.906h-168z"
+         id="path1" />
+    </clipPath>
+    <clipPath
+       id="a">
+      <path
+         d="m253 232h294v419.9h-294z"
+         id="path2" />
+    </clipPath>
+  </defs>
+  <g
+     id="g5">
+    <g
+       clip-path="url(#b)"
+       id="g3">
+      <path
+         d="m483.96 169.09c0-11.594-9.3984-20.992-20.992-20.992h-125.95c-11.594 0-20.992 9.3984-20.992 20.992v41.984h167.94z"
+         id="path3" />
+    </g>
+    <g
+       clip-path="url(#a)"
+       id="g4">
+      <path
+         d="m 253.05,232.06 v 377.86 c 0,23.188 18.797,41.984 41.984,41.984 h 209.92 c 23.188,0 41.984,-18.797 41.984,-41.984 l -0.004,-377.86 z"
+         id="path4"
+         sodipodi:nodetypes="csssccc" />
+    </g>
+  </g>
+</svg>

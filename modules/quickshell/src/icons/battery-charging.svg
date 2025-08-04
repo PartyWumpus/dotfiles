@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Uploaded to: SVG Find, www.svgrepo.com, Generator: SVG Find Mixer Tools -->
+<svg width="800px" height="800px" version="1.1" viewBox="144 144 512 512" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <clipPath id="b">
+   <path d="m316 148.09h168v63.906h-168z"/>
+  </clipPath>
+  <clipPath id="a">
+   <path d="m253 232h294v419.9h-294z"/>
+  </clipPath>
+ </defs>
+ <g>
+  <g clip-path="url(#b)">
+   <path d="m483.96 169.09c0-11.594-9.3984-20.992-20.992-20.992h-125.95c-11.594 0-20.992 9.3984-20.992 20.992v41.984h167.94z"/>
+  </g>
+  <g clip-path="url(#a)">
+   <path d="m253.05 232.06v377.86c0 23.188 18.797 41.984 41.984 41.984h209.92c23.188 0 41.984-18.797 41.984-41.984l-0.003906-377.86zm83.969 356.86 41.984-146.95-62.977 0.003906 146.95-146.95-41.984 146.95h62.977z"/>
+  </g>
+ </g>
+</svg>
