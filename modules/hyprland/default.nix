@@ -242,8 +242,8 @@ in
       };
 
       general = {
-        gaps_in = -1;
-        gaps_out = 0;
+        gaps_in = 3;
+        gaps_out = "2,10,10,10";
         "col.inactive_border" = "rgb(363a4f)"; # Surface 0
         "col.active_border" = "rgb(c6a0f6)"; # Mauve
         border_size = 2;
@@ -251,7 +251,7 @@ in
 
       decoration = {
         dim_around = 0.2; # dimming around modals
-        rounding = 0;
+        rounding = 4;
         blur = {
           enabled = false;
         };
@@ -311,6 +311,7 @@ in
         "noanim, launcher"
 
         "noanim, ^ags-.*"
+        "noanim, ^quickshell$"
       ];
       exec-once = [
         "swww-daemon"
@@ -320,7 +321,7 @@ in
         "hypridle"
         "hyprctl setcursor Qogir 24"
         "${pkgs.waycorner}/bin/waycorner"
-        "sleep 10 && swww img ${../../assets/nix.jpg}"
+        "sleep 10 && swww img ${../../assets/wallpaper.png}"
         "${inputs.self.packages.${pkgs.system}.bar}/bin/ags-desktop"
       ];
       bindm = [

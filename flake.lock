@@ -800,17 +800,16 @@
     "plugin-typst-concealer": {
       "flake": false,
       "locked": {
-        "lastModified": 1739509836,
-        "narHash": "sha256-eRsNFJ6ahVBU2hUzG9ONofpzD3dpu+KDC6f3G2sNdvg=",
-        "owner": "PartyWumpus",
-        "repo": "typst-concealer",
-        "rev": "a38cb59a7496a753a90d983098f4548038c4c77e",
-        "type": "github"
+        "dirtyRev": "3d2e72ce7fc06bd0db0dafbdd1e17d3c9e343d53-dirty",
+        "dirtyShortRev": "3d2e72c-dirty",
+        "lastModified": 1754743497,
+        "narHash": "sha256-O3kmcQyDABzU4Ztgzq/d7Fq8zaOwMrbw0DBM3GtO8QY=",
+        "type": "git",
+        "url": "file:///home/wumpus/Code/typst-plugin"
       },
       "original": {
-        "owner": "PartyWumpus",
-        "repo": "typst-concealer",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/wumpus/Code/typst-plugin"
       }
     },
     "pre-commit-hooks": {

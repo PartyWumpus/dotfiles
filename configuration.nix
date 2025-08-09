@@ -248,15 +248,23 @@
     services.tailscale.enable = true;
 
     # fonts
-    fonts.packages = with pkgs; [
-      oswald
-      noto-fonts
-      noto-fonts-cjk-sans
-      #noto-fonts-monochrome-emoji
-      noto-fonts-emoji
-      meslo-lgs-nf
-      rubik
-    ];
+    fonts = {
+      enableDefaultFonts = true;
+      fontconfig = {
+        antialias = true;
+        hinting.enable = true;
+        hinting.autohint = true;
+      };
+      packages = with pkgs; [
+        oswald
+        noto-fonts
+        noto-fonts-cjk-sans
+        #noto-fonts-monochrome-emoji
+        noto-fonts-emoji
+        meslo-lgs-nf
+        rubik
+      ];
+    };
 
     environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
 

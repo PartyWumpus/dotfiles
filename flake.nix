@@ -29,8 +29,8 @@
       url = "github:nix-community/neovim-nightly-overlay";
     };
     plugin-typst-concealer = {
-      url = "github:PartyWumpus/typst-concealer";
-      #url = "git+file:///home/wumpus/Code/typst-plugin";
+      #url = "github:PartyWumpus/typst-concealer";
+      url = "git+file:///home/wumpus/Code/typst-plugin";
       flake = false;
     };
     plugin-screenkey = {
