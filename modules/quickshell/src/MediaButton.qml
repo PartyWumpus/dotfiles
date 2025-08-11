@@ -3,7 +3,7 @@ import QtQuick
 
 MouseArea {
     id: root
-    required property bool enabled
+    property bool enabled: true
     required property string icon
     StyledText {
         color: root.enabled ? "white" : "grey"

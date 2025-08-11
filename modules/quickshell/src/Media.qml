@@ -13,7 +13,6 @@ WrapperItem {
     id: root
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
-    topMargin: 1
     function lengthStr(length: int): string {
         if (length <= 0) {
             return `-:--`;
@@ -29,19 +28,39 @@ WrapperItem {
         spacing: 7
 
         Repeater {
-            model: Mpris.players.values.length
+            model: Mpris.players
 
             Item {
                 id: media
                 Layout.alignment: Qt.AlignTop
                 required property int index
                 readonly property MprisPlayer player: Mpris.players.values[index]
-                property bool expanded: false
+
                 implicitWidth: rect.width
-                implicitHeight: rect.height
+                implicitHeight: 18 
                 visible: {
                     !(player.title === undefined && player.artist === undefined && player.position === 0);
                 }
+                /*
+                y: -18
+
+                states: State {
+                    name: "visible"
+                    when: visible
+
+                    PropertyChanges {
+                        media.y: 0
+                    }
+                }
+                Behavior on y {
+                    SequentialAnimation {
+                        NumberAnimation {
+                            duration: 800
+                            easing.type: Easing.OutCirc
+                        }
+                    }
+                  }
+                */
 
                 Timer {
                     // only emit the signal when the position is actually changing.
@@ -61,6 +80,7 @@ WrapperItem {
                         SequentialAnimation {
                             NumberAnimation {
                                 duration: 150
+                                easing.type: Easing.OutCirc
                             }
                         }
                     }
@@ -70,17 +90,17 @@ WrapperItem {
                     color: Colors.crust
 
                     MouseArea {
-                        id: wawaw
+                        id: expandArea
+                        states: State {
+                            name: "expanded"
+                            when: expandArea.containsMouse
+
+                            PropertyChanges {
+                                rect.implicitHeight: 19 * 2
+                            }
+                        }
                         anchors.fill: parent
                         hoverEnabled: true
-                        onEntered: {
-                            expanded = true;
-                            rect.implicitHeight = 19 * 2;
-                        }
-                        onExited: {
-                            expanded = false;
-                            rect.implicitHeight = 18;
-                        }
 
                         WrapperItem {
                             id: wawa
