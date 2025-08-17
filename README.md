@@ -1,5 +1,9 @@
 My nixos dotfiles. Feel free to steal (don't though, find something better), preferably with credit :)
 
+Older versions of my config:
+- AGSv1: https://github.com/PartyWumpus/dotfiles/tree/agsv1
+- AGSv2: https://github.com/PartyWumpus/dotfiles/tree/agsv2
+
 # Thanks to
 - [vimjoyer](https://www.youtube.com/@vimjoyer)'s videos for helping me get started
 - [raf](https://github.com/NotAShelf/), for helping me make my dots less shit (they are still shit)
