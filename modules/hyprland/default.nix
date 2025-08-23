@@ -88,7 +88,7 @@ in
   };
 
   programs.hyprlock = {
-    enable = true;
+    enable = false;
     settings = {
       general = {
         disable_loading_bar = true;
@@ -486,6 +486,13 @@ in
   };
 
   home.file.".local/share/ags/nix.json".text = builtins.toJSON {
+    show_clipboard = "${show_clipboard}";
+    wifi_menu = "${wifi_menu}";
+    bluetooth_menu = "${bluetooth_menu}";
+    record = "${record}";
+  };
+
+  home.file.".local/share/qs/nix.json".text = builtins.toJSON {
     show_clipboard = "${show_clipboard}";
     wifi_menu = "${wifi_menu}";
     bluetooth_menu = "${bluetooth_menu}";

@@ -803,7 +803,7 @@
         "dirtyRev": "3d2e72ce7fc06bd0db0dafbdd1e17d3c9e343d53-dirty",
         "dirtyShortRev": "3d2e72c-dirty",
         "lastModified": 1754743497,
-        "narHash": "sha256-O3kmcQyDABzU4Ztgzq/d7Fq8zaOwMrbw0DBM3GtO8QY=",
+        "narHash": "sha256-hEUhFfOgpx1mH3xwaN1JGEnu7vFEdrs6pMs8UD58vGo=",
         "type": "git",
         "url": "file:///home/wumpus/Code/typst-plugin"
       },

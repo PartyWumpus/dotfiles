@@ -34,33 +34,14 @@ WrapperItem {
                 id: media
                 Layout.alignment: Qt.AlignTop
                 required property int index
-                readonly property MprisPlayer player: Mpris.players.values[index]
+                required property var modelData
+                readonly property MprisPlayer player: modelData 
 
                 implicitWidth: rect.width
-                implicitHeight: 18 
+                implicitHeight: 18
                 visible: {
                     !(player.title === undefined && player.artist === undefined && player.position === 0);
                 }
-                /*
-                y: -18
-
-                states: State {
-                    name: "visible"
-                    when: visible
-
-                    PropertyChanges {
-                        media.y: 0
-                    }
-                }
-                Behavior on y {
-                    SequentialAnimation {
-                        NumberAnimation {
-                            duration: 800
-                            easing.type: Easing.OutCirc
-                        }
-                    }
-                  }
-                */
 
                 Timer {
                     // only emit the signal when the position is actually changing.
@@ -91,14 +72,25 @@ WrapperItem {
 
                     MouseArea {
                         id: expandArea
-                        states: State {
-                            name: "expanded"
-                            when: expandArea.containsMouse
+                        states: [
+                            State {
+                                name: "expanded"
+                                when: expandArea.containsMouse
 
-                            PropertyChanges {
-                                rect.implicitHeight: 19 * 2
+                                PropertyChanges {
+                                    rect.implicitHeight: 19 * 2
+                                }
+                            },
+                            State {
+                                name: "unexpanded"
+                                when: !expandArea.containsMouse
+
+                                PropertyChanges {
+                                    rect.implicitHeight: 18
+                                }
                             }
-                        }
+                        ]
+
                         anchors.fill: parent
                         hoverEnabled: true
 

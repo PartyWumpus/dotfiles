@@ -59,11 +59,17 @@ Scope {
                     layer.enabled: true
                     layer.effect: MultiEffect {
                         shadowEnabled: true
-                        blurMax: 10
-                        shadowColor: Qt.alpha(Colors.mauve, 0.7)
+                        blurMax: 15
+                        shadowColor: Colors.mauve
                     }
 
                     Border {}
+
+                    Osd {
+                      anchors.bottom: parent.bottom
+                      anchors.left: parent.left
+                      visibility: false
+                    }
 
                     Item {
                         id: bar
