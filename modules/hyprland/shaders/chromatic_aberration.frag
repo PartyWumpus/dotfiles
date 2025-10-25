@@ -1,8 +1,12 @@
 // vim: set ft=glsl:
 
+#version 300 es
+
 precision highp float;
-varying highp vec2 v_texcoord;
+in vec2 v_texcoord;
 uniform highp sampler2D tex;
+layout(location = 0) out vec4 fragColor;
+
 uniform float time;
 
 #define MAX_STRENGTH 0.028
@@ -10,7 +14,7 @@ uniform float time;
 #define TIME_OUT 1.0
 
 void main() {
-		vec4 original = texture2D(tex, v_texcoord);
+		vec4 original = texture(tex, v_texcoord);
 
 		float strength;
 		if (time <= TIME_IN) {
@@ -21,7 +25,7 @@ void main() {
 			// thank you desmos :)
 			strength = MAX_STRENGTH + 1.0 - exp(pow(TIME_OUT,-1.0)*log(1.0+MAX_STRENGTH)*(time-TIME_IN));
 		} else {
-			gl_FragColor = vec4(original.r, original.g, original.b, original.a);
+			fragColor = vec4(original.r, original.g, original.b, original.a);
 			return;
 		}
 
@@ -39,5 +43,5 @@ void main() {
     vec4 blueColor = texture2D(tex, v_texcoord + blueOffset);
 
 
-		gl_FragColor = vec4(redColor.r, original.g, blueColor.b, original.a);
+		fragColor = vec4(redColor.r, original.g, blueColor.b, original.a);
 }

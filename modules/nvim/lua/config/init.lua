@@ -25,6 +25,7 @@ require('todo-comments').setup()
 
 require('config.binds')
 require('config.lsp')
+require('dropbar')
 require('config.lualine')
 --require('config.typst-concealer')
 

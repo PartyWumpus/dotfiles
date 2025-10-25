@@ -51,7 +51,9 @@
     #nix.package = pkgs.nixVersions.git;
     nix.package = pkgs.lix;
 
-    systemd.extraConfig = "DefaultLimitNOFILE=4096";
+    systemd.settings.Manager = {
+      DefaultLimitNOFILE="4096";
+    };
 
     nix.registry.system.flake = inputs.self;
 
@@ -162,6 +164,8 @@
 
     #nixpkgs.overlays = [ inputs.neovim.overlay ];
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    
+    environment.stub-ld.enable = true;
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
@@ -209,7 +213,8 @@
       hunspell
       hunspellDicts.en_GB-ize
 
-      inputs.self.packages.${pkgs.system}.nvim
+
+      inputs.self.packages.x86_64-linux.nvf
     ];
 
     # thunar
@@ -246,6 +251,7 @@
     };
 
     services.tailscale.enable = true;
+    services.tailscale.useRoutingFeatures = "client";
 
     # fonts
     fonts = {
@@ -263,6 +269,7 @@
         noto-fonts-emoji
         meslo-lgs-nf
         rubik
+        source-sans-pro
       ];
     };
 

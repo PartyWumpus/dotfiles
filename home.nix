@@ -84,13 +84,15 @@
 
       google-chrome
       firefox-bin
-      transmission_3-gtk
       pinta
       ranger
       kdePackages.kdenlive
       feishin
 
       radicle-node
+
+      obsidian
+      krita
     ];
 
     gtk = {

@@ -93,6 +93,7 @@ let
           lazydev-nvim
           luasnip
           blink-cmp
+          dropbar-nvim
         ];
         general = with pkgs.vimPlugins; [
           lze

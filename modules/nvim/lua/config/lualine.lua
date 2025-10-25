@@ -10,7 +10,7 @@ require('lualine').setup {
     },
     ignore_focus = {},
     always_divide_middle = true,
-    globalstatus = false,
+    globalstatus = true,
     refresh = {
       statusline = 100,
       tabline = 100,
@@ -57,8 +57,31 @@ require('lualine').setup {
     lualine_z = {}
   },
   tabline = {},
-  winbar = {},
-  inactive_winbar = {},
+  winbar = {
+    lualine_a = {
+      { "filename", separator = { left = "", right = "" } },
+      { "%{%v:lua.dropbar()%}", separator = { left = "", right = "" }, color = "nil" },
+    },
+  },
+  inactive_winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {
+      { 'filename',
+        path = 1, -- relative path instead of just filename
+        symbols = {
+          modified = '*',
+          readonly = '',
+          unnamed = '[No Name]',
+          newfile = '[New]',
+        },
+        shorting_target = 5
+      }
+    },
+    lualine_x = { 'filetype', 'location' },
+    lualine_y = {},
+    lualine_z = {}
+  },
   extensions = { "oil", "fugitive" }
 }
 
@@ -70,4 +93,4 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufNew" }, {
     end)
   end
 })
-]]--
+]] --

@@ -237,7 +237,8 @@ in
       );
 
       input = {
-        kb_layout = "gb";
+        kb_layout = "gb,us";
+        kb_variant = ",colemak";
         kb_options = "caps:swapescape";
       };
 
@@ -262,13 +263,9 @@ in
 
       animations = {
         enabled = "yes";
-        first_launch_animation = "false";
       };
 
-      gestures = {
-        workspace_swipe = "true";
-        workspace_swipe_cancel_ratio = 0.3;
-      };
+      gesture = "3, horizontal, workspace";
 
       dwindle = {
         preserve_split = 1;
@@ -289,10 +286,10 @@ in
       };
       windowrulev2 = [
         # disable blur for all windows by default
-        "noblur, initialtitle:.*"
+        "noblur, initialTitle:.*"
 
-        "float, initialclass: xdg-desktop-portal-gtk"
-        "dimaround, initialclass: xdg-desktop-portal-gtk"
+        "float, initialClass: xdg-desktop-portal-gtk"
+        "dimaround, initialClass: xdg-desktop-portal-gtk"
         #"opacity 0.95, initialTitle: Alacritty"
         #"opacity 0.95, initialTitle: foot"
 
@@ -317,7 +314,7 @@ in
         "swww-daemon"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "wl-paste --watch cliphist store"
-        "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+        "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
         "hypridle"
         "hyprctl setcursor Qogir 24"
         "${pkgs.waycorner}/bin/waycorner"
