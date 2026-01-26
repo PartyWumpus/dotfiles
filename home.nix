@@ -110,6 +110,8 @@
       iconTheme.name = "Tela-dark";
     };
 
+    environment.QS_ICON_THEME="Tela-dark";
+
     home.pointerCursor = {
       gtk.enable = true;
       name = "Qogir";

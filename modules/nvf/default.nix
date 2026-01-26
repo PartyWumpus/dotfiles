@@ -78,6 +78,8 @@ nvf.lib.neovimConfiguration {
             enableFormat = true;
             enableTreesitter = true;
             enableExtraDiagnostics = true;
+
+
             nix = {
               enable = true;
               lsp = {
@@ -85,12 +87,28 @@ nvf.lib.neovimConfiguration {
                 server = "nixd";
               };
             };
-            rust.enable = true;
-            rust.lsp.enable = true;
-            python.enable = true;
-            python.lsp.enable = true;
-            kotlin.enable = true;
-            kotlin.lsp.enable = true;
+
+            rust = {
+              enable = true;
+              lsp.enable = true;
+            };
+
+            python = {
+              enable = true;
+              lsp.enable = true;
+            };
+
+            kotlin = {
+              enable = true;
+              lsp.enable = true;
+            };
+
+            qml = {
+              enable = true;
+              format.enable = true;
+              lsp.enable = true;
+            };
+
           };
           binds = {
             whichKey = {
