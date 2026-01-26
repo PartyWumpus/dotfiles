@@ -172,7 +172,7 @@
     environment.systemPackages = with pkgs; [
       sof-firmware
 
-      # bluetooth info for ags
+      # bluetooth info
       gnome-bluetooth
       manix
 
@@ -222,7 +222,8 @@
     programs.xfconf.enable = true;
     services.tumbler.enable = true;
 
-    ## AGS
+    ## Previously needed for AGS
+    ## prolly not needed anymore
     # power info
     services.upower.enable = true;
     # caching of cover art
@@ -274,6 +275,7 @@
     };
 
     environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
+    environment.variables.QS_ICON_THEME = "Tela-dark";
 
     environment.variables.HOSTNAME = config.networking.hostName;
 

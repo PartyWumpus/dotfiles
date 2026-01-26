@@ -24,7 +24,6 @@
     catppuccin.url = "github:catppuccin/nix";
 
     # NEOVIM
-    nixCats.url = "github:BirdeeHub/nixCats-nvim";
     nvf.url = "github:notashelf/nvf/v0.8";
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
@@ -37,19 +36,6 @@
     plugin-screenkey = {
       url = "github:NStefan002/screenkey.nvim";
       flake = false;
-    };
-
-    # AGS
-    astal = {
-      #url = "github:aylur/astal";
-      url = "github:PartyWumpus/astal/wireplumber-improvements";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ags = {
-      url = "github:aylur/ags?rev=a6a7a0adb17740f4c34a59902701870d46fbb6a4";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.astal.follows = "astal";
     };
 
     # QS
@@ -127,14 +113,8 @@
         ] ++ nixosModules;
       };
 
-      packages.x86_64-linux.nvim = (import ./modules/nvim { inherit inputs; }).packages.x86_64-linux.nvim;
-      packages.x86_64-linux.nvim_impure =
-        (import ./modules/nvim { inherit inputs; }).packages.x86_64-linux.impure;
-
       packages.x86_64-linux.bar =
-        (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.default;
-      packages.x86_64-linux.ags =
-        (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.ags_bin;
+        (import ./modules/quickshell { inherit inputs; }).packages.x86_64-linux;
       packages.x86_64-linux.qs =
         (import ./modules/quickshell { inherit inputs; }).packages.x86_64-linux;
       packages.x86_64-linux.nvf = (import ./modules/nvf {inherit inputs pkgs;}).neovim;
@@ -142,7 +122,6 @@
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
 
       devShells.x86_64-linux = import ./devshells { inherit pkgs; } // {
-        ags = (import ./modules/ags { inherit inputs; }).devShells.x86_64-linux.default;
         qs = (import ./modules/quickshell { inherit inputs; }).devShell;
       };
 
