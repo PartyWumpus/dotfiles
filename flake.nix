@@ -135,6 +135,8 @@
         (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.default;
       packages.x86_64-linux.ags =
         (import ./modules/ags { inherit inputs; }).packages.x86_64-linux.ags_bin;
+      packages.x86_64-linux.qs =
+        (import ./modules/quickshell { inherit inputs; }).packages.x86_64-linux;
       packages.x86_64-linux.nvf = (import ./modules/nvf {inherit inputs pkgs;}).neovim;
 
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;

@@ -307,7 +307,6 @@ in
         # disable animations for tofi
         "noanim, launcher"
 
-        "noanim, ^ags-.*"
         "noanim, ^quickshell$"
       ];
       exec-once = [
@@ -319,7 +318,7 @@ in
         "hyprctl setcursor Qogir 24"
         "${pkgs.waycorner}/bin/waycorner"
         "sleep 10 && swww img ${../../assets/wallpaper.png}"
-        "${inputs.self.packages.${pkgs.system}.bar}/bin/ags-desktop"
+        "${inputs.self.packages.${pkgs.system}.qs}/bin/bar"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
