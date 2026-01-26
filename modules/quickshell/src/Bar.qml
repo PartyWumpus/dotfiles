@@ -66,9 +66,8 @@ Scope {
                     Border {}
 
                     Osd {
-                      anchors.bottom: parent.bottom
-                      anchors.left: parent.left
-                      visibility: false
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
                     }
 
                     Item {
@@ -113,6 +112,9 @@ Scope {
                                 id: battery
                                 anchors.left: parent.left
                                 implicitWidth: batteryInner.implicitWidth + 5
+                                Recording {
+                                    anchors.right: parent.left
+                                }
                                 Battery {
                                     id: batteryInner
                                     anchors.left: parent.left

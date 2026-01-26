@@ -8,13 +8,13 @@ Item {
     id: root
 
     readonly property var workspaces: {
-      const wks = {}
-      Hyprland.workspaces.values.forEach((wk) => {
-        wks[wk.id-1] = wk
-      })
-      wks
+        const wks = {};
+        Hyprland.workspaces.values.forEach(wk => {
+            wks[wk.id - 1] = wk;
+        });
+        wks;
     }
-      
+
     implicitWidth: layout.implicitWidth
     implicitHeight: layout.implicitHeight
 
@@ -25,27 +25,27 @@ Item {
         spacing: 3
 
         Repeater {
-            model: 10 
+            model: 10
 
             Rectangle {
-              required property int index
-              width: 14
-              height: 14
-              radius: Infinity
-              color: {
-                const wk = root.workspaces[this.index]
-                // TODO: handle multimonitor
-                if (wk === undefined) {
-                  Colors.surface1
-                } else if (wk.focused) {
-                  Colors.mauve
-                } else if (wk.urgent) {
-                  Colors.red
-                } else {
-                  Colors.overlay1
+                required property int index
+                width: 14
+                height: 14
+                radius: Infinity
+                color: {
+                    const wk = root.workspaces[this.index];
+                    // TODO: handle multimonitor
+                    if (wk === undefined) {
+                        Colors.surface1;
+                    } else if (wk.focused) {
+                        Colors.mauve;
+                    } else if (wk.urgent) {
+                        Colors.red;
+                    } else {
+                        Colors.overlay1;
+                    }
                 }
-              }
-            } 
+            }
         }
     }
 

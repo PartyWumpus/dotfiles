@@ -1,24 +1,45 @@
 import Quickshell
 import QtQuick
 import QtQuick.Shapes
+import Quickshell.Services.Pipewire
 
 Item {
     id: root
 
     property var cornerWidth: 15
     property var cornerHeight: 15
-    required property bool visibility
+    property bool visibility
 
-    //visible: height > 0
     implicitHeight: 0
     implicitWidth: content.implicitWidth
+    anchors.leftMargin: -content.width
+
+    Connections {
+        target: Pipewire.defaultAudioSink?.audio ?? null
+
+        function onVolumeChanged() {
+            root.visibility = true;
+            hideTimer.restart();
+        }
+
+        function onMutedChanged() {
+            root.visibility = true;
+            hideTimer.restart();
+        }
+    }
+
+    Timer {
+        id: hideTimer
+        interval: 2500
+        onTriggered: root.visibility = false
+    }
 
     states: State {
         name: "visible"
         when: root.visibility
 
         PropertyChanges {
-            root.y: 200 
+            root.anchors.leftMargin: 0
         }
     }
 
@@ -28,10 +49,10 @@ Item {
             to: "visible"
 
             NumberAnimation {
-                target: root
-                property: "y"
-                duration: 200
-                easing.type: Easing.BezierSpline
+                target: root.anchors
+                property: "leftMargin"
+                duration: 100
+                easing.type: Easing.OutCirc
             }
         },
         Transition {
@@ -39,10 +60,10 @@ Item {
             to: ""
 
             NumberAnimation {
-                target: root
-                property: "y"
-                duration: 200
-                easing.type: Easing.BezierSpline
+                target: root.anchors
+                property: "leftMargin"
+                duration: 300
+                easing.type: Easing.InCirc
             }
         }
     ]

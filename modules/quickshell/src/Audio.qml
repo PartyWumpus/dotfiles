@@ -20,7 +20,7 @@ Singleton {
         if (defaultSink?.ready && defaultSink?.audio !== undefined) {
             defaultSink.audio.muted = false;
             defaultSink.audio.volume = Math.max(0, Math.min(1, newVolume));
-          }
+        }
     }
 
     function getIcon(node: PwNode): string {

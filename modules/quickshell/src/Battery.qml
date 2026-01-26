@@ -20,7 +20,7 @@ Item {
         anchors.fill: parent
 
         hoverEnabled: true
-        ToolTip {
+        StyledToolTip {
             visible: area.containsMouse
             text: `${root.isCharging ? "Gaining" : "Using"}: ${Math.round(root.device.changeRate * 10) / 10}W (${Math.round(root.device.percentage * 100)}%)`
         }

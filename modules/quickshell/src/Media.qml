@@ -35,7 +35,7 @@ WrapperItem {
                 Layout.alignment: Qt.AlignTop
                 required property int index
                 required property var modelData
-                readonly property MprisPlayer player: modelData 
+                readonly property MprisPlayer player: modelData
 
                 implicitWidth: rect.width
                 implicitHeight: 18
@@ -105,6 +105,8 @@ WrapperItem {
 
                             RowLayout {
                                 Layout.fillWidth: true
+
+                                /*
                                 Image {
                                     id: albumIcon
                                     Layout.alignment: Qt.AlignCenter
@@ -115,12 +117,38 @@ WrapperItem {
                                     fillMode: Image.Stretch
                                     sourceSize.width: 15
                                     sourceSize.height: 15
+                                  }
+                                  */
+
+                                MouseArea {
+                                    id: albumIconArea
+                                    Layout.alignment: Qt.AlignCenter
+                                    implicitHeight: 15
+                                    implicitWidth: 15
+                                    hoverEnabled: true
+
+                                    Image {
+                                        id: albumIcon
+                                        retainWhileLoading: true
+
+                                        source: media.player.trackArtUrl ?? ""
+                                        asynchronous: true
+                                        fillMode: Image.Stretch
+                                        sourceSize.width: 15
+                                        sourceSize.height: 15
+                                    }
+
+                                    StyledToolTip {
+                                        text: player.trackAlbum || "[Unknown Album]"
+                                        visible: albumIconArea.containsMouse
+                                    }
                                 }
+
                                 MediaButton {
                                     Layout.alignment: Qt.AlignCenter
                                     icon: "󰒮"
                                     enabled: media.player.canGoPrevious
-                                    implicitWidth: 15
+                                    implicitWidth: 20
                                     implicitHeight: 15
                                     onClicked: () => {
                                         media.player.previous();
@@ -130,7 +158,7 @@ WrapperItem {
                                     Layout.alignment: Qt.AlignCenter
                                     icon: media.player.isPlaying ? "" : ""
                                     enabled: media.player.canTogglePlaying
-                                    implicitWidth: 15
+                                    implicitWidth: 20
                                     implicitHeight: 15
                                     onClicked: () => {
                                         media.player.togglePlaying();
@@ -140,7 +168,7 @@ WrapperItem {
                                     Layout.alignment: Qt.AlignCenter
                                     icon: "󰒭"
                                     enabled: media.player.canGoNext
-                                    implicitWidth: 15
+                                    implicitWidth: 20
                                     implicitHeight: 15
                                     onClicked: () => {
                                         media.player.next();
@@ -159,16 +187,16 @@ WrapperItem {
                                         };
                                         // TODO: do this less badly?
                                         Hyprland.dispatch(`focuswindow ${playerMaps[player.identity]}`);
-                                        //media.player.raise();
+                                    //media.player.raise();
                                     }
-                                    ToolTip {
+                                    StyledToolTip {
                                         text: player.identity
                                         visible: mediaPlayerIconArea.containsMouse
                                     }
                                     IconImage {
                                         id: mediaPlayerIcon
                                         anchors.fill: parent
-                                        source: Quickshell.iconPath(DesktopEntries.heuristicLookup(media.player.identity)?.icon ?? "", "todo-use-generic-music-icon")
+                                        source: Quickshell.iconPath(DesktopEntries.heuristicLookup(player.identity)?.icon ?? "", "todo-use-generic-music-icon")
                                         asynchronous: true
                                     }
                                 }

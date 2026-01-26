@@ -18,7 +18,7 @@ Canvas {
 
     property real centerWidth: width / 2
     property real centerHeight: height / 2
-    property real radius: (Math.min(canvas.width, canvas.height) / 2)-2
+    property real radius: (Math.min(canvas.width, canvas.height) / 2) - 2
 
     property real minimumValue: 0
     property real maximumValue: 100
@@ -35,7 +35,7 @@ Canvas {
 
     property var icon
 
-    signal clicked()
+    signal clicked
 
     onEmptyColorChanged: requestPaint()
     onFillColorChanged: requestPaint()
@@ -65,11 +65,7 @@ Canvas {
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.fillStyle = Qt.lighter(canvas.fillColor, 1.25);
-            ctx.arc(canvas.centerWidth,
-                    canvas.centerHeight,
-                    canvas.radius,
-                    0,
-                    2*Math.PI);
+            ctx.arc(canvas.centerWidth, canvas.centerHeight, canvas.radius, 0, 2 * Math.PI);
             ctx.fill();
         }
 
@@ -79,13 +75,8 @@ Canvas {
         ctx.beginPath();
         ctx.lineWidth = 3;
         ctx.strokeStyle = emptyColor;
-        ctx.arc(canvas.centerWidth,
-                canvas.centerHeight,
-                canvas.radius,
-                angleOffset + canvas.angle,
-                angleOffset + 2*Math.PI);
+        ctx.arc(canvas.centerWidth, canvas.centerHeight, canvas.radius, angleOffset + canvas.angle, angleOffset + 2 * Math.PI);
         ctx.stroke();
-
 
         // Second, thicker arc
         // From 0 to angle
@@ -93,11 +84,7 @@ Canvas {
         ctx.beginPath();
         ctx.lineWidth = 3;
         ctx.strokeStyle = canvas.fillColor;
-        ctx.arc(canvas.centerWidth,
-                canvas.centerHeight,
-                canvas.radius,
-                canvas.angleOffset,
-                canvas.angleOffset + canvas.angle);
+        ctx.arc(canvas.centerWidth, canvas.centerHeight, canvas.radius, canvas.angleOffset, canvas.angleOffset + canvas.angle);
         ctx.stroke();
 
         ctx.restore();
@@ -107,22 +94,21 @@ Canvas {
         anchors.centerIn: canvas
         anchors.fill: canvas
         margin: 4.5
-      Item {
-        VectorImage {
-            id: sourceItem
-            anchors.fill: parent
-            source: canvas.icon
-            preferredRendererType: VectorImage.CurveRenderer
-            visible: false
-        }
+        Item {
+            VectorImage {
+                id: sourceItem
+                anchors.fill: parent
+                source: canvas.icon
+                preferredRendererType: VectorImage.CurveRenderer
+                visible: false
+            }
 
-        Colorize {
-          source: sourceItem
-          color: canvas.fillColor
+            Colorize {
+                source: sourceItem
+                color: canvas.fillColor
+            }
         }
-      }
     }
-
 
     MouseArea {
         id: mouseArea
@@ -132,4 +118,3 @@ Canvas {
         onPressedChanged: canvas.requestPaint()
     }
 }
-
