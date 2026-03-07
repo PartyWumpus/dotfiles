@@ -23,8 +23,10 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
+    tuigreet.url = "github:NotAShelf/tuigreet";
+
     # NEOVIM
-    nvf.url = "github:notashelf/nvf/v0.8";
+    nvf.url = "github:notashelf/nvf";
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
     };
@@ -40,11 +42,7 @@
 
     # QS
     quickshell = {
-      # add ?ref=<tag> to track a tag
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-
-      # THIS IS IMPORTANT
-      # Mismatched system dependencies will lead to crashes and other issues.
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -69,6 +67,7 @@
         inputs.flatpaks.nixosModules.declarative-flatpak
         inputs.catppuccin.nixosModules.catppuccin
         ./configuration.nix
+        ./modules/stuff/greetd.nix
         home-manager.nixosModules.default
         {
           home-manager.sharedModules = [ { imports = hmModules; } ];

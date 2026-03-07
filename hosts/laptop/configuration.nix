@@ -45,9 +45,9 @@
     SuspendState=mem
   '';
 
-  services.logind.lidSwitch = "suspend-then-hibernate";
-  services.logind.lidSwitchExternalPower = "suspend-then-hibernate";
-  services.logind.lidSwitchDocked = "ignore";
+  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "suspend-then-hibernate";
+  services.logind.settings.Login.HandleLidSwitchDocked = "ignore";
 
   services.tlp = {
     enable = true;

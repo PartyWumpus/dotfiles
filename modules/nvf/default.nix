@@ -73,6 +73,7 @@ nvf.lib.neovimConfiguration {
             };
           };
           treesitter.grammars = pkgs.vimPlugins.nvim-treesitter.allGrammars;
+          treesitter.enable = true;
           autocomplete.blink-cmp.enable = true;
           languages = {
             enableFormat = true;

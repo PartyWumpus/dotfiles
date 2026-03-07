@@ -86,7 +86,9 @@
       firefox-bin
       pinta
       ranger
-      kdePackages.kdenlive
+
+      # fix this later https://github.com/NixOS/nixpkgs/issues/483540
+      #kdePackages.kdenlive
       feishin
 
       radicle-node
@@ -208,16 +210,11 @@
 
     programs.git = {
       enable = true;
-      userName = "PartyWumpus";
-      userEmail = "48649272+PartyWumpus@users.noreply.github.com";
-      aliases = {
-        dft = "difftool";
-      };
-      extraConfig = {
-        diff.tool = ''difftastic'';
-        difftool.prompt = false;
-        difftool.difftastic.cmd = ''${pkgs.difftastic}/bin/difft "$LOCAL" "$REMOTE"'';
-        pager.difftool = true;
+      settings = {
+        user = {
+          name = "PartyWumpus";
+          email = "48649272+PartyWumpus@users.noreply.github.com";
+        };
       };
     };
 

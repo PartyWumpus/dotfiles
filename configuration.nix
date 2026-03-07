@@ -185,13 +185,6 @@
       # themes
       libsForQt5.qtstyleplugin-kvantum
       libsForQt5.qt5ct
-      (pkgs.catppuccin-sddm.override {
-        flavor = "macchiato";
-        font = "Noto Sans";
-        fontSize = "15";
-        background = "${./assets/nix.jpg}";
-        loginBackground = true;
-      })
 
       # git packages
       git
@@ -267,7 +260,7 @@
         noto-fonts
         noto-fonts-cjk-sans
         #noto-fonts-monochrome-emoji
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         meslo-lgs-nf
         rubik
         source-sans-pro
@@ -329,12 +322,6 @@
     security.pam.services.hyprlock = { };
 
     services.xserver.enable = true;
-    services.displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-      theme = "catppuccin-macchiato";
-      package = pkgs.kdePackages.sddm;
-    };
 
     hardware.bluetooth.enable = true;
     hardware.bluetooth.settings.General.Experimental = true;
@@ -361,10 +348,10 @@
     # services.openssh.enable = true;
 
     # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
+    #networking.firewall.allowedTCPPorts = [ 5173 8000 ];
     # networking.firewall.allowedUDPPorts = [ ... ];
     # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
+    networking.firewall.enable = false;
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

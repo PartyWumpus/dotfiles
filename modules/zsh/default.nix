@@ -13,6 +13,7 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     historySubstringSearch.enable = true;
+    dotDir = config.home.homeDirectory;
     historySubstringSearch.searchDownKey = [
       "^[[B"
       "$terminfo[kcud1]"

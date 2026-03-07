@@ -92,7 +92,7 @@ Scope {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.right: parent.right
                             implicitHeight: 20
-                            implicitWidth: battery.implicitWidth + hotcornerContainer.implicitWidth
+                            implicitWidth: battery.implicitWidth + date.implicitWidth + hotcornerContainer.implicitWidth + 5
 
                             Rectangle {
                                 id: wawaAreaa
@@ -120,15 +120,43 @@ Scope {
                                     anchors.left: parent.left
                                 }
                             }
+
+                            Item {
+                              id: date
+                              anchors.left: battery.right
+                              implicitHeight: dateInner.implicitHeight
+                              implicitWidth: dateInner.implicitWidth
+                              StyledText {
+                                  id: dateInner
+                                  text: Time.date
+                              }
+                              MouseArea {
+                                id: dateArea
+                                hoverEnabled: true
+                                anchors.fill: parent
+                              }
+                              StyledToolTip {
+                                text: Time.day 
+                                visible: dateArea.containsMouse
+                              }
+                            }
+
                             Item {
                                 id: hotcornerContainer
-                                anchors.left: battery.right
+                                anchors.left: date.right
+                                anchors.leftMargin: 5
                                 implicitWidth: clock.implicitWidth + hotcorner.implicitWidth
                                 implicitHeight: Math.max(clock.implicitHeight, hotcorner.implicitHeight)
 
-                                Clock {
+                                Item {
                                     id: clock
                                     anchors.left: parent.left
+                                    implicitHeight: clockInner.implicitHeight
+                                    implicitWidth: clockInner.implicitWidth + 2
+                                    StyledText {
+                                        id: clockInner
+                                        text: Time.time
+                                    }
                                 }
                                 MouseArea {
                                     id: hotcornerArea

@@ -11,10 +11,13 @@ Singleton {
     readonly property string time: {
         Qt.formatDateTime(clock.date, "hh:mm:") + "<font color='grey'>" + Qt.formatDateTime(clock.date, "ss") + "</font>";
     }
+    readonly property string day: {
+        Qt.formatDateTime(clock.date, "dddd dd MMM yyyy");
+    }
 
     SystemClock {
         id: clock
         // change to .Minutes when on battery saver
-        precision: SystemClock.Seconds
+        precision: SystemClock.Minutes
     }
 }
