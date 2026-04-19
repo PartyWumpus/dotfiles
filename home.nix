@@ -78,7 +78,7 @@
       tldr
       unzip
 
-      neofetch
+      fastfetch
       pipes
       eza
 
@@ -87,8 +87,7 @@
       pinta
       ranger
 
-      # fix this later https://github.com/NixOS/nixpkgs/issues/483540
-      #kdePackages.kdenlive
+      kdePackages.kdenlive
       feishin
 
       radicle-node

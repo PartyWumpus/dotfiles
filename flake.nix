@@ -19,8 +19,6 @@
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland";
 
-    flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
-
     catppuccin.url = "github:catppuccin/nix";
 
     tuigreet.url = "github:NotAShelf/tuigreet";
@@ -64,7 +62,6 @@
         inputs.catppuccin.homeModules.catppuccin
       ];
       nixosModules = [
-        inputs.flatpaks.nixosModules.declarative-flatpak
         inputs.catppuccin.nixosModules.catppuccin
         ./configuration.nix
         ./modules/stuff/greetd.nix

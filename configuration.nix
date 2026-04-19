@@ -222,28 +222,6 @@
     # caching of cover art
     services.gvfs.enable = true;
 
-    services.flatpak.debug = true;
-    services.flatpak.enable = true;
-    # docs: https://github.com/GermanBread/declarative-flatpak/blob/dev/docs/definition.md
-    services.flatpak.overrides = {
-      "global" = {
-        filesystems = [
-          #"host"
-          "/mnt"
-        ];
-      };
-      #"dev.bambosh.UnofficialHomestuckCollection".filesystems = [ "host" "xdg-download" "home" "/mnt" ];
-    };
-    services.flatpak.packages = [
-      "flathub:app/com.heroicgameslauncher.hgl//stable"
-      "flathub:app/dev.bambosh.UnofficialHomestuckCollection//stable"
-      "flathub:app/com.github.tchx84.Flatseal//stable"
-    ];
-    services.flatpak.remotes = {
-      "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-      "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
-    };
-
     services.tailscale.enable = true;
     services.tailscale.useRoutingFeatures = "client";
 

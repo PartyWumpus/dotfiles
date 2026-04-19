@@ -284,30 +284,30 @@ in
       ecosystem = {
         no_update_news = true;
       };
-      windowrulev2 = [
+      windowrule = [
         # disable blur for all windows by default
-        "noblur, initialTitle:.*"
+        "no_blur on, match:initial_title .*"
 
-        "float, initialClass: xdg-desktop-portal-gtk"
-        "dimaround, initialClass: xdg-desktop-portal-gtk"
+        "float on, match:initial_class xdg-desktop-portal-gtk"
+        "dim_around on, match:initial_class xdg-desktop-portal-gtk"
         #"opacity 0.95, initialTitle: Alacritty"
         #"opacity 0.95, initialTitle: foot"
 
         # modalify tag:modal windows
-        "float, tag:modal"
-        "pin, tag:modal"
-        "noanim, tag:modal"
-        "center, tag:modal"
-        "bordercolor rgb(c6a0f6) rgba(c6a0f688), pinned:1"
+        "float on, match:tag modal"
+        "pin on, match:tag modal"
+        "no_anim on, match:tag modal"
+        "center on, match:tag modal"
+        "border_color rgb(c6a0f6) rgba(c6a0f688), match:pin true"
       ];
       layerrule = [
         # no black border on grimblast screenshots
-        "noanim, ^(selection)$"
+        "no_anim on, match:namespace ^(selection)$"
 
         # disable animations for tofi
-        "noanim, launcher"
+        "no_anim on, match:namespace launcher"
 
-        "noanim, ^quickshell$"
+        "no_anim on, match:namespace ^quickshell$"
       ];
       exec-once = [
         "swww-daemon"

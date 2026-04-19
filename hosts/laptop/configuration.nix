@@ -40,10 +40,10 @@
   ];
 
   # suspend-then-hibernate
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=10m
-    SuspendState=mem
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec="10m";
+    SuspendState="mem";
+  };
 
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
   services.logind.settings.Login.HandleLidSwitchExternalPower = "suspend-then-hibernate";
